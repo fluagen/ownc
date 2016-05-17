@@ -1,6 +1,7 @@
 var mongoose  = require('mongoose');
 var BaseModel = require("./base_model");
 var Schema    = mongoose.Schema;
+var ObjectId  = Schema.ObjectId;
 
 var UserSchema = new Schema({
   loginid: { type: String},
@@ -20,5 +21,6 @@ var UserSchema = new Schema({
 });
 
 UserSchema.plugin(BaseModel);
+UserSchema.index({create_at: -1});
 
 mongoose.model('User', UserSchema);

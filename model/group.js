@@ -17,5 +17,6 @@ var GroupSchema = new Schema({
 });
 
 GroupSchema.plugin(BaseModel);
+GroupSchema.index({create_at: -1});
 
 mongoose.model('Group', GroupSchema);

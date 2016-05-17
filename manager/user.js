@@ -9,6 +9,12 @@ exports.getUserById = function(id, callback) {
     }, callback);
 };
 
+exports.getUserByLoginid = function(loginid, callback) {
+    User.findOne({
+        loginid: loginid
+    }, callback);
+};
+
 exports.save = function(loginid, name, passwd, email, callback) {
 
     var user = new User();

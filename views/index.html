@@ -4,6 +4,9 @@
 	<title></title>
 </head>
 <body>
-hello world
+<%if(typeof(user) !== 'undefined' && user){
+				%>
+welcome <%= user.loginid%>
+<%}%>
 </body>
 </html>

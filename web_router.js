@@ -11,5 +11,7 @@ router.get('/', site.index);
 
 router.get('/signup', sign.showSignup);
 router.post('/signup', sign.signup);
+router.get('/signin', sign.showSignin);
+router.post('/signin', sign.signin);
 
 module.exports = router;
