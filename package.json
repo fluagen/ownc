@@ -1,0 +1,36 @@
+{
+  "name": "ownc",
+  "version": "1.0.0",
+  "description": "own community",
+  "main": "app.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fluagen/ownc.git"
+  },
+  "author": "majie",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fluagen/ownc/issues"
+  },
+  "homepage": "https://github.com/fluagen/ownc#readme",
+  "dependencies": {
+     "body-parser": "*",
+     "compression": "*",
+    "express": "*",
+    "cookie-parser": "*",
+    "express-session": "*",
+     "method-override": "*",
+    "loader": "*",
+    "lodash": "*",
+    "ejs-mate": "*",
+    "mongoose": "*",
+    "connect-redis": "*",
+    "bcrypt": "*",
+    "moment": "*",
+    "utility": "*",
+    "eventproxy": "*"
+  }
+}

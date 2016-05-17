@@ -1,0 +1,49 @@
+
+var path = require('path');
+var express = require('express');
+var session = require('express-session');
+var bodyParser = require('body-parser');
+var compress = require('compression');
+var RedisStore = require('connect-redis')(session);
+
+
+var app = express();
+
+var config = require('./config');
+var webRouter = require('./web_router');
+
+
+
+// 配置环境
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'html');
+app.engine('html', require('ejs-mate'));
+
+// 静态文件目录
+var staticDir = path.join(__dirname, 'public');
+app.use('/public', express.static(staticDir));
+
+//通用中间件
+app.use(bodyParser.json({limit: '1mb'}));
+app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }));
+app.use(require('method-override')());
+app.use(require('cookie-parser')(config.session_secret));
+app.use(compress());
+app.use(session({
+  secret: config.session_secret,
+  store: new RedisStore({
+    port: config.redis_port,
+    host: config.redis_host,
+  }),
+  resave: true,
+  saveUninitialized: true,
+}));
+
+// routes
+app.use('/', webRouter);
+
+  app.listen(config.port, function () {
+  	console.log('Ownc listening on port', config.port);
+  });
+
+module.exports = app;
