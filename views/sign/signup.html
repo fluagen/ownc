@@ -1,15 +1,69 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
-<form action="/signup" method="post">
-	<label>登录名</label>><input type="text" name="loginid">
-	<label>密码</label>><input type="password" name="passwd">
-	<label>email</label>><input type="text" name="email">
-
-	<input type="submit" name="注册">
-</form>
-</body>
-</html>
+<% layout('layout') -%>
+<div class="row">
+	<div class="col-md-9">
+		<ul class="list-group">
+			<li class="list-group-item">注册</li>
+			<li class="list-group-item">
+				<% if (typeof(error) !== 'undefined' && error) { %>
+				<div class="message-tip">
+					<p class="bg-danger"><%= error%></p>
+				</div>
+				<%
+				}
+				%>
+				<%if(typeof(success) !== 'undefined' && success){
+				%>
+				<div class="message-tip">
+					<p class="bg-success"><%= success%></p>
+				</div>
+				<%}else{%>
+				<form class="form-horizontal" id="signup" action="/signup" method="post">
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="loginid">用户名</label>
+						<div class="col-md-4">
+							<% if (typeof(loginid) !== 'undefined') { %>
+							<input id="loginid" name="loginid" type="text" placeholder="字母、数字，不少于5位" class="form-control input-md" required="" value="<%=loginid%>"></input>
+							<% } else { %>
+							<input id="loginid" name="loginid" type="text" placeholder="字母、数字，不少于5位" class="form-control input-md" required=""></input>
+							<% } %>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="pass">密码</label>
+						<div class="col-md-4">
+							<input id="passwd" name="passwd" type="password" placeholder="不少于6位" class="form-control input-md" required=""></input>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="repasswd">密码确认</label>
+						<div class="col-md-4">
+							<input id="repasswd" name="repasswd" type="password" placeholder="" class="form-control input-md" required=""></input>
+							
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="email">email</label>
+						<div class="col-md-4">
+							<% if (typeof(email) !== 'undefined') { %>
+							<input id="email" name="email" type="email" placeholder="" class="form-control input-md" required="" value="<%=email%>"></input>
+							<% } else { %>
+							<input id="email" name="email" type="email" placeholder="" class="form-control input-md" required=""></input>
+							<% } %>
+							
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="register-btn"></label>
+						<div class="col-md-8">
+							<input name="register-btn" type="submit" class="btn btn-success" value="注册"></input>
+						</div>
+					</div>
+				</form>
+				<%}%>
+			</li>
+		</ul>
+	</div>
+	<div class="col-md-3">
+		<%- partial('./aside/about') %>
+	</div>
+</div>

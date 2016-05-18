@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<!-- style -->
+		<%- Loader('/public/stylesheets/index.min.css')
+		.css('/public/libs/bootstrap/css/bootstrap.css')
+		.css('/public/stylesheets/common.css')
+		.done(assets, config.site_static_host, config.mini_assets)
+		%>
+		<!-- scripts -->
+		<%- Loader('/public/index.min.js')
+		.js('/public/libs/jquery-2.2.2.js')
+		.js('/public/libs/bootstrap/js/bootstrap.js')
+		.done(assets, config.site_static_host, config.mini_assets)
+		%>
+		<title></title>
+	</head>
+	<body>
+		<nav class="navbar navbar-default">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/">OwnC</a>
+				</div>
+				<%if(current_user){%>
+				<ul class="nav navbar-nav navbar-right">
+					<li>welcome <%= current_user.loginid %></li>
+				</ul>
+				<%}else{%>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="/signup">注册</a></li>
+					<li><a href="/signin">登录</a></li>
+				</ul>
+				<%}%>
+			</div>
+		</nav>
+		<div class="container ">
+			<%-body -%>
+		</div>
+	</body>
+</html>

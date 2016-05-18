@@ -4,13 +4,15 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var compress = require('compression');
 var RedisStore = require('connect-redis')(session);
+var Loader = require('loader');
+var _ = require('lodash');
 
 
 var app = express();
 
 var config = require('./config');
 var webRouter = require('./web_router');
-var model = require('./model');
+var auth = require('./middleware/auth');
 
 
 
@@ -43,6 +45,17 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
 }));
+
+//自定义中间件
+app.use(auth.authUser);
+
+var assets = {};
+// 设置全局变量
+_.extend(app.locals, {
+    config: config,
+    Loader: Loader,
+    assets: assets
+});
 
 // routes
 app.use('/', webRouter);

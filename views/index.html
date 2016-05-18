@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
-<%if(typeof(user) !== 'undefined' && user){
-				%>
-welcome <%= user.loginid%>
+<% layout('layout') -%>
+<%%>
+<%if(current_user){%>
+welcome <%= current_user.loginid%>
 <%}%>
-</body>
-</html>
