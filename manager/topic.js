@@ -5,19 +5,21 @@ var userManager = require('./user');
 var groupManager = require('./group');
 var replyManager = require('./reply');
 
-
-
-exports.getTopicsByQuery = function(query, opt, callback) {
+var getTopicsByQuery = function(query, opt, callback) {
     query.deleted = false;
     query.author_deleted = false;
     query.group_deleted = false;
     Topic.find(query, {}, opt, callback);
 };
-exports.getTopicById = function(id, callback) {
+
+exports.getTopicsByQuery = getTopicsByQuery;
+
+var getTopicById = function(id, callback) {
     Topic.findOne({
         _id: id
     }, callback);
 };
+exports.getTopicById = getTopicById;
 
 exports.getFullTopicById = function(id, callback) {
     var ep = new EventProxy();
@@ -28,7 +30,7 @@ exports.getFullTopicById = function(id, callback) {
         }
         return callback(null, topic);
     });
-    ep.all('topic', function(toipic) {
+    ep.all('topic', function(topic) {
         if (!topic) {
             return callback(null, null);
         }
@@ -43,7 +45,9 @@ exports.getFullTopicById = function(id, callback) {
         groupManager.getGroupById(topic.group_id, proxy.done('group'));
 
     });
-    getTopicById(id, ep.done('topic'));
+    Topic.findOne({
+        '_id': id
+    }, ep.done('topic'));
 };
 
 exports.getFullTopicsByQuery = function(query, opt, callback) {
@@ -51,13 +55,13 @@ exports.getFullTopicsByQuery = function(query, opt, callback) {
     var ep = new EventProxy();
     ep.fail(callback);
     ep.all('full_topics', function(topics) {
-        if (topics) {
+        if (!topics) {
             return callback(null, null);
         }
         return callback(null, topics);
     });
     ep.all('topics', function(topics) {
-        if (topics) {
+        if (!topics) {
             return callback(null, null);
         }
         ep.after('topics_ready', topics.length, function() {
@@ -66,13 +70,20 @@ exports.getFullTopicsByQuery = function(query, opt, callback) {
         topics.forEach(function(topic, i) {
             var proxy = new EventProxy();
             proxy.fail(callback);
-            proxy.all('author', 'group', function(author, group) {
+            proxy.all('author', 'group', 'lastReply', function(author, group, lastReply) {
                 topic.author = author;
                 topic.group = group;
+                topic.lastReply = lastReply;
                 ep.emit('topics_ready');
             });
             userManager.getUserById(topic.author_id, proxy.done('author'));
             groupManager.getGroupById(topic.group_id, proxy.done('group'));
+            if (topic.last_reply) {
+                replyManager.getFullReplyById(topic.last_reply, proxy.done('lastReply'));
+            } else {
+                proxy.emit('lastReply', null);
+            }
+
         });
     });
     getTopicsByQuery(query, opt, ep.done('topics'));

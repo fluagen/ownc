@@ -13,7 +13,7 @@ exports.signup = function(req, res, next) {
     var passwd = req.body.passwd;
     var repasswd = req.body.repasswd;
     var email = req.body.email;
-console.log('loginid:'+loginid+",passwd:"+passwd+",repasswd:"+repasswd+",email:"+email);
+    console.log('loginid:' + loginid + ",passwd:" + passwd + ",repasswd:" + repasswd + ",email:" + email);
     var ep = new EventProxy();
     ep.fail(next);
 
@@ -38,7 +38,7 @@ console.log('loginid:'+loginid+",passwd:"+passwd+",repasswd:"+repasswd+",email:"
     passwd = validator.trim(passwd);
     repasswd = validator.trim(repasswd);
 
-    if (loginid.length < 5 || tool.validateId(loginid)) {
+    if (loginid.length < 5 || !tools.validateId(loginid)) {
         ep.emit('prop_err', '登录名至少5位字母、数字。');
         return;
     }
@@ -83,23 +83,48 @@ console.log('loginid:'+loginid+",passwd:"+passwd+",repasswd:"+repasswd+",email:"
     userManager.getUsersByQuery(query, {}, ep.done('reapt_user'));
 };
 
-exports.showSignin = function(req, res, next) {
+exports.showLogin = function(req, res, next) {
     res.render('sign/signin');
 };
 
-exports.signin = function(req, res, next) {
+exports.login = function(req, res, next) {
     var loginid = req.body.loginid;
     var passwd = req.body.passwd;
     var ep = new EventProxy();
     ep.fail(next);
-    ep.all('user', function(user) {
-        console.log(user);
-        if (!user || user.passwd !== passwd) {
-            return res.send('用户名或密码错误');
-        }
-        auth.gen_session(user, res);
-        //req.session.user = user;
-        res.redirect('/');
+
+    ep.all('prop_err', function(error) {
+        return res.render('sign/signin', {
+            loginid: loginid,
+            error: error
+        });
     });
-    userManager.getUserByLoginid(loginid, ep.done('user'));
+
+    // 验证信息的完整性
+    if ([loginid, passwd].some(function(item) {
+        return item === undefined || validator.trim(item) === '';
+    })) {
+        ep.emit('prop_err', '登录名和密码不能为空。');
+        return;
+    }
+
+    ep.all('user', function(user) {
+        if (!user) {
+            ep.emit('prop_err', '登录名或密码错误。');
+            return;
+        }
+        tools.bcompare(passwd, user.passwd, ep.done(function(bool) {
+            if (!bool) {
+                ep.emit('prop_err', '登录名或密码错误。');
+                return;
+            }
+            auth.gen_session(user, res);
+            res.redirect('/');
+        }));
+    });
+    if (loginid.indexOf('@') !== -1) {
+        userManager.getUserByEmail(loginid, ep.done('user'));
+    } else {
+        userManager.getUserByLoginid(loginid, ep.done('user'));
+    }
 };

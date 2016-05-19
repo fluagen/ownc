@@ -15,6 +15,12 @@ exports.getUserByLoginid = function(loginid, callback) {
     }, callback);
 };
 
+exports.getUserByEmail = function(email, callback) {
+    User.findOne({
+        email: email
+    }, callback);
+};
+
 exports.getUsersByQuery = function(query, opt, callback) {
     User.find(query, {}, opt, callback);
 };

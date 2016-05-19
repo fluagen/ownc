@@ -1,13 +1,44 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
-<form action="/signin" method="post">
-<label>用户名：</label> <input type="text" name="loginid" />
-<label>密码：</label> <input type="password" name="passwd" />
-<input type="submit" name="登录">
-</form>
-</body>
-</html>
+<% layout('layout') -%>
+<div class="row">
+	<div class="col-md-9">
+		<ul class="list-group">
+			<li class="list-group-item">登录</li>
+			<li class="list-group-item">
+				<% if (typeof(error) !== 'undefined' && error) { %>
+				<div class="message-tip">
+					<p class="bg-danger"><%= error%></p>
+				</div>
+				<%
+				}
+				%>
+				<form class="form-horizontal" id="signin" action="/signin" method="post">
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="loginid">用户名</label>
+						<div class="col-md-4">
+							<% if (typeof(loginid) !== 'undefined') { %>
+							<input id="loginid" name="loginid" type="text" placeholder="" class="form-control input-md" required="" value="<%=loginid%>"></input>
+							<% } else { %>
+							<input id="loginid" name="loginid" type="text" placeholder="" class="form-control input-md" required=""></input>
+							<% } %>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="passwd">密码</label>
+						<div class="col-md-4">
+							<input id="passwd" name="passwd" type="password" placeholder="" class="form-control input-md" required=""></input>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="login-btn"></label>
+						<div class="col-md-8">
+							<input name="login-btn" type="submit" class="btn btn-success" value="登录"></input>
+						</div>
+					</div>
+				</form>
+			</li>
+		</ul>
+	</div>
+	<div class="col-md-3">
+		<%- partial('./aside/about') %>
+	</div>
+</div>

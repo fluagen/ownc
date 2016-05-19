@@ -1,5 +1,17 @@
 <% layout('layout') -%>
-<%%>
-<%if(current_user){%>
-welcome <%= current_user.loginid%>
-<%}%>
+<div class="row">
+	<div class="col-md-9">
+		<div class="list-group">
+			<% for(var i=0; i<topics.length; i++){
+			var topic = topics[i];
+			%>
+			<div class="list-group-item">
+				<a href="/topic/<%= topic._id %>"><%= topic.title%></a>
+			</div>
+			<%}%>
+		</div>
+	</div>
+	<div class="col-md-3">
+		<%- partial('./aside/about') %>
+	</div>
+</div>

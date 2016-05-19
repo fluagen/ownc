@@ -1,0 +1,20 @@
+<% layout('layout') -%>
+<div class="row">
+	<div class="col-md-9">
+		<ul class="list-group">
+			<li class="list-group-item"><%= topic.title%></li>
+			<li class="list-group-item"><%= topic.content%></li>
+		</ul>
+		<ul class="list-group">
+			<li class="list-group-item"><%= topic.reply_count%>&nbsp;回复</li>
+			<%
+			for(var i=0; i<topic.replies.length; i++){
+			var reply = topic.replies[i];
+			%>
+			<li class="list-group-item"><%= reply.content%></li>
+			<%}%>
+			
+		</ul>
+	</div>
+	<div class="col-md-3"></div>
+</div>

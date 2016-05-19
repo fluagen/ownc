@@ -1,6 +1,6 @@
 var model = require('../model');
 var Group = model.Group;
-var EventProxy = require('eventporxy');
+var EventProxy = require('eventproxy');
 
 exports.getGroupById = function(id, callback) {
     Group.findOne({
