@@ -13,6 +13,7 @@ var app = express();
 var config = require('./config');
 var webRouter = require('./web_router');
 var auth = require('./middleware/auth');
+var notify = require('./middleware/notify');
 
 
 
@@ -47,7 +48,9 @@ app.use(session({
 }));
 
 //自定义中间件
+app.use(notify.errorMessage);
 app.use(auth.authUser);
+
 
 var assets = {};
 // 设置全局变量
@@ -59,6 +62,11 @@ _.extend(app.locals, {
 
 // routes
 app.use('/', webRouter);
+
+app.use(function (err, req, res, next) {
+    console.error(err);
+    return res.status(500).send('500 status');
+  });
 
 app.listen(config.port, function() {
     console.log('Ownc listening on port', config.port);

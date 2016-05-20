@@ -25,6 +25,13 @@ exports.getUsersByQuery = function(query, opt, callback) {
     User.find(query, {}, opt, callback);
 };
 
+exports.getUsersByLoginids = function (loginids, callback) {
+  if (loginids.length === 0) {
+    return callback(null, []);
+  }
+  User.find({ loginid: { $in: loginids } }, callback);
+};
+
 exports.save = function(loginid, name, passwd, email, callback) {
 
     var user = new User();

@@ -3,17 +3,31 @@ var validator = require('validator');
 
 var topicManager = require('../manager/topic');
 var userManager = require('../manager/user');
+var replyManager = require('../manager/reply');
 
 exports.index = function(req, res, next) {
     var tid = req.params.tid;
     var ep = new EventProxy();
     ep.fail(next);
-    ep.all('topic', function(topic) {
+    ep.all('topic', 'replies', function(topic, replies) {
+        if (!replies) {
+            replies = [];
+        }
         res.render('topic/index', {
-            topic: topic
+            topic: topic,
+            replies: replies
         });
     });
-    topicManager.getFullTopicById(tid, ep.done('topic'));
+    ep.all('topic', function(topic) {
+        replyManager.getFullRepliesByTopicId(topic._id, ep.done('replies'));
+    });
+    topicManager.getFullTopicById(tid, ep.done(function(topic) {
+        if (!topic) {
+            res.render404('话题不存在或已被删除。');
+            return;
+        }
+        ep.emit('topic', topic);
+    }));
 };
 
 exports.create = function(req, res, next) {

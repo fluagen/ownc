@@ -18,7 +18,7 @@ exports.getFullRepliesByTopicId = function(topicId, callback) {
     var ep = new EventProxy();
     ep.fail(callback);
     ep.all('replies', function(replies) {
-        if (replies || replies.length) {
+        if (!replies || replies.length === 0) {
             return callback(null, []);
         }
         ep.after('full_reply', replies.length, function() {

@@ -13,7 +13,6 @@ exports.signup = function(req, res, next) {
     var passwd = req.body.passwd;
     var repasswd = req.body.repasswd;
     var email = req.body.email;
-    console.log('loginid:' + loginid + ",passwd:" + passwd + ",repasswd:" + repasswd + ",email:" + email);
     var ep = new EventProxy();
     ep.fail(next);
 

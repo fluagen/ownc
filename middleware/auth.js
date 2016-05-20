@@ -2,6 +2,29 @@ var config = require('../config');
 var userManager = require('../manager/user');
 var EventProxy = require('eventproxy');
 
+/**
+ * 需要登录
+ */
+exports.userRequired = function (req, res, next) {
+  if (!req.session || !req.session.user || !req.session.user._id) {
+    return res.renderError(403, '需要登录，或会话已过期。');
+  }
+
+  next();
+};
+exports.blockUser = function () {
+  return function (req, res, next) {
+    if (req.path === '/signout') {
+      return next();
+    }
+
+    if (req.session.user && req.session.user.is_block && req.method !== 'GET') {
+        return res.renderError(403, '您已被管理员屏蔽了。');
+    }
+    next();
+  };
+};
+
 function gen_session(user, res) {
     var auth_token = user._id + '$$$$'; // 以后可能会存储更多信息，用 $$$$ 来分隔
     var opts = {
