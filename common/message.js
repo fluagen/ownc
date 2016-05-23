@@ -4,14 +4,14 @@ var Message = models.Message;
 var _ = require('lodash');
 
 /***
-* type:
-*       reply 话题回复
-*      at_topic 话题中at
-*      at_reply 回复中at
-*      apply_group 请求加入组
-*      apply_group_ok 申请加入组的请求通过
-*      apply_group_no 申请加入组的请求被拒绝
-*/
+ * message type:
+ *      reply 话题回复
+ *      at_topic 话题中at
+ *      at_reply 回复中at
+ *      apply_group 请求加入组
+ *      apply_group_ok 申请加入组的请求通过
+ *      apply_group_no 申请加入组的请求被拒绝
+ */
 
 exports.sendReplyMessage = function(receiver_id, sender_id, topic_id, reply_id, callback) {
     callback = callback || _.noop;
@@ -31,30 +31,16 @@ exports.sendReplyMessage = function(receiver_id, sender_id, topic_id, reply_id, 
     });
 };
 
-exports.sendAtMessageByTopic = function(receiver_id, sender_id, topic_id, callback) {
-    callback = callback || _.noop;
-    var ep = new eventproxy();
-    ep.fail(callback);
-
-    var message = new Message();
-    message.type = 'at_topic';
-    message.receiver_id = receiver_id;
-    message.sender_id = sender_id;
-    message.topic_id = topic_id;
-
-    message.save(ep.done('message_saved'));
-    ep.all('message_saved', function(msg) {
-        callback(null, msg);
-    });
-};
-
-exports.sendAtMessageByReply = function(receiver_id, sender_id, topic_id, reply_id, callback) {
+exports.sendAtMessage = function(receiver_id, sender_id, topic_id, reply_id, callback) {
     callback = callback || _.noop;
     var ep = new eventproxy();
     ep.fail(callback);
 
     var message = new Message();
     message.type = 'at_reply';
+    if (!reply_id) {
+        message.type = 'at_topic';
+    }
     message.receiver_id = receiver_id;
     message.sender_id = sender_id;
     message.topic_id = topic_id;
@@ -66,13 +52,13 @@ exports.sendAtMessageByReply = function(receiver_id, sender_id, topic_id, reply_
     });
 };
 
-exports.sendApplyMessageToGroup =function(receiver_id, sender_id, group_id, callback){
-callback = callback || _.noop;
+exports.sendGroupMessage = function(receiver_id, sender_id, group_id, type, callback) {
+    callback = callback || _.noop;
     var ep = new eventproxy();
     ep.fail(callback);
 
     var message = new Message();
-    message.type = 'apply_group';
+    message.type = type;
     message.receiver_id = receiver_id;
     message.sender_id = sender_id;
     message.group_id = group_id;
@@ -83,19 +69,5 @@ callback = callback || _.noop;
     });
 };
 
-exports.sendMessageToGroup =function(receiver_id, sender_id, group_id, callback){
-callback = callback || _.noop;
-    var ep = new eventproxy();
-    ep.fail(callback);
 
-    var message = new Message();
-    message.type = 'apply_group';
-    message.receiver_id = receiver_id;
-    message.sender_id = sender_id;
-    message.group_id = group_id;
 
-    message.save(ep.done('message_saved'));
-    ep.all('message_saved', function(msg) {
-        callback(null, msg);
-    });
-};

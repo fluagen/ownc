@@ -25,11 +25,27 @@ exports.getUsersByQuery = function(query, opt, callback) {
     User.find(query, {}, opt, callback);
 };
 
-exports.getUsersByLoginids = function (loginids, callback) {
-  if (loginids.length === 0) {
-    return callback(null, []);
-  }
-  User.find({ loginid: { $in: loginids } }, callback);
+exports.getUsersByLoginids = function(loginids, callback) {
+    if (loginids.length === 0) {
+        return callback(null, []);
+    }
+    User.find({
+        loginid: {
+            $in: loginids
+        }
+    }, callback);
+};
+
+exports.accReplyCount = function(id, callback) {
+    User.findOne({
+        _id: id
+    }, function(err, user) {
+        if (err || !user) {
+            return callback(err);
+        }
+        user.reply_count += 1;
+        user.save(callback);
+    });
 };
 
 exports.save = function(loginid, name, passwd, email, callback) {
