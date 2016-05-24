@@ -11,7 +11,25 @@
 			for(var i=0; i<replies.length; i++){
 			var reply = replies[i];
 			%>
-			<li class="list-group-item"><%= reply.content%></li>
+			
+			<li class="list-group-item">
+			<div class="reply">
+			<div class="avatar"><a href="#"><img class="media-object avatar-48" src="https://ruby-china-files.b0.upaiyun.com/user/large_avatar/15774.jpg" alt="15774"></a></div>
+			<div class="infos">
+				<div class="info">
+					<div>
+					<span><a href="#"><%= reply.author.loginid %></a></span>
+					<span>&nbsp;•&nbsp;<%= i%>楼&nbsp;•&nbsp;</span>
+					<span><%= reply.create_at_ago() %></span>
+					</div>
+					<div class="opts">编辑</div>
+					
+				</div>
+				<div><%= reply.content%></div>
+			</div>	
+			</div>
+			</li>
+
 			<%}%>
 			
 		</ul>

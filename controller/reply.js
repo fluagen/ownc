@@ -34,8 +34,8 @@ exports.add = function(req, res, next) {
 
         replyManager.save(tid, content, req.session.user._id, ep.done(function(reply) {
             topicManager.updateLastReply(tid, reply._id, ep.done('topic_update_lastreply'));
-            userManager.getUserById(req.session.user._id, ep.done(function(user){
-                if (!user) {//TODO 重新登陆
+            userManager.getUserById(req.session.user._id, ep.done(function(user) {
+                if (!user) { //TODO 重新登陆
                     res.render404('话题不存在或已被删除。');
                     return;
                 }
@@ -44,7 +44,7 @@ exports.add = function(req, res, next) {
                 req.session.user = user;
                 ep.emit('user_acc_replycount');
             }));
-            if (topic.author_id !== req.session.user._id) {
+            if (topic.author_id.toString() !== req.session.user._id.toString()) {
                 // send message to topic author
                 message.sendReplyMessage(topic.author_id, req.session.user._id, topic._id, reply._id, ep.done('sendReplyMessage'));
             } else {
@@ -65,3 +65,27 @@ exports.add = function(req, res, next) {
     });
     topicManager.getTopicById(tid, ep.done('topic'));
 };
+
+exports.delete = function(req, res, next) {
+    var reply_id = req.body.reply_id;
+    var ep = new EventProxy();
+    ep.fail(next);
+    ep.all('reply', function(reply) {
+        if (!reply) {
+            res.render404('删除操作失败，回复记录不存在。');
+            return;
+        }
+        if (reply.author_id.toString() === req.session.user._id.toString() || req.session.user.is_admin) {
+            reply.deleted = true;
+            reply.save(ep.done(function(){
+                res.redirect('/topic/'+reply.topic_id);
+            }));
+        } else {
+            res.renderError(500, '无效的操作。');
+            return;
+        }
+
+    });
+    replyManager.getReplyById(reply_id, ep.done('reply'));
+};
+
