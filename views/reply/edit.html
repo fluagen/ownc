@@ -1,0 +1,28 @@
+<% layout('layout') -%>
+<div class="row">
+	<div class="col-md-9">
+		<% if (typeof(error) !== 'undefined' && error) { %>
+		<div class="message-tip">
+			<p class="bg-danger"><%= error%></p>
+		</div>
+		<%}%>
+		<div class="list-group">
+			<div class="list-group-item">编辑回复</div>
+			<div class="list-group-item">
+				<form class="form-horizontal" action="/reply/<%= reply_id%>/edit" method="post">
+					<div class="form-group">
+						<textarea class="form-control" id="r_content" name="r_content" rows="10" placeholder=""><%= typeof(content) !== 'undefined' && content || '' %></textarea>
+					</div>
+					<div class="form-group">
+						<input name="save-btn" type="submit" class="btn btn-success" value="保存"></input>
+						<input name="rtn-btn" type="button" class="btn btn-success" value="返回"></input>
+					</div>
+				</form>
+			</div>
+		</div>
+		
+	</div>
+	<div class="col-md-3">
+		<%- partial('./aside/about') %>
+	</div>
+</div>

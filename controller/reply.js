@@ -77,8 +77,8 @@ exports.delete = function(req, res, next) {
         }
         if (reply.author_id.toString() === req.session.user._id.toString() || req.session.user.is_admin) {
             reply.deleted = true;
-            reply.save(ep.done(function(){
-                res.redirect('/topic/'+reply.topic_id);
+            reply.save(ep.done(function() {
+                res.redirect('/topic/' + reply.topic_id);
             }));
         } else {
             res.renderError(500, '无效的操作。');
@@ -89,3 +89,46 @@ exports.delete = function(req, res, next) {
     replyManager.getReplyById(reply_id, ep.done('reply'));
 };
 
+exports.showEdit = function(req, res, next) {
+    var reply_id = req.params.reply_id;
+    var ep = new EventProxy();
+    ep.fail(next);
+    ep.all('reply', function(reply) {
+        if (!reply) {
+            res.render404('此回复不存在或已被删除。');
+            return;
+        }
+        if (req.session.user._id.toString() === reply.author_id.toString()) {
+            res.render('reply/edit', {
+                reply_id: reply._id,
+                content: reply.content
+            });
+        } else {
+            res.renderError(500, '你不能编辑此回复。');
+            return;
+        }
+    });
+    replyManager.getReplyById(reply_id, ep.done('reply'));
+};
+
+exports.update = function(req, res, next) {
+    var reply_id = req.params.reply_id;
+    var content = req.body.r_content;
+    if (content === undefined || validator.trim(content) === '') {
+        res.render404('回复内容不能为空。');
+        return;
+    }
+    var ep = new EventProxy();
+    ep.fail(next);
+    ep.all('reply', function(reply) {
+        if (!reply) {
+            res.render404('此回复不存在或已被删除。');
+            return;
+        }
+        reply.content = content;
+        reply.save();
+        res.redirect('/topic/' + reply.topic_id + '#' + reply_id);
+    });
+    replyManager.getReplyById(reply_id, ep.done('reply'));
+
+};

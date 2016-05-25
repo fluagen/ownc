@@ -13,23 +13,30 @@
 			%>
 			
 			<li class="list-group-item">
-			<div class="reply">
-			<div class="avatar"><a href="#"><img class="media-object avatar-48" src="https://ruby-china-files.b0.upaiyun.com/user/large_avatar/15774.jpg" alt="15774"></a></div>
-			<div class="infos">
-				<div class="info">
-					<div>
-					<span><a href="#"><%= reply.author.loginid %></a></span>
-					<span>&nbsp;•&nbsp;<%= i%>楼&nbsp;•&nbsp;</span>
-					<span><%= reply.create_at_ago() %></span>
+				<div class="reply">
+					<div class="avatar"><a href="#"><img class="media-object avatar-48" src="https://ruby-china-files.b0.upaiyun.com/user/large_avatar/15774.jpg" alt="15774"></a></div>
+					<div class="infos">
+						<div class="info">
+							<div>
+								<span><a href="#"><%= reply.author.loginid %></a></span>
+								<span>&nbsp;•&nbsp;<%= i+1 %>楼&nbsp;•&nbsp;</span>
+								<span><%= reply.create_at_ago() %></span>
+							</div>
+							<%if(current_user){%>
+							<div class="opts">
+								<%if(current_user._id.toString() === reply.author._id.toString()){%>
+								<a title="编辑" href="/reply/<%= reply._id%>/edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+								<%}%>
+								<a title="赞" href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
+								<a title="回复" href="#"><i class="fa fa-reply" aria-hidden="true"></i></a>
+							</div>
+							<%}%>
+							
+						</div>
+						<div><%= reply.content%></div>
 					</div>
-					<div class="opts">编辑</div>
-					
 				</div>
-				<div><%= reply.content%></div>
-			</div>	
-			</div>
 			</li>
-
 			<%}%>
 			
 		</ul>
