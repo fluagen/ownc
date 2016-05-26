@@ -5,6 +5,7 @@
 		<%- Loader('/public/stylesheets/index.min.css')
 		.css('/public/libs/bootstrap/css/bootstrap.css')
 		.css('/public/libs/font-awesome/css/font-awesome.min.css')
+		.css('/public/libs/at/css/jquery.atwho.css')
 		.css('/public/stylesheets/common.css')
 		.done(assets, config.site_static_host, config.mini_assets)
 		%>
@@ -12,6 +13,9 @@
 		<%- Loader('/public/index.min.js')
 		.js('/public/libs/jquery-2.2.2.js')
 		.js('/public/libs/bootstrap/js/bootstrap.js')
+		.js('/public/libs/at/js/jquery.caret.js')
+		.js('/public/libs/at/js/jquery.atwho.js')
+		.js('/public/libs/lodash.js')
 		.done(assets, config.site_static_host, config.mini_assets)
 		%>
 		<title></title>

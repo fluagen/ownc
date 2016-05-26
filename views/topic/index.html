@@ -18,7 +18,7 @@
 					<div class="infos">
 						<div class="info">
 							<div>
-								<span><a href="#"><%= reply.author.loginid %></a></span>
+								<a class="author" href="#"><%= reply.author.loginid %></a>
 								<span>&nbsp;•&nbsp;<%= i+1 %>楼&nbsp;•&nbsp;</span>
 								<span><%= reply.create_at_ago() %></span>
 							</div>
@@ -65,3 +65,15 @@
 	</div>
 	<div class="col-md-3"></div>
 </div>
+<% if (current_user && typeof(topic) !== 'undefined') { %>
+<script type="text/javascript">
+var allAuthors = $('.author').map(function (idx, ele) {
+	return $(ele).text().trim();
+}).toArray();
+allAuthors = _.uniq(allAuthors);
+$('#r_content').atwho({
+	at: "@",
+	data: allAuthors
+});
+</script>>
+<% } %>

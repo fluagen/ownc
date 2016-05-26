@@ -28,6 +28,11 @@
 .info a {
 	color: #999;
 }
+.info .author {
+	font-weight: bold;
+	font-size: 13px;
+	color: #555;
+}
 .info .opts a {
 	padding: 0px 3px;
 }

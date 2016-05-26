@@ -57,7 +57,8 @@ var assets = {};
 _.extend(app.locals, {
     config: config,
     Loader: Loader,
-    assets: assets
+    assets: assets,
+    _: _
 });
 
 // routes
