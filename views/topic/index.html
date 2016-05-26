@@ -44,11 +44,22 @@
 		<div class="list-group">
 			<div class="list-group-item">添加回复</div>
 			<div class="list-group-item">
+			<ul class="nav nav-pills">
+  <li role="presentation" class="edit-btn active"><a href="javascript:void(0)">编辑</a></li>
+  <li role="presentation" class="preview-btn"><a href="javascript:void(0)">预览</a></li>
+</ul>
 				<form class="form-horizontal" action="/<%= topic._id%>/reply" method="post">
-					<div class="form-group">
+					<div class="form-group" id="editor">
 						<div class="col-md-1"></div>
 						<div class="col-md-11">
-							<textarea class="form-control" id="r_content" name="r_content" rows="10" placeholder=""></textarea>
+							<textarea class="form-control editor-text" id="r_content" name="r_content" rows="10" placeholder=""></textarea>
+						</div>
+						
+					</div>
+					<div class="form-group" id="preview">
+						<div class="col-md-1"></div>
+						<div class="col-md-11 preview-box">
+3333
 						</div>
 						
 					</div>
@@ -75,5 +86,19 @@ $('#r_content').atwho({
 	at: "@",
 	data: allAuthors
 });
-</script>>
+autosize($('#r_content'));
+
+$('.edit-btn').click(function(){
+	$(this).addClass('active');
+	$('.preview-btn').removeClass('active');
+	$('#editor').toggle(true);
+	$('#preview').toggle(false);
+});
+$('.preview-btn').click(function(){
+	$(this).addClass('active');
+	$('.edit-btn').removeClass('active');
+	$('#editor').toggle(false);
+	$('#preview').toggle(true);
+});
+</script>
 <% } %>
