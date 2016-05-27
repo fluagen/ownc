@@ -41,37 +41,26 @@
 			
 		</ul>
 		<%if(current_user){%>
-		<div class="list-group">
-			<div class="list-group-item">添加回复</div>
-			<div class="list-group-item">
-			<ul class="nav nav-pills">
-  <li role="presentation" class="edit-btn active"><a href="javascript:void(0)">编辑</a></li>
-  <li role="presentation" class="preview-btn"><a href="javascript:void(0)">预览</a></li>
-</ul>
-				<form class="form-horizontal" action="/<%= topic._id%>/reply" method="post">
-					<div class="form-group" id="editor">
-						<div class="col-md-1"></div>
-						<div class="col-md-11">
-							<textarea class="form-control editor-text" id="r_content" name="r_content" rows="10" placeholder=""></textarea>
-						</div>
-						
-					</div>
-					<div class="form-group" id="preview">
-						<div class="col-md-1"></div>
-						<div class="col-md-11 preview-box">
-3333
-						</div>
-						
-					</div>
-					<div class="form-group">
-						<div class="col-md-1"></div>
-						<div class="col-md-11">
-							<input name="save-btn" type="submit" class="btn btn-success" value="回复"></input>
-						</div>
-					</div>
-				</form>
+		<div class="editor-box">
+			<form class="form-horizontal" id="editor-form" action="/<%= topic._id%>/reply" method="post">
+				<textarea class="form-control editor-text" id="r_content" name="r_content" rows="4" placeholder="添加回复"></textarea>
+			</form>
+		</div>
+		<div class="preview-box">
+		</div>
+		<div class="editor-bar-box">
+			<div class="editor-bar-list">
+				<button name="save-btn" id="save-btn"  class="btn btn-primary">回复</button>
+				<button name="edit-btn" id="edit-btn" class="btn btn-primary">编辑</button>
+				<button name="preview-btn" id ="preview-btn" class="btn btn-primary">预览</button>
+			</div>
+			
+			<div class="editor-bar-list-fa">
+				<a title="上传图片" href="#"><i class="fa fa-image" aria-hidden="true"></i></a>
 			</div>
 		</div>
+		
+		
 		<%}%>
 	</div>
 	<div class="col-md-3"></div>
@@ -87,18 +76,19 @@ $('#r_content').atwho({
 	data: allAuthors
 });
 autosize($('#r_content'));
-
-$('.edit-btn').click(function(){
-	$(this).addClass('active');
-	$('.preview-btn').removeClass('active');
-	$('#editor').toggle(true);
-	$('#preview').toggle(false);
+$('#edit-btn').click(function(){
+	$('.editor-box').toggle(true);
+	$('.editor-bar-list-fa').toggle(true);
+	$('#preview-btn').toggle(true);
+	$('.preview-box').toggle(false);
+	$('#edit-btn').toggle(false);
 });
-$('.preview-btn').click(function(){
-	$(this).addClass('active');
-	$('.edit-btn').removeClass('active');
-	$('#editor').toggle(false);
-	$('#preview').toggle(true);
+$('#preview-btn').click(function(){
+	$('.editor-box').toggle(false);
+	$('.editor-bar-list-fa').toggle(false);
+	$('#preview-btn').toggle(false);
+	$('.preview-box').toggle(true);
+	$('#edit-btn').toggle(true);
 });
 </script>
 <% } %>

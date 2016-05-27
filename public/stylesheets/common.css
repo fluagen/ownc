@@ -1,48 +1,95 @@
+body {
+	background: #e9eaed;
+}
+
+.footer {
+	min-height: 200px;
+}
+
 .message-tip p {
 	padding: 15px;
 }
+
 .reply {
 	padding: 0;
 	position: relative;
 	padding-left: 58px;
 }
+
 .reply .avatar {
 	position: absolute;
 	top: 0px;
 	left: 0px;
 }
+
 .avatar-48 {
 	width: 48px;
 	height: 48px;
 	border-radius: 120px;
 }
+
 .reply .infos {
 	min-height: 48px
 }
+
 .info {
 	color: #999;
 	font-size: 12px;
 	display: flex;
 	justify-content: space-between;
 }
+
 .info a {
 	color: #999;
 }
+
 .info .author {
 	font-weight: bold;
 	font-size: 13px;
 	color: #555;
 }
+
 .info .opts a {
 	padding: 0px 3px;
 }
+
 .info .opts a:hover {
 	background: #f0f0f0;
 	color: #333;
 	text-decoration: none;
 }
 
-.editor-text {
-	overflow: visible;
+.editor-box textarea {
+	min-height: 100px;
 }
 
+.preview-box {
+	display: none;
+	min-height: 100px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background: #faf5eb;
+}
+
+.editor-bar-box {
+	padding: 5px 0px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.editor-bar-list button:first-of-type {
+	margin-right: 10px;
+}
+
+.editor-bar-list button:nth-child(2) {
+	display: none;
+}
+
+.editor-bar-list-fa {
+	padding: 0px;
+}
+
+.editor-bar-list-fa a,
+.editor-bar-list-fa a:hover {
+	color: #333;
+}
