@@ -32,6 +32,12 @@
     "moment": "*",
     "utility": "*",
     "validator": "*",
-    "eventproxy": "*"
+    "eventproxy": "*",
+    "node-sass-middleware": "*"
+  },
+  "devDependencies": {
+    "gulp": "*",
+    "gulp-sass": "*",
+    "gulp-autoprefixer": "*"
   }
 }

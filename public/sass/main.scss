@@ -1,0 +1,79 @@
+$background-basic: #e9eaed;
+$background-fa: #333;
+$reply-editor-min-height: 100px;
+$topic-editor-min-height: 300px;
+
+body {
+	background: $background-basic;
+}
+
+@mixin avatar($width, $height) {
+	width: $width;
+	height: $height;
+	border-radius: 120px;
+}
+
+.notice p {
+	padding: 15px;
+}
+
+.reply-item-box {
+	padding: 0;
+	position: relative;
+	padding-left: 58px;
+}
+
+.reply-item-avatar {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+.avatar-48 {
+	@include avatar(48px, 48px);
+}
+
+.reply-item-info {
+}
+
+.editor-box {
+	textarea {
+		min-height: $reply-editor-min-height;
+	}
+
+}
+
+.preview-box {
+	display: none;
+	min-height: $reply-editor-min-height;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background: #faf5eb;
+}
+
+.editor-bar-box {
+	padding: 5px 0px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.editor-bar-items {
+	button:first-of-type {
+		margin-right: 10px;
+	}
+
+	button:nth-child(2) {
+		display: none;
+	}
+
+	.editor-bar-fa {
+		padding: 0px;
+
+		a,
+		a:hover {
+			color: #333;
+		}
+
+	}
+
+}

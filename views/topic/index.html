@@ -82,6 +82,7 @@ $('#edit-btn').click(function(){
 	$('#preview-btn').toggle(true);
 	$('.preview-box').toggle(false);
 	$('#edit-btn').toggle(false);
+	$('.preview-box').htm('');
 });
 $('#preview-btn').click(function(){
 	$('.editor-box').toggle(false);
@@ -89,6 +90,9 @@ $('#preview-btn').click(function(){
 	$('#preview-btn').toggle(false);
 	$('.preview-box').toggle(true);
 	$('#edit-btn').toggle(true);
+	var md = window.markdownit();
+	$('.preview-box').html(md.render($('#r_content').val()));
+
 });
 </script>
 <% } %>

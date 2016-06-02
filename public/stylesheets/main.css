@@ -1,0 +1,54 @@
+body {
+  background: #e9eaed; }
+
+.notice p {
+  padding: 15px; }
+
+.reply-item-box {
+  padding: 0;
+  position: relative;
+  padding-left: 58px; }
+
+.reply-item-avatar {
+  position: absolute;
+  top: 0px;
+  left: 0px; }
+  .reply-item-avatar .avatar-48 {
+    width: 48px;
+    height: 48px;
+    -webkit-border-radius: 120px;
+            border-radius: 120px; }
+
+.editor-box textarea {
+  min-height: 100px; }
+
+.preview-box {
+  display: none;
+  min-height: 100px;
+  border: 1px solid #ccc;
+  -webkit-border-radius: 4px;
+          border-radius: 4px;
+  background: #faf5eb; }
+
+.editor-bar-box {
+  padding: 5px 0px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.editor-bar-items button:first-of-type {
+  margin-right: 10px; }
+
+.editor-bar-items button:nth-child(2) {
+  display: none; }
+
+.editor-bar-items .editor-bar-fa {
+  padding: 0px; }
+  .editor-bar-items .editor-bar-fa a,
+  .editor-bar-items .editor-bar-fa a:hover {
+    color: #333; }

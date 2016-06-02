@@ -6,6 +6,7 @@ var compress = require('compression');
 var RedisStore = require('connect-redis')(session);
 var Loader = require('loader');
 var _ = require('lodash');
+var sassMiddleware = require('node-sass-middleware');
 
 
 var app = express();
