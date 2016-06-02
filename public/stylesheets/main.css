@@ -1,6 +1,12 @@
 body {
   background: #e9eaed; }
 
+.avatar-48 {
+  width: 48px;
+  height: 48px;
+  -webkit-border-radius: 120px;
+          border-radius: 120px; }
+
 .notice p {
   padding: 15px; }
 
@@ -9,20 +15,43 @@ body {
   position: relative;
   padding-left: 58px; }
 
+.reply-item {
+  min-height: 48px; }
+
 .reply-item-avatar {
   position: absolute;
   top: 0px;
   left: 0px; }
-  .reply-item-avatar .avatar-48 {
-    width: 48px;
-    height: 48px;
-    -webkit-border-radius: 120px;
-            border-radius: 120px; }
+
+.reply-item-info {
+  color: #999;
+  font-size: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+  .reply-item-info a {
+    color: #999; }
+  .reply-item-info .author {
+    font-weight: bold;
+    font-size: 13px;
+    color: #555; }
+  .reply-item-info .opts a {
+    padding: 0px 3px; }
+    .reply-item-info .opts a:hover {
+      background: #f0f0f0;
+      color: #333;
+      text-decoration: none; }
 
 .editor-box textarea {
   min-height: 100px; }
 
 .preview-box {
+  padding: 10px;
   display: none;
   min-height: 100px;
   border: 1px solid #ccc;
@@ -40,15 +69,12 @@ body {
   -webkit-justify-content: space-between;
       -ms-flex-pack: justify;
           justify-content: space-between; }
-
-.editor-bar-items button:first-of-type {
-  margin-right: 10px; }
-
-.editor-bar-items button:nth-child(2) {
-  display: none; }
-
-.editor-bar-items .editor-bar-fa {
-  padding: 0px; }
-  .editor-bar-items .editor-bar-fa a,
-  .editor-bar-items .editor-bar-fa a:hover {
-    color: #333; }
+  .editor-bar-box .editor-bar-buttons button:first-of-type {
+    margin-right: 10px; }
+  .editor-bar-box .editor-bar-buttons button:nth-child(2) {
+    display: none; }
+  .editor-bar-box .editor-bar-fa {
+    padding: 0px; }
+    .editor-bar-box .editor-bar-fa a,
+    .editor-bar-box .editor-bar-fa a:hover {
+      color: #333; }

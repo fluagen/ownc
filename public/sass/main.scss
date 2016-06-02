@@ -6,74 +6,86 @@ $topic-editor-min-height: 300px;
 body {
 	background: $background-basic;
 }
-
 @mixin avatar($width, $height) {
 	width: $width;
 	height: $height;
 	border-radius: 120px;
 }
-
+.avatar-48 {
+	@include avatar(48px, 48px);
+}
 .notice p {
 	padding: 15px;
 }
-
 .reply-item-box {
 	padding: 0;
 	position: relative;
 	padding-left: 58px;
 }
-
+.reply-item {
+	min-height: 48px;
+}
 .reply-item-avatar {
 	position: absolute;
 	top: 0px;
 	left: 0px;
 }
-
-.avatar-48 {
-	@include avatar(48px, 48px);
-}
-
 .reply-item-info {
-}
+	color: #999;
+	font-size: 12px;
+	display: flex;
+	justify-content: space-between;
 
+	a {
+		color: #999;
+	}
+	.author {
+		font-weight: bold;
+		font-size: 13px;
+		color: #555;
+	}
+	.opts a {
+		padding: 0px 3px;
+
+		&:hover {
+			background: #f0f0f0;
+			color: #333;
+			text-decoration: none;
+		}
+	}
+}
 .editor-box {
 	textarea {
 		min-height: $reply-editor-min-height;
 	}
-
 }
-
 .preview-box {
+	padding: 10px;
 	display: none;
 	min-height: $reply-editor-min-height;
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	background: #faf5eb;
 }
-
 .editor-bar-box {
 	padding: 5px 0px;
 	display: flex;
 	justify-content: space-between;
-}
 
-.editor-bar-items {
-	button:first-of-type {
-		margin-right: 10px;
+	.editor-bar-buttons {
+		button:first-of-type {
+			margin-right: 10px;
+		}
+		button:nth-child(2) {
+			display: none;
+		}
 	}
-
-	button:nth-child(2) {
-		display: none;
-	}
-
 	.editor-bar-fa {
 		padding: 0px;
 
-		a,
+		a, 
 		a:hover {
 			color: #333;
 		}
-
 	}
-
 }

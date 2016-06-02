@@ -13,9 +13,9 @@
 			%>
 			
 			<li class="list-group-item">
-				<div class="reply">
+				<div class="reply-item-box">
 					<div class="avatar"><a href="#"><img class="media-object avatar-48" src="https://ruby-china-files.b0.upaiyun.com/user/large_avatar/15774.jpg" alt="15774"></a></div>
-					<div class="infos">
+					<div class="reply-item">
 						<div class="info">
 							<div>
 								<a class="author" href="#"><%= reply.author.loginid %></a>
@@ -46,16 +46,16 @@
 				<textarea class="form-control editor-text" id="r_content" name="r_content" rows="4" placeholder="添加回复"></textarea>
 			</form>
 		</div>
-		<div class="preview-box">
+		<div class="preview-box markdown-reply">
 		</div>
 		<div class="editor-bar-box">
-			<div class="editor-bar-list">
+			<div class="editor-bar-buttons">
 				<button name="save-btn" id="save-btn"  class="btn btn-primary">回复</button>
 				<button name="edit-btn" id="edit-btn" class="btn btn-primary">编辑</button>
 				<button name="preview-btn" id ="preview-btn" class="btn btn-primary">预览</button>
 			</div>
 			
-			<div class="editor-bar-list-fa">
+			<div class="editor-bar-fa">
 				<a title="上传图片" href="#"><i class="fa fa-image" aria-hidden="true"></i></a>
 			</div>
 		</div>
@@ -78,7 +78,7 @@ $('#r_content').atwho({
 autosize($('#r_content'));
 $('#edit-btn').click(function(){
 	$('.editor-box').toggle(true);
-	$('.editor-bar-list-fa').toggle(true);
+	$('.editor-bar-fa').toggle(true);
 	$('#preview-btn').toggle(true);
 	$('.preview-box').toggle(false);
 	$('#edit-btn').toggle(false);
@@ -86,7 +86,7 @@ $('#edit-btn').click(function(){
 });
 $('#preview-btn').click(function(){
 	$('.editor-box').toggle(false);
-	$('.editor-bar-list-fa').toggle(false);
+	$('.editor-bar-fa').toggle(false);
 	$('#preview-btn').toggle(false);
 	$('.preview-box').toggle(true);
 	$('#edit-btn').toggle(true);
