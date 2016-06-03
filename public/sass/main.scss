@@ -1,5 +1,6 @@
-$background-basic: #e9eaed;
-$background-fa: #333;
+$background-basic: #e9eaed; //亮灰
+$color-basic: #333333; //黑
+
 $reply-editor-min-height: 100px;
 $topic-editor-min-height: 300px;
 
@@ -11,46 +12,56 @@ body {
 	height: $height;
 	border-radius: 120px;
 }
+@mixin sep($width) {
+	width: $width;
+}
+.sep-5 {
+	@include sep(5px);
+}
+.sep-10 {
+	@include sep(10px);
+}
 .avatar-48 {
 	@include avatar(48px, 48px);
 }
 .notice p {
 	padding: 15px;
 }
-.reply-item-box {
-	padding: 0;
-	position: relative;
-	padding-left: 58px;
-}
-.reply-item {
-	min-height: 48px;
-}
-.reply-item-avatar {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-}
-.reply-item-info {
-	color: #999;
-	font-size: 12px;
+$reply-item-min-height: 48px;
+
+.reply-box {
 	display: flex;
-	justify-content: space-between;
 
-	a {
-		color: #999;
+	.avatar {
+		min-width: $reply-item-min-height;
 	}
-	.author {
-		font-weight: bold;
-		font-size: 13px;
-		color: #555;
-	}
-	.opts a {
-		padding: 0px 3px;
+	.info {
+		//flex: 1;
+		min-width: $reply-item-min-height;
+		display: flex;
+		flex-direction: column;
+		
+		.info-basic {
+			display: flex;
+			justify-content: space-between;
 
-		&:hover {
-			background: #f0f0f0;
-			color: #333;
-			text-decoration: none;
+			.info-basic-meta {
+				flex: 1;
+			}
+			.info-basic-opt {
+				width: 50px;
+				a {
+					background: lighten($background-basic, 20%);
+				}
+				a:hover {
+					background: lighten($background-basic, 20%);
+					color: $color-basic;
+					text-decoration: none;
+				}
+			}
+		}
+		.reply-content {
+			
 		}
 	}
 }
@@ -83,8 +94,7 @@ body {
 	.editor-bar-fa {
 		padding: 0px;
 
-		a, 
-		a:hover {
+		a, a:hover {
 			color: #333;
 		}
 	}

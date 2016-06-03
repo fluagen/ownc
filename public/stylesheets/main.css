@@ -1,6 +1,12 @@
 body {
   background: #e9eaed; }
 
+.sep-5 {
+  width: 5px; }
+
+.sep-10 {
+  width: 10px; }
+
 .avatar-48 {
   width: 48px;
   height: 48px;
@@ -10,42 +16,46 @@ body {
 .notice p {
   padding: 15px; }
 
-.reply-item-box {
-  padding: 0;
-  position: relative;
-  padding-left: 58px; }
-
-.reply-item {
-  min-height: 48px; }
-
-.reply-item-avatar {
-  position: absolute;
-  top: 0px;
-  left: 0px; }
-
-.reply-item-info {
-  color: #999;
-  font-size: 12px;
+.reply-box {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-      -ms-flex-pack: justify;
-          justify-content: space-between; }
-  .reply-item-info a {
-    color: #999; }
-  .reply-item-info .author {
-    font-weight: bold;
-    font-size: 13px;
-    color: #555; }
-  .reply-item-info .opts a {
-    padding: 0px 3px; }
-    .reply-item-info .opts a:hover {
-      background: #f0f0f0;
-      color: #333;
-      text-decoration: none; }
+  display: flex; }
+  .reply-box .avatar {
+    min-width: 48px; }
+  .reply-box .info {
+    min-width: 48px;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column; }
+    .reply-box .info .info-basic {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+      -webkit-justify-content: space-between;
+          -ms-flex-pack: justify;
+              justify-content: space-between; }
+      .reply-box .info .info-basic .info-basic-meta {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+            -ms-flex: 1;
+                flex: 1; }
+      .reply-box .info .info-basic .info-basic-opt {
+        width: 50px; }
+        .reply-box .info .info-basic .info-basic-opt a {
+          background: white; }
+        .reply-box .info .info-basic .info-basic-opt a:hover {
+          background: white;
+          color: #333333;
+          text-decoration: none; }
 
 .editor-box textarea {
   min-height: 100px; }
@@ -75,6 +85,5 @@ body {
     display: none; }
   .editor-bar-box .editor-bar-fa {
     padding: 0px; }
-    .editor-bar-box .editor-bar-fa a,
-    .editor-bar-box .editor-bar-fa a:hover {
+    .editor-bar-box .editor-bar-fa a, .editor-bar-box .editor-bar-fa a:hover {
       color: #333; }
