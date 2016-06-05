@@ -24,6 +24,10 @@ body {
   .reply-box .avatar {
     min-width: 48px; }
   .reply-box .info {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
     min-width: 48px;
     display: -webkit-box;
     display: -webkit-flex;
@@ -51,11 +55,12 @@ body {
       .reply-box .info .info-basic .info-basic-opt {
         width: 50px; }
         .reply-box .info .info-basic .info-basic-opt a {
-          background: white; }
+          color: #89898A; }
         .reply-box .info .info-basic .info-basic-opt a:hover {
-          background: white;
           color: #333333;
           text-decoration: none; }
+    .reply-box .info .reply-content {
+      word-wrap: break-word; }
 
 .editor-box textarea {
   min-height: 100px; }

@@ -1,6 +1,8 @@
 $background-basic: #e9eaed; //亮灰
 $color-basic: #333333; //黑
 
+
+
 $reply-editor-min-height: 100px;
 $topic-editor-min-height: 300px;
 
@@ -36,7 +38,7 @@ $reply-item-min-height: 48px;
 		min-width: $reply-item-min-height;
 	}
 	.info {
-		//flex: 1;
+		flex: 1;
 		min-width: $reply-item-min-height;
 		display: flex;
 		flex-direction: column;
@@ -51,17 +53,17 @@ $reply-item-min-height: 48px;
 			.info-basic-opt {
 				width: 50px;
 				a {
-					background: lighten($background-basic, 20%);
+					color: #89898A;
 				}
 				a:hover {
-					background: lighten($background-basic, 20%);
+					//background-color: darken($background-basic, 5%);
 					color: $color-basic;
 					text-decoration: none;
 				}
 			}
 		}
 		.reply-content {
-			
+			word-wrap: break-word;
 		}
 	}
 }
