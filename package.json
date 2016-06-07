@@ -33,7 +33,8 @@
     "utility": "*",
     "validator": "*",
     "eventproxy": "*",
-    "node-sass-middleware": "*"
+    "node-sass-middleware": "*",
+    "multer": "*"
   },
   "devDependencies": {
     "gulp": "*",

@@ -1,6 +1,9 @@
 
 var express = require('express');
 
+var multer  = require('multer');
+var upload = multer({ dest: 'public/uploads/' });
+
 var auth = require('./middleware/auth');
 
 var site = require('./controller/site');
@@ -26,5 +29,7 @@ router.get('/topic/:tid', topic.index);
 router.post('/:tid/reply', auth.userRequired, reply.add);
 router.get('/reply/:reply_id/edit', auth.userRequired, reply.showEdit);
 router.post('/reply/:reply_id/edit', auth.userRequired, reply.update);
+
+router.post('/upload', upload.single('file_image'), site.upload);
 
 module.exports = router;

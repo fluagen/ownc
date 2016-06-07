@@ -1,5 +1,6 @@
 $background-basic: #e9eaed; //亮灰
 $color-basic: #333333; //黑
+$info-text-color: #B9BDC0;
 
 
 
@@ -44,11 +45,19 @@ $reply-item-min-height: 48px;
 		flex-direction: column;
 		
 		.info-basic {
+
 			display: flex;
 			justify-content: space-between;
-
+			color: $info-text-color;
 			.info-basic-meta {
 				flex: 1;
+				a {
+					color: $info-text-color;
+				}
+				a:hover {
+					color: $info-text-color;
+					text-decoration: none;
+				}
 			}
 			.info-basic-opt {
 				width: 50px;
@@ -56,7 +65,6 @@ $reply-item-min-height: 48px;
 					color: #89898A;
 				}
 				a:hover {
-					//background-color: darken($background-basic, 5%);
 					color: $color-basic;
 					text-decoration: none;
 				}

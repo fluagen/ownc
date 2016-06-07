@@ -14,27 +14,27 @@
 			
 			<li class="list-group-item reply-box">
 				<div class="avatar"><a href="#"><img class="media-object avatar-48" src="https://ruby-china-files.b0.upaiyun.com/user/large_avatar/15774.jpg" alt="15774"></a></div>
-					<div class="sep-10"></div>
-					<div class="info">
-						<div class="info-basic">
-							<div class="info-basic-meta">
-								<a class="author" href="#"><%= reply.author.loginid %></a>
-								<span>&nbsp;•&nbsp;<%= i+1 %>楼&nbsp;•&nbsp;</span>
-								<span><%= reply.create_at_ago() %></span>
-							</div>
-							<%if(current_user){%>
-							<div class="info-basic-opt">
-								<%if(current_user._id.toString() === reply.author._id.toString()){%>
-								<a title="编辑" href="/reply/<%= reply._id%>/edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-								<%}%>
-								<a title="赞" href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
-								<a title="回复" href="#"><i class="fa fa-reply" aria-hidden="true"></i></a>
-							</div>
-							<%}%>
-							
+				<div class="sep-10"></div>
+				<div class="info">
+					<div class="info-basic">
+						<div class="info-basic-meta">
+							<a class="author" href="#"><%= reply.author.loginid %></a>
+							<span>&nbsp;•&nbsp;<%= i+1 %>楼&nbsp;•&nbsp;</span>
+							<span><%= reply.create_at_ago() %></span>
 						</div>
-						<div class="reply-content"><%= reply.content%></div>
+						<%if(current_user){%>
+						<div class="info-basic-opt">
+							<%if(current_user._id.toString() === reply.author._id.toString()){%>
+							<a title="编辑" href="/reply/<%= reply._id%>/edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+							<%}%>
+							<a title="赞" href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
+							<a title="回复" href="#"><i class="fa fa-reply" aria-hidden="true"></i></a>
+						</div>
+						<%}%>
+						
 					</div>
+					<div class="reply-content"><%= reply.content%></div>
+				</div>
 			</li>
 			<%}%>
 			
@@ -53,9 +53,9 @@
 				<button name="edit-btn" id="edit-btn" class="btn btn-primary">编辑</button>
 				<button name="preview-btn" id ="preview-btn" class="btn btn-primary">预览</button>
 			</div>
-			
 			<div class="editor-bar-fa">
-				<a title="上传图片" href="#"><i class="fa fa-image" aria-hidden="true"></i></a>
+				<a title="上传图片" id="fileupload_btn" href="javascript:void(0);"><i class="fa fa-image" aria-hidden="true"></i></a>
+				<input id="fileupload" name="file_image" type="file" style="display:none">
 			</div>
 		</div>
 		
@@ -91,7 +91,32 @@ $('#preview-btn').click(function(){
 	$('#edit-btn').toggle(true);
 	var md = window.markdownit();
 	$('.preview-box').html(md.render($('#r_content').val()));
-
+});
+$(function () {
+	$('#fileupload').fileupload({
+		dataType: 'json',
+		url: '/upload',
+		acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+		maxFileSize: 1000*500, // 500k
+		messages: {			
+			acceptFileTypes: '只接收gif,jpe,jpeg,png格式的图片文件',
+			maxFileSize: '图片文件不能大于500k'
+		}
+	}).on('fileuploaddone', function (e, data) {
+		alert(data);
+	}).on('fileuploadfail', function (e, data) {
+		alert(e);
+	}).on('fileuploadprocessfail', function (e, data) {
+		var file = data.files[0];
+		if(file.error){
+			alert(file.error);
+			return;
+		}
+		
+	});
+});
+$('#fileupload_btn').click(function(){
+	$('#fileupload').click();
 });
 </script>
 <% } %>
