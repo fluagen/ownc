@@ -65,10 +65,10 @@ _.extend(app.locals, {
 // routes
 app.use('/', webRouter);
 
-app.use(function (err, req, res, next) {
+app.use(function(err, req, res, next) {
     console.error(err);
     return res.status(500).send('500 status');
-  });
+});
 
 app.listen(config.port, function() {
     console.log('Ownc listening on port', config.port);

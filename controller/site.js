@@ -18,8 +18,3 @@ exports.index = function(req, res, next) {
     };
     topicManager.getFullTopicsByQuery(query, options, ep.done('topics'));
 };
-
-exports.upload = function(req, res, next) {
-    console.log(req.body);
-return res.send({'status': 'success'});
-};

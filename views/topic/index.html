@@ -70,11 +70,11 @@ var allAuthors = $('.author').map(function (idx, ele) {
 	return $(ele).text().trim();
 }).toArray();
 allAuthors = _.uniq(allAuthors);
-$('#r_content').atwho({
+$('.editor-text').atwho({
 	at: "@",
 	data: allAuthors
 });
-autosize($('#r_content'));
+autosize($('.editor-text'));
 $('#edit-btn').click(function(){
 	$('.editor-box').toggle(true);
 	$('.editor-bar-fa').toggle(true);
@@ -98,14 +98,22 @@ $(function () {
 		url: '/upload',
 		acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
 		maxFileSize: 1000*500, // 500k
-		messages: {			
+		messages: {
 			acceptFileTypes: '只接收gif,jpe,jpeg,png格式的图片文件',
 			maxFileSize: '图片文件不能大于500k'
 		}
 	}).on('fileuploaddone', function (e, data) {
-		alert(data);
+		var result = data.result;
+		if(result.status === 'success'){
+			var imgtext = '![]('+result.path+') \n';
+			insertStringToEditor(imgtext);
+		}
 	}).on('fileuploadfail', function (e, data) {
-		alert(e);
+		var file = data.files[0];
+		if(file.error){
+			alert(file.error);
+			return;
+		}
 	}).on('fileuploadprocessfail', function (e, data) {
 		var file = data.files[0];
 		if(file.error){
@@ -118,5 +126,14 @@ $(function () {
 $('#fileupload_btn').click(function(){
 	$('#fileupload').click();
 });
+function insertStringToEditor (str) {
+	$target = $(".editor-text");
+	start = $target[0].selectionStart;
+	end = $target[0].selectionEnd;
+	$target.val($target.val().substring(0, start) + str + $target.val().substring(end));
+	$target[0].selectionStart = $target[0].selectionEnd = start + str.length;
+	$target.focus();
+}
+
 </script>
 <% } %>
