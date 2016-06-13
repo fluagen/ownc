@@ -61,6 +61,7 @@ _.extend(app.locals, {
     assets: assets,
     _: _
 });
+_.extend(app.locals, require('./common/render_helper'));
 
 // routes
 app.use('/', webRouter);

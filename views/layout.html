@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<!-- style -->
-		<%- Loader('/public/stylesheets/index.min.css')
+		<%- Loader('/public/index.min.css')
 		.css('/public/libs/bootstrap/css/bootstrap.css')
 		.css('/public/libs/font-awesome/css/font-awesome.min.css')
 		.css('/public/libs/at/css/jquery.atwho.css')
@@ -24,6 +24,7 @@
 		.js('/public/libs/jquery.fileupload.js')
 		.js('/public/libs/jquery.fileupload-process.js')
 		.js('/public/libs/jquery.fileupload-validate.js')
+		.js('/public/js/main.js')
 		.done(assets, config.site_static_host, config.mini_assets)
 		%>
 		<title></title>

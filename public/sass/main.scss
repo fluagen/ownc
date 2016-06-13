@@ -1,9 +1,8 @@
-$background-basic: #e9eaed; //亮灰
-$color-basic: #333333; //黑
+$background-basic: #e9eaed;
+//亮灰
+$color-basic: #333333;
+//黑
 $info-text-color: #B9BDC0;
-
-
-
 $reply-editor-min-height: 100px;
 $topic-editor-min-height: 300px;
 
@@ -30,6 +29,9 @@ body {
 .notice p {
 	padding: 15px;
 }
+.alert {
+	box-shadow: 4px 4px 5px 0px rgba(50, 50, 50, 0.19);
+}
 $reply-item-min-height: 48px;
 
 .reply-box {
@@ -43,14 +45,15 @@ $reply-item-min-height: 48px;
 		min-width: $reply-item-min-height;
 		display: flex;
 		flex-direction: column;
-		
-		.info-basic {
 
+		.info-basic {
 			display: flex;
 			justify-content: space-between;
 			color: $info-text-color;
+
 			.info-basic-meta {
 				flex: 1;
+
 				a {
 					color: $info-text-color;
 				}
@@ -61,6 +64,7 @@ $reply-item-min-height: 48px;
 			}
 			.info-basic-opt {
 				width: 50px;
+
 				a {
 					color: #89898A;
 				}
@@ -75,7 +79,12 @@ $reply-item-min-height: 48px;
 		}
 	}
 }
-.editor-box {
+.topic-editor {
+	textarea {
+		min-height: $topic-editor-min-height;
+	}
+}
+.reply-editor {
 	textarea {
 		min-height: $reply-editor-min-height;
 	}
@@ -83,10 +92,15 @@ $reply-item-min-height: 48px;
 .preview-box {
 	padding: 10px;
 	display: none;
-	min-height: $reply-editor-min-height;
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	background: #faf5eb;
+}
+.topic-preview {
+	min-height: $topic-editor-min-height;
+}
+.reply-preview {
+	min-height: $reply-editor-min-height;
 }
 .editor-bar-box {
 	padding: 5px 0px;

@@ -3,7 +3,7 @@
 	<div class="col-md-9">
 		<ul class="list-group">
 			<li class="list-group-item"><%= topic.title%></li>
-			<li class="list-group-item"><%= topic.content%></li>
+			<li class="list-group-item markdown-body"><%- markdown(topic.content) %></li>
 		</ul>
 		<ul class="list-group">
 			<li class="list-group-item"><%= topic.reply_count%>&nbsp;回复</li>
@@ -33,23 +33,23 @@
 						<%}%>
 						
 					</div>
-					<div class="reply-content"><%= reply.content%></div>
+					<div class="reply-content markdown-reply"><%- markdown(reply.content) %></div>
 				</div>
 			</li>
 			<%}%>
 			
 		</ul>
 		<%if(current_user){%>
-		<div class="editor-box">
-			<form class="form-horizontal" id="editor-form" action="/<%= topic._id%>/reply" method="post">
+		<div class="editor-box reply-editor">
+			<form class="form-horizontal reply-form" action="/<%= topic._id%>/reply" method="post">
 				<textarea class="form-control editor-text" id="r_content" name="r_content" rows="4" placeholder="添加回复"></textarea>
 			</form>
 		</div>
-		<div class="preview-box markdown-reply">
+		<div class="preview-box reply-preview markdown-reply">
 		</div>
 		<div class="editor-bar-box">
 			<div class="editor-bar-buttons">
-				<button name="save-btn" id="save-btn"  class="btn btn-primary">回复</button>
+				<button name="save-btn" id="save-btn"  class="btn btn-primary reply-btn">回复</button>
 				<button name="edit-btn" id="edit-btn" class="btn btn-primary">编辑</button>
 				<button name="preview-btn" id ="preview-btn" class="btn btn-primary">预览</button>
 			</div>
@@ -64,76 +64,3 @@
 	</div>
 	<div class="col-md-3"></div>
 </div>
-<% if (current_user && typeof(topic) !== 'undefined') { %>
-<script type="text/javascript">
-var allAuthors = $('.author').map(function (idx, ele) {
-	return $(ele).text().trim();
-}).toArray();
-allAuthors = _.uniq(allAuthors);
-$('.editor-text').atwho({
-	at: "@",
-	data: allAuthors
-});
-autosize($('.editor-text'));
-$('#edit-btn').click(function(){
-	$('.editor-box').toggle(true);
-	$('.editor-bar-fa').toggle(true);
-	$('#preview-btn').toggle(true);
-	$('.preview-box').toggle(false);
-	$('#edit-btn').toggle(false);
-	$('.preview-box').htm('');
-});
-$('#preview-btn').click(function(){
-	$('.editor-box').toggle(false);
-	$('.editor-bar-fa').toggle(false);
-	$('#preview-btn').toggle(false);
-	$('.preview-box').toggle(true);
-	$('#edit-btn').toggle(true);
-	var md = window.markdownit();
-	$('.preview-box').html(md.render($('#r_content').val()));
-});
-$(function () {
-	$('#fileupload').fileupload({
-		dataType: 'json',
-		url: '/upload',
-		acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-		maxFileSize: 1000*500, // 500k
-		messages: {
-			acceptFileTypes: '只接收gif,jpe,jpeg,png格式的图片文件',
-			maxFileSize: '图片文件不能大于500k'
-		}
-	}).on('fileuploaddone', function (e, data) {
-		var result = data.result;
-		if(result.status === 'success'){
-			var imgtext = '![]('+result.path+') \n';
-			insertStringToEditor(imgtext);
-		}
-	}).on('fileuploadfail', function (e, data) {
-		var file = data.files[0];
-		if(file.error){
-			alert(file.error);
-			return;
-		}
-	}).on('fileuploadprocessfail', function (e, data) {
-		var file = data.files[0];
-		if(file.error){
-			alert(file.error);
-			return;
-		}
-		
-	});
-});
-$('#fileupload_btn').click(function(){
-	$('#fileupload').click();
-});
-function insertStringToEditor (str) {
-	$target = $(".editor-text");
-	start = $target[0].selectionStart;
-	end = $target[0].selectionEnd;
-	$target.val($target.val().substring(0, start) + str + $target.val().substring(end));
-	$target[0].selectionStart = $target[0].selectionEnd = start + str.length;
-	$target.focus();
-}
-
-</script>
-<% } %>
