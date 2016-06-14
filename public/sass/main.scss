@@ -23,6 +23,9 @@ body {
 .sep-10 {
 	@include sep(10px);
 }
+.avatar-box {
+	margin-right: 10px;
+}
 .avatar-48 {
 	@include avatar(48px, 48px);
 }
@@ -64,6 +67,7 @@ $reply-item-min-height: 48px;
 			}
 			.info-basic-opt {
 				width: 50px;
+				text-align: right;
 
 				a {
 					color: #89898A;

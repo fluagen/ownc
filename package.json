@@ -33,7 +33,7 @@
     "utility": "*",
     "validator": "*",
     "eventproxy": "*",
-    "node-sass-middleware": "*",
+    "markdown-it": "*",
     "multer": "*"
   },
   "devDependencies": {

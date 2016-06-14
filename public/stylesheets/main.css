@@ -7,6 +7,9 @@ body {
 .sep-10 {
   width: 10px; }
 
+.avatar-box {
+  margin-right: 10px; }
+
 .avatar-48 {
   width: 48px;
   height: 48px;
@@ -15,6 +18,10 @@ body {
 
 .notice p {
   padding: 15px; }
+
+.alert {
+  -webkit-box-shadow: 4px 4px 5px 0px rgba(50, 50, 50, 0.19);
+          box-shadow: 4px 4px 5px 0px rgba(50, 50, 50, 0.19); }
 
 .reply-box {
   display: -webkit-box;
@@ -59,7 +66,8 @@ body {
           color: #B9BDC0;
           text-decoration: none; }
       .reply-box .info .info-basic .info-basic-opt {
-        width: 50px; }
+        width: 50px;
+        text-align: right; }
         .reply-box .info .info-basic .info-basic-opt a {
           color: #89898A; }
         .reply-box .info .info-basic .info-basic-opt a:hover {

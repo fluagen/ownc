@@ -7,37 +7,7 @@
 		</ul>
 		<ul class="list-group">
 			<li class="list-group-item"><%= topic.reply_count%>&nbsp;回复</li>
-			<%
-			for(var i=0; i<replies.length; i++){
-			var reply = replies[i];
-			%>
-			
-			<li class="list-group-item reply-box">
-				<div class="avatar"><a href="#"><img class="media-object avatar-48" src="https://ruby-china-files.b0.upaiyun.com/user/large_avatar/15774.jpg" alt="15774"></a></div>
-				<div class="sep-10"></div>
-				<div class="info">
-					<div class="info-basic">
-						<div class="info-basic-meta">
-							<a class="author" href="#"><%= reply.author.loginid %></a>
-							<span>&nbsp;•&nbsp;<%= i+1 %>楼&nbsp;•&nbsp;</span>
-							<span><%= reply.create_at_ago() %></span>
-						</div>
-						<%if(current_user){%>
-						<div class="info-basic-opt">
-							<%if(current_user._id.toString() === reply.author._id.toString()){%>
-							<a title="编辑" href="/reply/<%= reply._id%>/edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-							<%}%>
-							<a title="赞" href="#"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
-							<a title="回复" href="#"><i class="fa fa-reply" aria-hidden="true"></i></a>
-						</div>
-						<%}%>
-						
-					</div>
-					<div class="reply-content markdown-reply"><%- markdown(reply.content) %></div>
-				</div>
-			</li>
-			<%}%>
-			
+			<%- partial('../reply/reply', replies) %>
 		</ul>
 		<%if(current_user){%>
 		<div class="editor-box reply-editor">
