@@ -1,23 +1,23 @@
-<li class="list-group-item reply-box">
+<li class="list-group-item reply-box" id="<%= reply._id%>">
 	<div class="avatar-box"><a href="#"><img class="avatar-48" src="https://ruby-china-files.b0.upaiyun.com/user/large_avatar/15774.jpg" alt="15774"></a></div>
 	<div class="info">
-		<div class="info-basic">
-			<div class="info-basic-meta">
+		<div class="info-bar">
+			<div class="info-meta">
 				<a class="author" href="#"><%= reply.author.loginid %></a>
 				<span>&nbsp;•&nbsp;<%= indexInCollection+1 %>楼&nbsp;•&nbsp;</span>
 				<span><%= reply.create_at_ago() %></span>
 			</div>
-			<%if(current_user){%>
-			<div class="info-basic-opt">
-				<%if(current_user._id.toString() === reply.author._id.toString()){%>
-				<a title="编辑" href="/reply/<%= reply._id%>/edit"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-				<%}%>
-				<a class="opt-up" title="赞" href="javascript:void(0);"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>
-				<a class="opt-reply" title="回复" href="javascript:void(0);" onclick="replyOne('<%= reply.author.loginid %>');"><i class="fa fa-reply" aria-hidden="true"></i></a>
+			<div class="opt">
+				<a class="opt-up <%= current_user && is_uped(current_user,reply) ? 'active' : '' %>" title="赞" href="javascript:void(0);">
+					<i class="fa fa-thumbs-up" aria-hidden="true"></i>
+					<span class="up-count"><%= reply.ups && reply.ups.length ? reply.ups.length : '' %></span>
+				</a>
+				<a class="opt-reply" title="回复" href="javascript:void(0);" onclick="replyOne('<%= reply.author.loginid %>');">
+					<i class="fa fa-reply" aria-hidden="true"></i>
+				</a>
 			</div>
-			<%}%>
 			
 		</div>
-		<div class="reply-content markdown-reply"><%- markdown(reply.content) %></div>
+		<div class="info-content markdown-reply"><%- markdown(reply.content) %></div>
 	</div>
 </li>

@@ -1,27 +1,14 @@
-$background-basic: #e9eaed;
-//亮灰
-$color-basic: #333333;
-//黑
-$info-text-color: #B9BDC0;
-$reply-editor-min-height: 100px;
-$topic-editor-min-height: 300px;
+@import "vars";
 
 body {
-	background: $background-basic;
+	background: #e9eaed;
+	color: $black;
+	font-family: Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN", Roboto, "Heiti SC", "Microsoft Yahei", sans-serif;
 }
 @mixin avatar($width, $height) {
 	width: $width;
 	height: $height;
 	border-radius: 120px;
-}
-@mixin sep($width) {
-	width: $width;
-}
-.sep-5 {
-	@include sep(5px);
-}
-.sep-10 {
-	@include sep(10px);
 }
 .avatar-box {
 	margin-right: 10px;
@@ -29,60 +16,66 @@ body {
 .avatar-48 {
 	@include avatar(48px, 48px);
 }
-.notice p {
-	padding: 15px;
-}
 .alert {
 	box-shadow: 4px 4px 5px 0px rgba(50, 50, 50, 0.19);
 }
-$reply-item-min-height: 48px;
+.notice p {
+	padding: 15px;
+}
 
-.reply-box {
-	display: flex;
-
-	.avatar {
-		min-width: $reply-item-min-height;
+/** info item **/
+.opt {
+	a {
+		color: $grayLabelText;
+		text-decoration: none;
 	}
-	.info {
-		flex: 1;
-		min-width: $reply-item-min-height;
-		display: flex;
-		flex-direction: column;
-
-		.info-basic {
-			display: flex;
-			justify-content: space-between;
-			color: $info-text-color;
-
-			.info-basic-meta {
-				flex: 1;
-
-				a {
-					color: $info-text-color;
-				}
-				a:hover {
-					color: $info-text-color;
-					text-decoration: none;
-				}
-			}
-			.info-basic-opt {
-				width: 50px;
-				text-align: right;
-
-				a {
-					color: #89898A;
-				}
-				a:hover {
-					color: $color-basic;
-					text-decoration: none;
-				}
-			}
-		}
-		.reply-content {
-			word-wrap: break-word;
-		}
+	a:hover {
+		color: $black;
+	}
+	a.active .fa {
+		@extend .animated;
+    		@extend .bounceIn;
+		color: $red;
 	}
 }
+.info {
+	display: flex;
+	flex-direction: column;
+	min-width: 200px;
+	.info-bar {
+		margin-bottom: 5px;
+		color: $grayLabelText;
+		display: flex;
+		justify-content: space-between;
+		.info-meta {
+			flex: 1;
+			a {
+				color: $grayLabelText;
+			}
+			a:hover {
+				color: $grayLabelText;
+				text-decoration: none;
+			}
+
+		}
+		.opt {
+			min-width: 50px;
+			text-align: right;
+		}
+	}
+	
+	.info-content {
+		word-wrap: break-word;
+	}
+}
+.reply-box {
+	display: flex;
+	.info {
+		flex: 1;
+	}
+}
+
+/** editor **/
 .topic-editor {
 	textarea {
 		min-height: $topic-editor-min-height;

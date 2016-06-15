@@ -27,6 +27,7 @@ router.get('/topic/:tid', topic.index);
 router.post('/:tid/reply', auth.userRequired, reply.add);
 router.get('/reply/:reply_id/edit', auth.userRequired, reply.showEdit);
 router.post('/reply/:reply_id/edit', auth.userRequired, reply.update);
+router.post('/reply/:reply_id/up', auth.userRequired, reply.up);
 
 router.post('/upload', upload.image);
 

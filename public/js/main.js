@@ -38,6 +38,7 @@
             self.initEditorBar();
             self.initImageUpload();
             self.initReplySubmit();
+            self.initReplyUp();
         },
         initAtAuthor: function() {
             var allAuthors = $('.author').map(function(idx, ele) {
@@ -138,12 +139,44 @@
                 $('.reply-form').submit();
             });
         },
-        initOptReply: function(){
-            $('.opt-reply').click(function(){});
+        initReplyUp: function() {
+            $('.opt-up').click(function() {
+                var reply_id = $(this).closest('.reply-box').attr('id');
+                var $this = $(this);
+                var $upcount = $(this).find('.up-count');
+                $.ajax({
+                    url: '/reply/' + reply_id + '/up',
+                    method: 'POST',
+                }).done(function(data) {
+                    if (data.success) {
+                        var currentCount = Number($upcount.text().trim()) || 0;
+                        if (data.action === 'up') {
+                            $upcount.text(currentCount + 1);
+                            $this.addClass('active');
+                        } else {
+                            if (data.action === 'down') {
+                                currentCount = currentCount - 1;
+                                if(currentCount < 1){
+                                    $upcount.text('');
+                                }else{
+                                    $upcount.text(currentCount);
+                                }
+                                $this.removeClass('active');
+                            }
+                        }
+                    } else {
+                        alert(data.message);
+                    }
+                }).fail(function(xhr) {
+                    if (xhr.status === 403) {
+                        alert('请先登录，登陆后即可点赞。');
+                    }
+                });
+            });
         }
 
     };
-    var replyOne = function (username){
+    var replyOne = function(username) {
         var mention = '\n' + '@' + username + ' ';
         ownc.insertStringToEditor(mention);
     };

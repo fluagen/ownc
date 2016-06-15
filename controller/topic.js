@@ -6,6 +6,12 @@ var userManager = require('../manager/user');
 var replyManager = require('../manager/reply');
 
 exports.index = function(req, res, next) {
+    var is_uped = function(user, reply) {
+        if (!reply.ups) {
+            return false;
+        }
+        return reply.ups.indexOf(user._id) !== -1;
+    };
     var tid = req.params.tid;
     var ep = new EventProxy();
     ep.fail(next);
@@ -15,7 +21,8 @@ exports.index = function(req, res, next) {
         }
         res.render('topic/index', {
             topic: topic,
-            replies: replies
+            replies: replies,
+            is_uped: is_uped
         });
     });
     ep.all('topic', function(topic) {

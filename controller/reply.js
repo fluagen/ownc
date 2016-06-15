@@ -132,3 +132,37 @@ exports.update = function(req, res, next) {
     replyManager.getReplyById(reply_id, ep.done('reply'));
 
 };
+
+exports.up = function(req, res, next) {
+    var reply_id = req.params.reply_id;
+    var user = req.session.user;
+    var ep = new EventProxy();
+    ep.fail(next);
+    ep.all('reply', function(reply) {
+        if (reply.author_id.equals(user._id)) {
+            res.send({
+                success: false,
+                message: '不能给自己点赞。',
+            });
+        } else {
+            var action;
+            reply.ups = reply.ups || [];
+            var upIndex = reply.ups.indexOf(user._id);
+            if (upIndex === -1) {
+                reply.ups.push(user._id);
+                action = 'up';
+            } else {
+                reply.ups.splice(upIndex, 1);
+                action = 'down';
+            }
+            reply.save(function() {
+                res.send({
+                    success: true,
+                    action: action
+                });
+            });
+        }
+
+    });
+    replyManager.getReplyById(reply_id, ep.done('reply'));
+};
