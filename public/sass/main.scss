@@ -16,14 +16,18 @@ body {
 .avatar-48 {
 	@include avatar(48px, 48px);
 }
+.avatar-80 {
+	@include avatar(80px, 80px);
+}
 .alert {
 	box-shadow: 4px 4px 5px 0px rgba(50, 50, 50, 0.19);
 }
-.notice p {
-	padding: 15px;
+
+.topic-heading {
+
 }
 
-/** info item **/
+/** reply info item **/
 .opt {
 	a {
 		color: $grayLabelText;
@@ -39,8 +43,6 @@ body {
 	}
 }
 .info {
-	display: flex;
-	flex-direction: column;
 	min-width: 200px;
 	.info-bar {
 		margin-bottom: 5px;
@@ -50,9 +52,6 @@ body {
 		.info-meta {
 			flex: 1;
 			a {
-				color: $grayLabelText;
-			}
-			a:hover {
 				color: $grayLabelText;
 				text-decoration: none;
 			}

@@ -4,9 +4,10 @@
 		<ul class="list-group">
 			<li class="list-group-item">登录</li>
 			<li class="list-group-item">
-				<% if (typeof(error) !== 'undefined' && error) { %>
-				<div class="message-tip">
-					<p class="bg-danger"><%= error%></p>
+				<% if (typeof(msg) !== 'undefined' && msg) { %>
+				<div class="alert alert-dismissable <%= msgtype%>">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					<%= msg%>
 				</div>
 				<%
 				}

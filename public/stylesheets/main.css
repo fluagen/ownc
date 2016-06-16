@@ -74,15 +74,6 @@ body {
   color: #EB5424; }
 
 .info {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
   min-width: 200px; }
   .info .info-bar {
     margin-bottom: 5px;
@@ -101,8 +92,6 @@ body {
           -ms-flex: 1;
               flex: 1; }
       .info .info-bar .info-meta a {
-        color: #9A9DA0; }
-      .info .info-bar .info-meta a:hover {
         color: #9A9DA0;
         text-decoration: none; }
     .info .info-bar .opt {

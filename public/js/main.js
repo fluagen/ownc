@@ -169,7 +169,9 @@
                     }
                 }).fail(function(xhr) {
                     if (xhr.status === 403) {
-                        alert('请先登录，登陆后即可点赞。');
+                        //alert('请先登录，登陆后即可点赞。');
+                        window.location.href= '/login-required';
+                        return;
                     }
                 });
             });

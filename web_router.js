@@ -18,6 +18,7 @@ router.get('/signup', sign.showSignup);
 router.post('/signup', sign.signup);
 router.get('/signin', sign.showLogin);
 router.post('/signin', sign.login);
+router.get('/login-required', sign.loginRequired);
 
 
 router.get('/topic/create', auth.userRequired, topic.create);

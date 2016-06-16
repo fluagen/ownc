@@ -20,7 +20,8 @@ exports.signup = function(req, res, next) {
         return res.render('sign/signup', {
             loginid: loginid,
             email: email,
-            error: error
+            msgtype: 'alert-danger',
+            msg: error
         });
     });
 
@@ -95,7 +96,8 @@ exports.login = function(req, res, next) {
     ep.all('prop_err', function(error) {
         return res.render('sign/signin', {
             loginid: loginid,
-            error: error
+            msgtype: 'alert-danger',
+            msg: error
         });
     });
 
@@ -126,4 +128,11 @@ exports.login = function(req, res, next) {
     } else {
         userManager.getUserByLoginid(loginid, ep.done('user'));
     }
+};
+
+exports.loginRequired = function(req, res, next) {
+    res.render('sign/signin', {
+        msgtype: 'alert-warning',
+        msg: '需要登录后才能继续操作。'
+    });
 };
