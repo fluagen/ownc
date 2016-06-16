@@ -16,21 +16,46 @@ body {
 .avatar-48 {
 	@include avatar(48px, 48px);
 }
+.avatar-65 {
+	@include avatar(65px, 65px);
+}
 .avatar-80 {
 	@include avatar(80px, 80px);
 }
 .alert {
 	box-shadow: 4px 4px 5px 0px rgba(50, 50, 50, 0.19);
 }
-
 .topic-heading {
+	display: flex;
 
+	.topic-info {
+		flex: 1;
+		.topic-title {
+			font-size: 22px;
+			color: #333;
+			text-align: left;
+			line-height: 135%;
+			margin-bottom: 8px;
+			font-weight: bold;
+		}
+		.topic-meta {
+			color: $gray;
+			a{
+				color: $gray;
+				text-decoration: none;
+			}
+		}
+	}
+	.topic-avatar {
+		margin-left: 10px;
+		min-width: 70px;
+	}
 }
 
 /** reply info item **/
 .opt {
 	a {
-		color: $grayLabelText;
+		color: $gray;
 		text-decoration: none;
 	}
 	a:hover {
@@ -38,37 +63,39 @@ body {
 	}
 	a.active .fa {
 		@extend .animated;
-    		@extend .bounceIn;
+		@extend .bounceIn;
 		color: $red;
 	}
 }
 .info {
 	min-width: 200px;
+
 	.info-bar {
 		margin-bottom: 5px;
-		color: $grayLabelText;
+		color: $gray;
 		display: flex;
 		justify-content: space-between;
+
 		.info-meta {
 			flex: 1;
+
 			a {
-				color: $grayLabelText;
+				color: $gray;
 				text-decoration: none;
 			}
-
 		}
 		.opt {
 			min-width: 50px;
 			text-align: right;
 		}
 	}
-	
 	.info-content {
 		word-wrap: break-word;
 	}
 }
 .reply-box {
 	display: flex;
+
 	.info {
 		flex: 1;
 	}

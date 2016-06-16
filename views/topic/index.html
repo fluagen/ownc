@@ -2,7 +2,20 @@
 <div class="row">
 	<div class="col-md-9">
 		<ul class="list-group">
-			<li class="list-group-item"><%= topic.title%></li>
+			<li class="list-group-item topic-heading">
+			
+				<div class="topic-info">
+					<div class="topic-title"><%= topic.title%></div>
+					<div class="topic-meta">
+						<a href="#"><%= topic.author.loginid %></a>
+						<span>&nbsp;•&nbsp;</span>
+						<abbr title="<%= topic.create_at %>" class="timeago">于<%= topic.create_at_ago()%>发布</abbr>
+					</div>
+				</div>
+				<div class="topic-avatar">
+					<a href="javascript:void(0);"><img class="avatar-65" src="https://ruby-china-files.b0.upaiyun.com/user/large_avatar/15774.jpg" alt="15774"></a>
+				</div>
+			</li>
 			<li class="list-group-item markdown-body"><%- markdown(topic.content) %></li>
 		</ul>
 		<ul class="list-group">
