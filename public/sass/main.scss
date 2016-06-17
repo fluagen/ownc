@@ -25,25 +25,33 @@ body {
 .alert {
 	box-shadow: 4px 4px 5px 0px rgba(50, 50, 50, 0.19);
 }
+abbr[title] {
+	border-bottom: 0px;
+	cursor: text;
+}
+.info-meta {
+	color: $gray;
+	font-size: 12px;
+	word-break: break-all;
+	a {
+		color: $gray;
+		text-decoration: none;
+	}
+}
 .topic-heading {
 	display: flex;
 
 	.topic-info {
 		flex: 1;
+
 		.topic-title {
+			margin-top: 0px;
+			margin-bottom: 8px;
 			font-size: 22px;
 			color: #333;
 			text-align: left;
 			line-height: 135%;
-			margin-bottom: 8px;
 			font-weight: bold;
-		}
-		.topic-meta {
-			color: $gray;
-			a{
-				color: $gray;
-				text-decoration: none;
-			}
 		}
 	}
 	.topic-avatar {
@@ -76,13 +84,9 @@ body {
 		display: flex;
 		justify-content: space-between;
 
-		.info-meta {
+		.reply-meta {
 			flex: 1;
-
-			a {
-				color: $gray;
-				text-decoration: none;
-			}
+			@extend .info-meta;
 		}
 		.opt {
 			min-width: 50px;

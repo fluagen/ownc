@@ -120,6 +120,7 @@ exports.login = function(req, res, next) {
                 return;
             }
             auth.gen_session(user, res);
+            res.locals.current_user = req.session.user = user;
             res.redirect('/');
         }));
     });

@@ -18,7 +18,10 @@ exports.index = function(req, res, next) {
     ep.all('topic', 'replies', function(topic, replies) {
         if (!replies) {
             replies = [];
+        }else{
+            topic.lastReply = replies[replies.length -1 ];
         }
+        
         res.render('topic/index', {
             topic: topic,
             replies: replies,
@@ -33,6 +36,8 @@ exports.index = function(req, res, next) {
             res.render404('话题不存在或已被删除。');
             return;
         }
+        topic.visit_count += 1;
+        topic.save();
         ep.emit('topic', topic);
     }));
 };

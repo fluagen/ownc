@@ -3,13 +3,26 @@
 	<div class="col-md-9">
 		<ul class="list-group">
 			<li class="list-group-item topic-heading">
-			
+				
 				<div class="topic-info">
-					<div class="topic-title"><%= topic.title%></div>
-					<div class="topic-meta">
+					<h1 class="topic-title"><%= topic.title%></h1>
+					<div class="info-meta">
 						<a href="#"><%= topic.author.loginid %></a>
 						<span>&nbsp;•&nbsp;</span>
-						<abbr title="<%= topic.create_at %>" class="timeago">于<%= topic.create_at_ago()%>发布</abbr>
+						<abbr class="timeago" title="<%= topic.create_at_fmt() %>" >
+							于<%= topic.create_at_ago()%>发布
+						</abbr>
+						<%
+						if(topic.last_reply){
+						%>
+						<span>&nbsp;•&nbsp;</span>
+						最后由<a href="#"><%= topic.lastReply.author.loginid%></a>
+						<abbr class="timeago" title="<%= topic.lastReply.create_at_fmt() %>" >
+							于<%= topic.lastReply.create_at_ago()%>回复
+						</abbr>
+						<%}%>
+						<span>&nbsp;•&nbsp; </span>
+						<%= topic.visit_count%>次阅读
 					</div>
 				</div>
 				<div class="topic-avatar">
@@ -41,8 +54,6 @@
 				<input id="fileupload" name="file_image" type="file" style="display:none">
 			</div>
 		</div>
-		
-		
 		<%}%>
 	</div>
 	<div class="col-md-3"></div>
