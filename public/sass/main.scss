@@ -39,6 +39,12 @@ abbr[title] {
 	}
 }
 .topic-heading {
+
+	background: #fafafa;
+    padding: 6px 15px;
+    border-bottom-color: #eee;
+    color: #777;
+
 	display: flex;
 
 	.topic-info {
@@ -58,6 +64,23 @@ abbr[title] {
 		margin-left: 10px;
 		min-width: 70px;
 	}
+}
+
+.topic-footer {
+	padding: 6px 15px;
+    border-top-color: #eee;
+    background: #fafafa;
+}
+.operate {
+  .active {
+    color:#ce8a81
+  }
+  .fa {
+    font-size: 15px;
+  }
+  a:hover {
+    color: rgb(240, 148, 87);
+  }
 }
 
 /** reply info item **/

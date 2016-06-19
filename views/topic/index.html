@@ -2,7 +2,7 @@
 <div class="row">
 	<div class="col-md-9">
 		<ul class="list-group">
-			<li class="list-group-item topic-heading">
+			<li class="list-group-item topic-heading" id="<%= topic._id%>">
 				
 				<div class="topic-info">
 					<h1 class="topic-title"><%= topic.title%></h1>
@@ -30,6 +30,16 @@
 				</div>
 			</li>
 			<li class="list-group-item markdown-body"><%- markdown(topic.content) %></li>
+			<li class="list-group-item topic-footer operate">
+				<a class="follow" href="javascript:void(0);">
+					<i class="fa fa-eye" aria-hidden="true"></i>
+					关注
+				</a>
+				<a class="bookmark" href="javascript:void(0);">
+					<i class="fa fa-bookmark" aria-hidden="true"></i>
+					收藏
+				</a>
+			</li>
 		</ul>
 		<ul class="list-group">
 			<li class="list-group-item"><%= topic.reply_count%>&nbsp;回复</li>

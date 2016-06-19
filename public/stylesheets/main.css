@@ -84,6 +84,10 @@ abbr[title] {
     text-decoration: none; }
 
 .topic-heading {
+  background: #fafafa;
+  padding: 6px 15px;
+  border-bottom-color: #eee;
+  color: #777;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -104,6 +108,20 @@ abbr[title] {
   .topic-heading .topic-avatar {
     margin-left: 10px;
     min-width: 70px; }
+
+.topic-footer {
+  padding: 6px 15px;
+  border-top-color: #eee;
+  background: #fafafa; }
+
+.operate .active {
+  color: #ce8a81; }
+
+.operate .fa {
+  font-size: 15px; }
+
+.operate a:hover {
+  color: #f09457; }
 
 /** reply info item **/
 .opt a {

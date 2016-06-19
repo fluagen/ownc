@@ -18,9 +18,16 @@ require('./reply');
 require('./user');
 require('./group');
 require('./message');
+require('./topic_collect');
+require('./topic_follow');
 
 exports.Topic = mongoose.model('Topic');
 exports.Reply = mongoose.model('Reply');
 exports.User = mongoose.model('User');
 exports.Group = mongoose.model('Group');
 exports.Message = mongoose.model('Message');
+exports.TopicCollect = mongoose.model('TopicCollect');
+exports.TopicFollow = mongoose.model('TopicFollow');
+
+
+

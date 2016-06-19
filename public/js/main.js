@@ -39,6 +39,8 @@
             self.initImageUpload();
             self.initReplySubmit();
             self.initReplyUp();
+            self.initTopicCollect();
+            self.initTopicFollow();
         },
         initAtAuthor: function() {
             var allAuthors = $('.author').map(function(idx, ele) {
@@ -156,9 +158,9 @@
                         } else {
                             if (data.action === 'down') {
                                 currentCount = currentCount - 1;
-                                if(currentCount < 1){
+                                if (currentCount < 1) {
                                     $upcount.text('');
-                                }else{
+                                } else {
                                     $upcount.text(currentCount);
                                 }
                                 $this.removeClass('active');
@@ -170,7 +172,57 @@
                 }).fail(function(xhr) {
                     if (xhr.status === 403) {
                         //alert('请先登录，登陆后即可点赞。');
-                        window.location.href= '/login-required';
+                        window.location.href = '/login-required';
+                        return;
+                    }
+                });
+            });
+        },
+        initTopicCollect: function() {
+            $(".bookmark").click(function() {
+                var topic_id = $(".topic-heading").attr('id');
+                var $this = $(this);
+                $.ajax({
+                    url: '/topic/' + topic_id + '/collect',
+                    method: 'POST',
+                }).done(function(data) {
+                    if (data.success) {
+                        if (data.action === 'bookmark') {
+                            $this.addClass('active');
+                        } else {
+                            $this.removeClass('active');
+                        }
+                    } else {
+                        alert(data.message);
+                    }
+                }).fail(function(xhr) {
+                    if (xhr.status === 403) {
+                        window.location.href = '/login-required';
+                        return;
+                    }
+                });
+            });
+        },
+        initTopicFollow: function() {
+            $(".follow").click(function() {
+                var topic_id = $(".topic-heading").attr('id');
+                var $this = $(this);
+                $.ajax({
+                    url: '/topic/' + topic_id + '/follow',
+                    method: 'POST',
+                }).done(function(data) {
+                    if (data.success) {
+                        if (data.action === 'follow') {
+                            $this.addClass('active');
+                        } else {
+                            $this.removeClass('active');
+                        }
+                    } else {
+                        alert(data.message);
+                    }
+                }).fail(function(xhr) {
+                    if (xhr.status === 403) {
+                        window.location.href = '/login-required';
                         return;
                     }
                 });
