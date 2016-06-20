@@ -1,13 +1,17 @@
 <li class="list-group-item reply-box" id="<%= reply._id%>">
-	<div class="avatar-box"><a href="#"><img class="avatar-48" src="https://ruby-china-files.b0.upaiyun.com/user/large_avatar/15774.jpg" alt="15774"></a></div>
+	<div class="avatar"><a href="#"><img class="avatar-48" src="https://ruby-china-files.b0.upaiyun.com/user/large_avatar/15774.jpg" alt="15774"></a></div>
 	<div class="info">
 		<div class="info-bar">
-			<div class="info-meta">
-				<a class="author" href="#"><%= reply.author.loginid %></a>
-				<span>&nbsp;•&nbsp;<%= indexInCollection+1 %>楼&nbsp;•&nbsp;</span>
-				<span><%= reply.create_at_ago() %></span>
+			<div class="meta">
+				<a class="author" href="javascript:void(0);"><%= reply.author.loginid %></a>
+				<span>&nbsp;•&nbsp;</span>
+				<%= indexInCollection+1 %>楼
+				<span>&nbsp;•&nbsp;</span>
+				<abbr class="timeago" title="<%= reply.create_at_fmt() %>" >
+					<%= reply.create_at_ago()%>
+				</abbr>
 			</div>
-			<div class="opt">
+			<div class="operate">
 				<a class="opt-up <%= current_user && is_uped(current_user,reply) ? 'active' : '' %>" title="赞" href="javascript:void(0);">
 					<i class="fa fa-thumbs-up" aria-hidden="true"></i>
 					<span class="up-count"><%= reply.ups && reply.ups.length ? reply.ups.length : '' %></span>

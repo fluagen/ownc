@@ -24,8 +24,8 @@ router.get('/login-required', sign.loginRequired);
 router.get('/topic/create', auth.userRequired, topic.create);
 router.post('/topic/create', auth.userRequired, topic.put);
 router.get('/topic/:tid', topic.index);
-router.post('/topic/:topic_id/collect', auth.userRequired, topic.collect);
-router.post('/topic/:topic_id/follow', auth.userRequired, topic.follow);
+router.post('/topic/:tid/collect', auth.userRequired, topic.collect);
+router.post('/topic/:tid/follow', auth.userRequired, topic.follow);
 
 router.post('/:tid/reply', auth.userRequired, reply.add);
 router.get('/reply/:reply_id/edit', auth.userRequired, reply.showEdit);

@@ -1,12 +1,11 @@
 <% layout('layout') -%>
 <div class="row">
 	<div class="col-md-9">
-		<ul class="list-group">
-			<li class="list-group-item topic-heading" id="<%= topic._id%>">
-				
-				<div class="topic-info">
+		<ul class="list-group topic">
+			<li class="list-group-item topic-header" id="<%= topic._id%>">
+				<div class="info">
 					<h1 class="topic-title"><%= topic.title%></h1>
-					<div class="info-meta">
+					<div class="meta">
 						<a href="#"><%= topic.author.loginid %></a>
 						<span>&nbsp;•&nbsp;</span>
 						<abbr class="timeago" title="<%= topic.create_at_fmt() %>" >
@@ -25,17 +24,17 @@
 						<%= topic.visit_count%>次阅读
 					</div>
 				</div>
-				<div class="topic-avatar">
+				<div class="avatar">
 					<a href="javascript:void(0);"><img class="avatar-65" src="https://ruby-china-files.b0.upaiyun.com/user/large_avatar/15774.jpg" alt="15774"></a>
 				</div>
 			</li>
 			<li class="list-group-item markdown-body"><%- markdown(topic.content) %></li>
 			<li class="list-group-item topic-footer operate">
-				<a class="follow" href="javascript:void(0);">
+				<a class="follow <%= is_followed ? 'active' : '' %>" href="javascript:void(0);">
 					<i class="fa fa-eye" aria-hidden="true"></i>
 					关注
 				</a>
-				<a class="bookmark" href="javascript:void(0);">
+				<a class="bookmark <%= is_collected ? 'active' : '' %>" href="javascript:void(0);">
 					<i class="fa fa-bookmark" aria-hidden="true"></i>
 					收藏
 				</a>

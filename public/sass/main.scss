@@ -29,66 +29,23 @@ abbr[title] {
 	border-bottom: 0px;
 	cursor: text;
 }
-.info-meta {
+.meta, 
+.operate {
 	color: $gray;
 	font-size: 12px;
-	word-break: break-all;
+
 	a {
 		color: $gray;
 		text-decoration: none;
 	}
-}
-.topic-heading {
-
-	background: #fafafa;
-    padding: 6px 15px;
-    border-bottom-color: #eee;
-    color: #777;
-
-	display: flex;
-
-	.topic-info {
-		flex: 1;
-
-		.topic-title {
-			margin-top: 0px;
-			margin-bottom: 8px;
-			font-size: 22px;
-			color: #333;
-			text-align: left;
-			line-height: 135%;
-			font-weight: bold;
-		}
+	.timeago {
+		font-size: 11px;
 	}
-	.topic-avatar {
-		margin-left: 10px;
-		min-width: 70px;
+	a.anchor {
+		color: #d0d0d0;
 	}
-}
-
-.topic-footer {
-	padding: 6px 15px;
-    border-top-color: #eee;
-    background: #fafafa;
 }
 .operate {
-  .active {
-    color:#ce8a81
-  }
-  .fa {
-    font-size: 15px;
-  }
-  a:hover {
-    color: rgb(240, 148, 87);
-  }
-}
-
-/** reply info item **/
-.opt {
-	a {
-		color: $gray;
-		text-decoration: none;
-	}
 	a:hover {
 		color: $black;
 	}
@@ -98,33 +55,64 @@ abbr[title] {
 		color: $red;
 	}
 }
-.info {
-	min-width: 200px;
 
-	.info-bar {
-		margin-bottom: 5px;
-		color: $gray;
-		display: flex;
-		justify-content: space-between;
 
-		.reply-meta {
-			flex: 1;
-			@extend .info-meta;
-		}
-		.opt {
-			min-width: 50px;
-			text-align: right;
+/**topic item**/
+.topic-header {
+	background-color: #fcfcfc;
+	display: flex;
+
+	.info {
+		word-break: break-all;
+		flex: 1;
+
+		.topic-title {
+			margin-top: 0;
+			margin-bottom: 8px;
+			font-size: 22px;
+			color: #333;
+			text-align: left;
+			line-height: 135%;
+			font-weight: 700;
 		}
 	}
-	.info-content {
-		word-wrap: break-word;
+	.avatar {
+		margin-left: 10px;
+		min-width: 70px;
 	}
 }
+.topic-footer {
+	background-color: #fcfcfc;
+	text-align: right;
+}
+
+/** reply item **/
 .reply-box {
 	display: flex;
 
 	.info {
+		//min-width: 200px;
+		word-break: break-all;
 		flex: 1;
+
+		.info-bar {
+			display: flex;
+
+			.meta {
+				flex: 1;
+			}
+			.operate {
+				min-width: 50px;
+				text-align: right;
+			}
+		}
+		.info-content {
+			word-wrap: break-word;
+		}
+	}
+	.avatar {
+		margin-right: 10px;
+		min-width: 50px;
 	}
 }
 

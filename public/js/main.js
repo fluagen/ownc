@@ -180,7 +180,7 @@
         },
         initTopicCollect: function() {
             $(".bookmark").click(function() {
-                var topic_id = $(".topic-heading").attr('id');
+                var topic_id = $(".topic-header").attr('id');
                 var $this = $(this);
                 $.ajax({
                     url: '/topic/' + topic_id + '/collect',
@@ -204,8 +204,9 @@
             });
         },
         initTopicFollow: function() {
+            // var self = this;
             $(".follow").click(function() {
-                var topic_id = $(".topic-heading").attr('id');
+                var topic_id = $(".topic-header").attr('id');
                 var $this = $(this);
                 $.ajax({
                     url: '/topic/' + topic_id + '/follow',
@@ -214,6 +215,9 @@
                     if (data.success) {
                         if (data.action === 'follow') {
                             $this.addClass('active');
+                            // var msg = '成功关注话题, 系统会通知你关于此话题最新的讨论.';
+                            // self.alertMessageBar($('.topic'), "alert-success", msg);
+
                         } else {
                             $this.removeClass('active');
                         }
