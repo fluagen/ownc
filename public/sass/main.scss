@@ -29,8 +29,7 @@ abbr[title] {
 	border-bottom: 0px;
 	cursor: text;
 }
-.meta, 
-.operate {
+.meta, .operate {
 	color: $gray;
 	font-size: 12px;
 
@@ -56,6 +55,38 @@ abbr[title] {
 	}
 }
 
+/**topic list**/
+.topic-list {
+	display: flex;
+
+	.info {
+		flex: 1;
+		min-width: 0;
+
+		.topic-title {
+			margin: 0 0 5px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+
+			a {
+				color: #555;
+			}
+		}
+	}
+	.avatar {
+		margin-right: 10px;
+		min-width: 50px;
+	}
+	.badge-reply-count {
+		margin-top: 10px;
+		margin-left: 15px;
+
+		.badge {
+			background-color: #8BAFCE;
+		}
+	}
+}
 
 /**topic item**/
 .topic-header {

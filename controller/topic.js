@@ -27,7 +27,6 @@ exports.index = function(req, res, next) {
         } else {
             topic.lastReply = replies[replies.length - 1];
         }
-console.log('is_collected:'+ is_collected + ', is_followed:'+ is_followed);
         res.render('topic/index', {
             topic: topic,
             replies: replies,
@@ -49,7 +48,6 @@ console.log('is_collected:'+ is_collected + ', is_followed:'+ is_followed);
         ep.emit('topic', topic);
     }));
     var user = req.session.user;
-    console.log(user);
     if (user) {
         TopicCollect.findOne({
             user_id: user._id,

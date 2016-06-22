@@ -33,6 +33,7 @@
     "utility": "*",
     "validator": "*",
     "eventproxy": "*",
+    "linkify-it": "*",
     "markdown-it": "*",
     "multer": "*"
   },

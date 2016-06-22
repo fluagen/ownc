@@ -75,20 +75,15 @@ abbr[title] {
   border-bottom: 0px;
   cursor: text; }
 
-.meta,
-.operate {
+.meta, .operate {
   color: #B9BDC0;
   font-size: 12px; }
-  .meta a,
-  .operate a {
-    padding: 1px 2px;
+  .meta a, .operate a {
     color: #B9BDC0;
     text-decoration: none; }
-  .meta .timeago,
-  .operate .timeago {
+  .meta .timeago, .operate .timeago {
     font-size: 11px; }
-  .meta a.anchor,
-  .operate a.anchor {
+  .meta a.anchor, .operate a.anchor {
     color: #d0d0d0; }
 
 .operate a:hover {
@@ -96,6 +91,34 @@ abbr[title] {
 
 .operate a.active .fa {
   color: #EB5424; }
+
+/**topic list**/
+.topic-list {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+  .topic-list .info {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    min-width: 0; }
+    .topic-list .info .topic-title {
+      margin: 0 0 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; }
+      .topic-list .info .topic-title a {
+        color: #555; }
+  .topic-list .avatar {
+    margin-right: 10px;
+    min-width: 50px; }
+  .topic-list .badge-reply-count {
+    margin-top: 10px;
+    margin-left: 15px; }
+    .topic-list .badge-reply-count .badge {
+      background-color: #8BAFCE; }
 
 /**topic item**/
 .topic-header {
