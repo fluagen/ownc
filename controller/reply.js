@@ -1,5 +1,6 @@
 var EventProxy = require('eventproxy');
 var validator = require('validator');
+var _ = require('lodash');
 
 var linkify = require('linkify-it')();
 
@@ -46,7 +47,12 @@ exports.add = function(req, res, next) {
         res.render404('回复内容不能为空。');
         return;
     }
-    console.log(linkify.match(content));
+    
+    var matchs = linkify.match(content);
+    var mentions = _.filter(matchs,{schema: '@'});
+    console.log(mentions);
+
+
     ep.all('reply_saved', 'topic_update_lastreply', 'user_acc_replycount', 'sendReplyMessage', 'sendAtMessage', function(reply) {
         res.redirect('/topic/' + tid + '#' + reply._id);
     });
