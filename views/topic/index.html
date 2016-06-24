@@ -32,11 +32,11 @@
 			<li class="list-group-item topic-footer operate">
 				<a class="follow <%= is_followed ? 'active' : '' %>" href="javascript:void(0);">
 					<i class="fa fa-eye" aria-hidden="true"></i>
-					关注
+					<span class="count"><%= topic.follow_count ? topic.follow_count  : ''%></span>关注
 				</a>
 				<a class="bookmark <%= is_collected ? 'active' : '' %>" href="javascript:void(0);">
 					<i class="fa fa-bookmark" aria-hidden="true"></i>
-					收藏
+					<span class="count"><%= topic.collect_count ? topic.collect_count  : ''%></span>收藏
 				</a>
 			</li>
 		</ul>

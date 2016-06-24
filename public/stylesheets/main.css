@@ -92,6 +92,9 @@ abbr[title] {
 .operate a.active .fa {
   color: #EB5424; }
 
+.follow {
+  margin-right: 5px; }
+
 /**topic list**/
 .topic-list {
   display: -webkit-box;

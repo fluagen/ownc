@@ -121,15 +121,16 @@ exports.collect = function(req, res, next) {
     var ep = new EventProxy();
     ep.fail(next);
     ep.all('action', function(action) {
-        console.log(action);
         return res.send({
             success: true,
             action: action
         });
     });
-    ep.all('topic_collect', function(topic_collect) {
+    ep.all('topic', 'topic_collect', function(topic, topic_collect) {
         if (topic_collect) {
             topic_collect.remove(ep.done(function() {
+                topic.collect_count -= 1;
+                topic.save();
                 ep.emit('action', 'cancel');
             }));
         } else {
@@ -137,6 +138,8 @@ exports.collect = function(req, res, next) {
             tc.user_id = user_id;
             tc.topic_id = topic_id;
             tc.save(ep.done(function() {
+                topic.collect_count += 1;
+                topic.save();
                 ep.emit('action', 'bookmark');
             }));
         }
@@ -145,7 +148,7 @@ exports.collect = function(req, res, next) {
         user_id: user_id,
         topic_id: topic_id
     }, ep.done('topic_collect'));
-
+    topicManager.getTopicById(topic_id, ep.done('topic'));
 };
 
 exports.follow = function(req, res, next) {
@@ -154,15 +157,16 @@ exports.follow = function(req, res, next) {
     var ep = new EventProxy();
     ep.fail(next);
     ep.all('action', function(action) {
-        console.log(action);
         return res.send({
             success: true,
             action: action
         });
     });
-    ep.all('topic_follow', function(topic_follow) {
+    ep.all('topic','topic_follow', function(topic, topic_follow) {
         if (topic_follow) {
             topic_follow.remove(ep.done(function() {
+                topic.follow_count -= 1;
+                topic.save();
                 ep.emit('action', 'cancel');
             }));
         } else {
@@ -170,6 +174,8 @@ exports.follow = function(req, res, next) {
             tf.user_id = user_id;
             tf.topic_id = topic_id;
             tf.save(ep.done(function() {
+                topic.follow_count += 1;
+                topic.save();
                 ep.emit('action', 'follow');
             }));
         }
@@ -178,4 +184,5 @@ exports.follow = function(req, res, next) {
         user_id: user_id,
         topic_id: topic_id
     }, ep.done('topic_follow'));
+    topicManager.getTopicById(topic_id, ep.done('topic'));
 };

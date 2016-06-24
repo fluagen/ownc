@@ -2,37 +2,11 @@ var EventProxy = require('eventproxy');
 var validator = require('validator');
 var _ = require('lodash');
 
-var linkify = require('linkify-it')();
-
 var topicManager = require('../manager/topic');
 var replyManager = require('../manager/reply');
 var userManager = require('../manager/user');
 var message = require('../common/message');
 var at = require('../common/at');
-
-linkify.add('@', {
-  validate: function (text, pos, self) {
-    var tail = text.slice(pos);
-
-    if (!self.re.twitter) {
-      self.re.twitter =  new RegExp(
-        '^([a-zA-Z0-9_]){1,15}(?!_)(?=$|' + self.re.src_ZPCc + ')'
-      );
-    }
-    if (self.re.twitter.test(tail)) {
-      // Linkifier allows punctuation chars before prefix,
-      // but we additionally disable `@` ("@@mention" is invalid)
-      if (pos >= 2 && tail[pos - 2] === '@') {
-        return false;
-      }
-      return tail.match(self.re.twitter)[0].length;
-    }
-    return 0;
-  },
-  normalize: function (match) {
-    match.url = match.url.replace(/^@/, '');
-  }
-});
 
 exports.add = function(req, res, next) {
     var tid = req.params.tid;
@@ -48,11 +22,6 @@ exports.add = function(req, res, next) {
         return;
     }
     
-    var matchs = linkify.match(content);
-    var mentions = _.filter(matchs,{schema: '@'});
-    console.log(mentions);
-
-
     ep.all('reply_saved', 'topic_update_lastreply', 'user_acc_replycount', 'sendReplyMessage', 'sendAtMessage', function(reply) {
         res.redirect('/topic/' + tid + '#' + reply._id);
     });
@@ -62,7 +31,6 @@ exports.add = function(req, res, next) {
             res.render404('话题不存在或已被删除。');
             return;
         }
-
         replyManager.save(tid, content, req.session.user._id, ep.done(function(reply) {
             topicManager.updateLastReply(tid, reply._id, ep.done('topic_update_lastreply'));
             userManager.getUserById(req.session.user._id, ep.done(function(user) {
@@ -82,7 +50,8 @@ exports.add = function(req, res, next) {
                 ep.emit('sendReplyMessage');
             }
             var n_content = content.replace('@' + topicAuthor.loginid + ' ', '');
-            at.sendMessageToMentionUsers(n_content, topic._id, req.session.user._id, reply._id, ep.done('sendAtMessage'));
+            at.sendMessageToMentionUsers(n_content, req.session.user._id, topic._id, reply._id, ep.done('sendAtMessage'));
+
             ep.emit('reply_saved', reply);
         }));
     });

@@ -13,13 +13,18 @@ var TopicSchema = new Schema({
   lock: {type: Boolean, default: false}, // 被锁定主题
   private: {type: Boolean, default: false}, // 私有的
   deleted: {type: Boolean, default: false},
-  author_deleted: {type: Boolean, default: false},
-  group_deleted: {type: Boolean, default: false},
-  reply_count: { type: Number, default: 0 },
-  visit_count: { type: Number, default: 0 },
   create_at: { type: Date, default: Date.now },
   update_at: { type: Date, default: Date.now },
+  ups: [Schema.Types.ObjectId],
+  downs: [Schema.Types.ObjectId],
+  
+  reply_count: { type: Number, default: 0 },
+  visit_count: { type: Number, default: 0 },
+  collect_count: { type: Number, default: 0 },
+  follow_count: { type: Number, default: 0 },
+ 
   last_reply: { type: ObjectId },
+  last_reply_author_loginid: {type: String},
   last_reply_at: { type: Date, default: Date.now }
 });
 

@@ -182,15 +182,24 @@
             $(".bookmark").click(function() {
                 var topic_id = $(".topic-header").attr('id');
                 var $this = $(this);
+                var $count = $(this).find('.count');
                 $.ajax({
                     url: '/topic/' + topic_id + '/collect',
                     method: 'POST',
                 }).done(function(data) {
                     if (data.success) {
+                        var currentCount = Number($count.text().trim()) || 0;
                         if (data.action === 'bookmark') {
                             $this.addClass('active');
+                            $count.text(currentCount+1);
                         } else {
                             $this.removeClass('active');
+                            currentCount = currentCount -1;
+                            if(currentCount){
+                                $count.text(currentCount);
+                            }else{
+                                $count.text('');
+                            }
                         }
                     } else {
                         alert(data.message);
@@ -208,18 +217,24 @@
             $(".follow").click(function() {
                 var topic_id = $(".topic-header").attr('id');
                 var $this = $(this);
+                var $count = $(this).find('.count');
                 $.ajax({
                     url: '/topic/' + topic_id + '/follow',
                     method: 'POST',
                 }).done(function(data) {
                     if (data.success) {
+                        var currentCount = Number($count.text().trim()) || 0;
                         if (data.action === 'follow') {
                             $this.addClass('active');
-                            // var msg = '成功关注话题, 系统会通知你关于此话题最新的讨论.';
-                            // self.alertMessageBar($('.topic'), "alert-success", msg);
-
+                            $count.text(currentCount+1);
                         } else {
                             $this.removeClass('active');
+                            currentCount = currentCount -1;
+                            if(currentCount){
+                                $count.text(currentCount);
+                            }else{
+                                $count.text('');
+                            }
                         }
                     } else {
                         alert(data.message);
