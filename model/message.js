@@ -5,9 +5,13 @@ var ObjectId  = Schema.ObjectId;
 
 /*
  * type:
- * reply: xx 回复了你的话题
- * reply2: xx 在话题中回复了你
- * at: xx ＠了你
+ *
+ * reply 			xx 回复了你的话题
+ * at_topic 		xx 在话题中提到了你
+ * at_reply 		xx 在话题中回复了你
+ * apply_group      xx 请求加入 xx组
+ * apply_group_ok   xx 申请加入 xx组 的请求通过
+ * apply_group_no   xx 申请加入 xx组 的请求被拒绝
  */
 
 var MessageSchema = new Schema({

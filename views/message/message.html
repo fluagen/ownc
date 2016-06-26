@@ -1,0 +1,13 @@
+<div class="list-group-item">
+				<div class="avatar">
+					<a href="javascript:void(0);"><img class="avatar-48" src="https://ruby-china-files.b0.upaiyun.com/user/large_avatar/15774.jpg" alt="15774">
+					</a>
+				</div>
+				<%if(message.type === 'reply'){%>
+					<%- partial('./reply', {sender: message.sender, topic: message.topic}) %>
+				<%}else if(message.type === 'at_reply'){%>
+					<%- partial('./at_reply', message) %>
+				<%}else if(message.type === 'at_topic'){%>
+					<%- partial('./at_topic', message) %>
+				<%}%>
+			</div>

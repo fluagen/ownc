@@ -8,6 +8,7 @@ var site = require('./controller/site');
 var sign = require('./controller/sign');
 var topic = require('./controller/topic');
 var reply = require('./controller/reply');
+var message = require('./controller/message');
 
 var router = express.Router();
 
@@ -31,6 +32,8 @@ router.post('/:tid/reply', auth.userRequired, reply.add);
 router.get('/reply/:reply_id/edit', auth.userRequired, reply.showEdit);
 router.post('/reply/:reply_id/edit', auth.userRequired, reply.update);
 router.post('/reply/:reply_id/up', auth.userRequired, reply.up);
+
+router.get('/message', auth.userRequired, message.index);
 
 router.post('/upload', upload.image);
 

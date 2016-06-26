@@ -46,6 +46,17 @@ body {
   color: #222527;
   font-family: Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN", Roboto, "Heiti SC", "Microsoft Yahei", sans-serif; }
 
+.navbar-default .navbar-nav > li > a {
+  color: #333;
+  border-bottom: 3px solid #FFF;
+  padding-bottom: 12px; }
+
+.topnav {
+  background-color: #FFF;
+  min-height: 40px;
+  -webkit-box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.1), 0 1px 0 0 rgba(0, 0, 0, 0.1);
+          box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.1), 0 1px 0 0 rgba(0, 0, 0, 0.1); }
+
 .avatar-box {
   margin-right: 10px; }
 
@@ -94,6 +105,15 @@ abbr[title] {
 
 .follow {
   margin-right: 5px; }
+
+.bell {
+  position: relative; }
+  .bell .count {
+    line-height: 20px;
+    position: absolute;
+    margin: 0px;
+    top: -5px;
+    color: #333; }
 
 /**topic list**/
 .topic-list {
