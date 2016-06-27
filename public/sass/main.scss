@@ -78,6 +78,27 @@ abbr[title] {
 	}
 }
 
+.author {
+	color: #333;
+}
+
+.message {
+
+	.new {
+		color: #F86334 !important
+	}
+	display: flex;
+
+	.info {
+		flex: 1;
+		.meta {
+			a {
+				
+			}
+		}
+	}
+}
+
 /**topic list**/
 .topic-list {
 	display: flex;

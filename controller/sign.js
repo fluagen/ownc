@@ -3,6 +3,7 @@ var EventProxy = require('eventproxy');
 var userManager = require('../manager/user');
 var auth = require('../middleware/auth');
 var tools = require('../common/tools');
+var config = require('../config');
 
 exports.showSignup = function(req, res, next) {
     res.render('sign/signup');
@@ -129,6 +130,14 @@ exports.login = function(req, res, next) {
     } else {
         userManager.getUserByLoginid(loginid, ep.done('user'));
     }
+};
+
+exports.logout = function(req, res, next) {
+    req.session.destroy();
+    res.clearCookie(config.auth_cookie_name, {
+        path: '/'
+    });
+    res.redirect('/');
 };
 
 exports.loginRequired = function(req, res, next) {

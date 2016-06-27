@@ -115,6 +115,20 @@ abbr[title] {
     top: -5px;
     color: #333; }
 
+.author {
+  color: #333; }
+
+.message {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+  .message .info {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
+
 /**topic list**/
 .topic-list {
   display: -webkit-box;

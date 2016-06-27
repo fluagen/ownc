@@ -19,6 +19,7 @@ router.get('/signup', sign.showSignup);
 router.post('/signup', sign.signup);
 router.get('/signin', sign.showLogin);
 router.post('/signin', sign.login);
+router.get('/logout', sign.logout);
 router.get('/login-required', sign.loginRequired);
 
 
