@@ -60,6 +60,12 @@ body {
 .avatar-box {
   margin-right: 10px; }
 
+.avatar-32 {
+  width: 32px;
+  height: 32px;
+  -webkit-border-radius: 120px;
+          border-radius: 120px; }
+
 .avatar-48 {
   width: 48px;
   height: 48px;
@@ -123,11 +129,53 @@ abbr[title] {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex; }
+  .message .new {
+    color: #F86334 !important; }
   .message .info {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
         -ms-flex: 1;
             flex: 1; }
+
+.notification {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+  .notification .avatar {
+    margin-right: 10px;
+    min-width: 32px; }
+  .notification .info {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    min-width: 0; }
+    .notification .info .notification-heading {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+      -webkit-justify-content: space-between;
+          -ms-flex-pack: justify;
+              justify-content: space-between;
+      color: #333;
+      font-size: 14px; }
+      .notification .info .notification-heading .heading {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+            -ms-flex: 1;
+                flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; }
+      .notification .info .notification-heading .timeago {
+        margin-left: 10px;
+        min-width: 30px; }
+    .notification .info .notification-body {
+      margin: 15 0;
+      background: #faf5eb; }
 
 /**topic list**/
 .topic-list {

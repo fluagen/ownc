@@ -23,6 +23,9 @@ body {
 .avatar-box {
 	margin-right: 10px;
 }
+.avatar-32 {
+	@include avatar(32px, 32px);
+}
 .avatar-48 {
 	@include avatar(48px, 48px);
 }
@@ -69,6 +72,7 @@ abbr[title] {
 }
 .bell {
 	position: relative;
+
 	.count {
 		line-height: 20px;
 		position: absolute;
@@ -77,24 +81,41 @@ abbr[title] {
 		color: #333;
 	}
 }
-
 .author {
 	color: #333;
 }
-
-.message {
-
-	.new {
-		color: #F86334 !important
-	}
+.notification {
 	display: flex;
 
+	.avatar {
+		margin-right: 10px;
+		min-width: 32px;
+	}
 	.info {
 		flex: 1;
-		.meta {
-			a {
-				
+		min-width: 0;
+
+		.notification-heading {
+			display: flex;
+			justify-content: space-between;
+			color: #333;
+			font-size: 14px;
+
+			.heading {
+				flex: 1;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
 			}
+			.timeago {
+				margin-left: 20px;
+				min-width: 30px;
+			}
+		}
+		.notification-body {
+			margin: 15 0;
+			//border-top: 1px dashed;
+			background: #faf5eb;
 		}
 	}
 }
