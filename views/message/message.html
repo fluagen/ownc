@@ -6,8 +6,8 @@
 				<%if(message.type === 'reply'){%>
 					<%- partial('./reply', {sender: message.sender, topic: message.topic, reply: message.reply}) %>
 				<%}else if(message.type === 'at_reply'){%>
-					<%- partial('./at_reply', message) %>
+					<%- partial('./at_reply', {sender: message.sender, topic: message.topic, reply: message.reply}) %>
 				<%}else if(message.type === 'at_topic'){%>
-					<%- partial('./at_topic', message) %>
+					<%- partial('./at_topic', {sender: message.sender, topic: message.topic}) %>
 				<%}%>
 			</div>

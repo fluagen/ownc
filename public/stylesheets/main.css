@@ -124,19 +124,6 @@ abbr[title] {
 .author {
   color: #333; }
 
-.message {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex; }
-  .message .new {
-    color: #F86334 !important; }
-  .message .info {
-    -webkit-box-flex: 1;
-    -webkit-flex: 1;
-        -ms-flex: 1;
-            flex: 1; }
-
 .notification {
   display: -webkit-box;
   display: -webkit-flex;
@@ -149,17 +136,12 @@ abbr[title] {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
         -ms-flex: 1;
-            flex: 1;
-    min-width: 0; }
+            flex: 1; }
     .notification .info .notification-heading {
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
-      -webkit-box-pack: justify;
-      -webkit-justify-content: space-between;
-          -ms-flex-pack: justify;
-              justify-content: space-between;
       color: #333;
       font-size: 14px; }
       .notification .info .notification-heading .heading {
@@ -167,14 +149,22 @@ abbr[title] {
         -webkit-flex: 1;
             -ms-flex: 1;
                 flex: 1;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis; }
+        min-width: 0; }
+        .notification .info .notification-heading .heading h2 {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis; }
+        .notification .info .notification-heading .heading .title {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis; }
+        .notification .info .notification-heading .heading .text {
+          margin: 0px 5px; }
       .notification .info .notification-heading .timeago {
-        margin-left: 10px;
+        margin-left: 20px;
         min-width: 30px; }
     .notification .info .notification-body {
-      margin: 15 0;
+      margin: 15px 0px;
       background: #faf5eb; }
 
 /**topic list**/

@@ -1,15 +1,11 @@
 <div class="info">
-	<div class="meta">
-		<a class="author" href="#"><%= message.sender.loginid %></a>
-		<span>&nbsp;•&nbsp;</span>
-		回复了你关注的话题:
-		<a href="#"><%= message.topic.title %></a>
-		<span>&nbsp;•&nbsp;</span>
-		<abbr class="timeago" title="<%= topic.create_at_fmt() %>" >
-			于<%= message.topic.create_at_ago()%>
-		</abbr>
+	<div class="notification-heading">
+		<div class="heading">
+<h2><%= topic.title %><%= topic.title %><%= topic.title %><%= topic.title %><%= topic.title %><%= topic.title %><%= topic.title %><%= topic.title %><%= topic.title %></h2>
+		</div>
+		<div class="timeago">
+			<%= topic.create_at_fmt()%>
+		</div>
 	</div>
-	<div class="info-content markdown-reply">
-		<%- markdown(message.reply.content) %>
-	</div>
+	<div class="markdown-body notification-body"><%- markdown(reply.content) %></div>
 </div>

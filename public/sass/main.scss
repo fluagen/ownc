@@ -93,19 +93,31 @@ abbr[title] {
 	}
 	.info {
 		flex: 1;
-		min-width: 0;
 
 		.notification-heading {
 			display: flex;
-			justify-content: space-between;
+			// justify-content: space-between;
 			color: #333;
 			font-size: 14px;
 
 			.heading {
 				flex: 1;
-				white-space: nowrap;
-				overflow: hidden;
-				text-overflow: ellipsis;
+				min-width: 0;
+
+				h2 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+				.title {
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+				.text {
+					margin: 0px 5px;
+				}
 			}
 			.timeago {
 				margin-left: 20px;
@@ -113,7 +125,7 @@ abbr[title] {
 			}
 		}
 		.notification-body {
-			margin: 15 0;
+			margin: 15px 0px;
 			//border-top: 1px dashed;
 			background: #faf5eb;
 		}
