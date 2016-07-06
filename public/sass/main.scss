@@ -10,16 +10,33 @@ body {
 	height: $height;
 	border-radius: 120px;
 }
+.navbar {
+	border: 0;
+	border-radius: 0;
+}
 .navbar-default .navbar-nav>li>a {
 	color: #333;
 	border-bottom: 3px solid #FFF;
 	padding-bottom: 12px;
 }
+
 .topnav {
 	background-color: #FFF;
 	min-height: 40px;
 	box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.1), 0 1px 0 0 rgba(0, 0, 0, 0.1);
 }
+
+.topnav .main-nav>li>a:hover,
+.topnav .main-nav>li.active a, 
+.topnav .main-nav>li.active a:hover {
+	border-bottom: 3px solid #EB5424;
+	color: #EB5424;
+	background: transparent;
+	padding-bottom: 12px;
+	
+}
+
+
 .avatar-box {
 	margin-right: 10px;
 }
@@ -93,42 +110,35 @@ abbr[title] {
 	}
 	.info {
 		flex: 1;
+		min-width: 0;
 
-		.notification-heading {
-			display: flex;
-			// justify-content: space-between;
+		.notification-head {
 			color: #333;
 			font-size: 14px;
+			display: flex;
+			flex: 1;
+			min-width: 0;
+			white-space: nowrap;
 
-			.heading {
-				flex: 1;
-				min-width: 0;
-
-				h2 {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-				.title {
-					white-space: nowrap;
-					overflow: hidden;
-					text-overflow: ellipsis;
-				}
-				.text {
-					margin: 0px 5px;
-				}
+			.title {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
 			}
-			.timeago {
-				margin-left: 20px;
-				min-width: 30px;
+			.text {
+				margin: 0px 8px;
 			}
 		}
 		.notification-body {
 			margin: 15px 0px;
 			//border-top: 1px dashed;
-			background: #faf5eb;
+			//background: #faf5eb;
+			background: #F7F7F7
 		}
+	}
+	.time {
+		margin-left: 10px;
+		min-width: 30px;
 	}
 }
 

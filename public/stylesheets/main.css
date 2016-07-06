@@ -46,6 +46,11 @@ body {
   color: #222527;
   font-family: Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN", Roboto, "Heiti SC", "Microsoft Yahei", sans-serif; }
 
+.navbar {
+  border: 0;
+  -webkit-border-radius: 0;
+          border-radius: 0; }
+
 .navbar-default .navbar-nav > li > a {
   color: #333;
   border-bottom: 3px solid #FFF;
@@ -56,6 +61,14 @@ body {
   min-height: 40px;
   -webkit-box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.1), 0 1px 0 0 rgba(0, 0, 0, 0.1);
           box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.1), 0 1px 0 0 rgba(0, 0, 0, 0.1); }
+
+.topnav .main-nav > li > a:hover,
+.topnav .main-nav > li.active a,
+.topnav .main-nav > li.active a:hover {
+  border-bottom: 3px solid #EB5424;
+  color: #EB5424;
+  background: transparent;
+  padding-bottom: 12px; }
 
 .avatar-box {
   margin-right: 10px; }
@@ -136,36 +149,33 @@ abbr[title] {
     -webkit-box-flex: 1;
     -webkit-flex: 1;
         -ms-flex: 1;
-            flex: 1; }
-    .notification .info .notification-heading {
+            flex: 1;
+    min-width: 0; }
+    .notification .info .notification-head {
+      color: #333;
+      font-size: 14px;
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
-      color: #333;
-      font-size: 14px; }
-      .notification .info .notification-heading .heading {
-        -webkit-box-flex: 1;
-        -webkit-flex: 1;
-            -ms-flex: 1;
-                flex: 1;
-        min-width: 0; }
-        .notification .info .notification-heading .heading h2 {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis; }
-        .notification .info .notification-heading .heading .title {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis; }
-        .notification .info .notification-heading .heading .text {
-          margin: 0px 5px; }
-      .notification .info .notification-heading .timeago {
-        margin-left: 20px;
-        min-width: 30px; }
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+          -ms-flex: 1;
+              flex: 1;
+      min-width: 0;
+      white-space: nowrap; }
+      .notification .info .notification-head .title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis; }
+      .notification .info .notification-head .text {
+        margin: 0px 8px; }
     .notification .info .notification-body {
       margin: 15px 0px;
-      background: #faf5eb; }
+      background: #F7F7F7; }
+  .notification .time {
+    margin-left: 10px;
+    min-width: 30px; }
 
 /**topic list**/
 .topic-list {

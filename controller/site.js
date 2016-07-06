@@ -9,7 +9,8 @@ exports.index = function(req, res, next) {
             topics = [];
         }
         res.render('index', {
-            topics: topics
+            topics: topics,
+            site: 'open'
         });
     });
     var query = {};

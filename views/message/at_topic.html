@@ -1,16 +1,8 @@
 <div class="info">
-	<div class="notification-heading">
-		<div class="heading">
-			<a href="/user/<%= sender.loginid %>"><%= sender.loginid %></a>
-			<span>&nbsp;•&nbsp;</span>
-			在发布的话题
-			<a class="title" href="/topic/<%= topic._id%>"><%= topic.title %></a>
-			<span>&nbsp;•&nbsp;</span>
-			中提到了你
-		</div>
-		<div class="timeago">
-			<%= topic.create_at_fmt()%>
-		</div>
+	<div class="notification-head">
+		<a href="/user/<%= sender.loginid %>"><%= sender.loginid %></a>
+		<span class="text">在发布的话题</span>
+		<a class="title" href="/topic/<%= topic._id%>"><%= topic.title %></a>
+		<span class="text">提到了你</span>
 	</div>
-	<div class="markdown-body notification-body"><%- markdown(reply.content) %></div>
 </div>

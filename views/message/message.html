@@ -10,4 +10,7 @@
 				<%}else if(message.type === 'at_topic'){%>
 					<%- partial('./at_topic', {sender: message.sender, topic: message.topic}) %>
 				<%}%>
+				<div class="time">
+					<%= message.create_at_fmt()%>
+				</div>
 			</div>
