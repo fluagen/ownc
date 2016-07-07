@@ -9,6 +9,7 @@ var sign = require('./controller/sign');
 var topic = require('./controller/topic');
 var reply = require('./controller/reply');
 var message = require('./controller/message');
+var community = require('./controller/community');
 
 var router = express.Router();
 
@@ -35,6 +36,9 @@ router.post('/reply/:reply_id/edit', auth.userRequired, reply.update);
 router.post('/reply/:reply_id/up', auth.userRequired, reply.up);
 
 router.get('/message', auth.userRequired, message.index);
+
+router.get('/community/create', auth.userRequired, community.create);
+router.post('/community/create', auth.userRequired, community.put);
 
 router.post('/upload', upload.image);
 

@@ -20,6 +20,7 @@ require('./group');
 require('./message');
 require('./topic_collect');
 require('./topic_follow');
+require('./community');
 
 exports.Topic = mongoose.model('Topic');
 exports.Reply = mongoose.model('Reply');
@@ -28,6 +29,7 @@ exports.Group = mongoose.model('Group');
 exports.Message = mongoose.model('Message');
 exports.TopicCollect = mongoose.model('TopicCollect');
 exports.TopicFollow = mongoose.model('TopicFollow');
+exports.Community = mongoose.model('Community');
 
 
 

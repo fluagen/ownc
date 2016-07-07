@@ -1,0 +1,40 @@
+<% layout('layout') -%>
+<div class="row">
+	<div class="col-md-9">
+		<ul class="list-group">
+			<li class="list-group-item">创建社区</li>
+			<li class="list-group-item">
+				
+				<form class="form-horizontal" action="/community/create" method="post">
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="loginid">名称</label>
+						<div class="col-md-6">
+							<input id="name" name="name" type="text" placeholder="" class="form-control input-md" required="" value="<%= typeof(name) !== 'undefined' && name || '' %>"></input>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="bio">简介</label>
+						<div class="col-md-6">
+							<textarea class="form-control" id="bio" name="bio" rows="4" placeholder=""><%= typeof(bio) !== 'undefined' && bio || '' %></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="location">位置</label>
+						<div class="col-md-6">
+							<input id="location" name="location" type="text" placeholder="" class="form-control input-md" required="" value="<%= typeof(location) !== 'undefined' && location || '' %>"></input>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="save-btn"></label>
+						<div class="col-md-8">
+							<input name="save-btn" type="submit" class="btn btn-success" value="保存"></input>
+						</div>
+					</div>
+				</form>
+			</li>
+		</ul>
+	</div>
+	<div class="col-md-3">
+		<%- partial('./aside/about') %>
+	</div>
+</div>
