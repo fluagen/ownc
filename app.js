@@ -15,6 +15,7 @@ var config = require('./config');
 var webRouter = require('./web_router');
 var auth = require('./middleware/auth');
 var notify = require('./middleware/notify');
+var tab = require('./middleware/tab');
 
 
 
@@ -62,6 +63,8 @@ _.extend(app.locals, {
     _: _
 });
 _.extend(app.locals, require('./common/render_helper'));
+
+app.use(tab.init);
 
 // routes
 app.use('/', webRouter);

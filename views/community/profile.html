@@ -1,7 +1,25 @@
 <% layout('layout') -%>
 <div class="row">
 	<div class="col-md-9">
-		Here is profile
+		<ul class="list-group">
+			<li class="list-group-item">
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+					<li role="presentation" class="active"><a href="#member" aria-controls="member" role="tab" data-toggle="tab">成员</a></li>
+					<li role="presentation"><a href="#group" aria-controls="group" role="tab" data-toggle="tab">组</a></li>
+				</ul>
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div role="tabpanel" class="tab-pane fade in active" id="member">
+					<ul class="list-group">
+						<li class="list-group-item">zhangsan</li>
+						<li class="list-group-item">lisi</li>
+					</ul>
+					</div>
+					<div role="tabpanel" class="tab-pane fade" id="group">here is group</div>
+				</div>
+			</li>
+		</ul>
 	</div>
 	<div class="col-md-3">
 		<%- partial('./aside/about') %>

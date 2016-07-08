@@ -24,6 +24,7 @@
 		.js('/public/libs/jquery.fileupload.js')
 		.js('/public/libs/jquery.fileupload-process.js')
 		.js('/public/libs/jquery.fileupload-validate.js')
+		.js('/public/libs/jquery.dotdotdot.js')
 		.js('/public/js/main.js')
 		.done(assets, config.site_static_host, config.mini_assets)
 		%>
@@ -36,8 +37,8 @@
 					<a class="navbar-brand" href="/">OwnC</a>
 				</div>
 				<ul class="nav navbar-nav main-nav">
-					<li class="<%= typeof(site) !== 'undefined' && site == 'open' ? 'active' : '' %>" ><a href="/">社区</a></li>
-					<li class="<%= typeof(site) !== 'undefined' && site == 'card' ? 'active' : '' %>"><a href="/card">名片</a></li>
+					<li class="<%= typeof(tab) !== 'undefined' && tab === 'open' ? 'active' : '' %>" ><a href="/">社区</a></li>
+					<li class="<%= typeof(tab) !== 'undefined' && tab === 'cards' ? 'active' : '' %>"><a href="/cards">名片</a></li>
 				</ul>
 				<%if(current_user){%>
 				<ul class="nav navbar-nav navbar-right">

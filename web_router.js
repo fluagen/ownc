@@ -3,6 +3,7 @@ var express = require('express');
 
 var auth = require('./middleware/auth');
 var upload = require('./middleware/upload');
+var tab = require('./middleware/tab');
 
 var site = require('./controller/site');
 var sign = require('./controller/sign');
@@ -11,10 +12,11 @@ var reply = require('./controller/reply');
 var message = require('./controller/message');
 var community = require('./controller/community');
 
+
 var router = express.Router();
 
 // home page
-router.get('/', site.index);
+router.get('/', tab.tab_open, site.index);
 
 router.get('/signup', sign.showSignup);
 router.post('/signup', sign.signup);
@@ -39,6 +41,8 @@ router.get('/message', auth.userRequired, message.index);
 
 router.get('/community/create', auth.userRequired, community.create);
 router.post('/community/create', auth.userRequired, community.put);
+router.get('/community/profile/:cid', auth.userRequired, community.profile);
+router.get('/cards', tab.tab_cards, community.cards);
 
 router.post('/upload', upload.image);
 
