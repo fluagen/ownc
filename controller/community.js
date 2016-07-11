@@ -1,27 +1,72 @@
 var EventProxy = require('eventproxy');
 var model = require('../model');
 var Community = model.Community;
-var communityManager = require('../manager/community');
+var topicManager = require('../manager/topic');
+var _ = require('lodash');
 
-exports.cards = function(req, res, next){
+
+
+exports.index = function(req, res, next) {
+    var cid = req.params.cid;
     var ep = new EventProxy();
     ep.fail(next);
-    ep.all('communities', function(communities){
+    var user = req.session.user;
+    if (!user) {
+        user = {
+            _id: 'anonymous'
+        };
+    }
+
+    ep.all('community', 'topics', function(community, topics) {
+        res.render('community/index', {
+            topics: topics,
+            community: community
+        });
+    });
+
+    ep.all('community', function(community) {
+        if (!community) {
+            res.render404('社区不存在或已被删除。');
+            return;
+        }
+        var query = {
+            'community_id': cid
+        };
+        var members = community.members ? community.members : [];
+        var index = _.indexOf(members, user._id);
+        if (index === -1) {
+            query.opened = true;
+        }
+
+        var opt = {
+            sort: '-top -last_reply_at'
+        };
+        topicManager.getFullTopicsByQuery(query, opt, ep.done('topics'));
+    });
+
+    Community.findOne({
+        _id: cid
+    }, ep.done('community'));
+};
+
+exports.cards = function(req, res, next) {
+    var ep = new EventProxy();
+    ep.fail(next);
+    ep.all('communities', function(communities) {
         res.render('community/cards', {
             communities: communities
         });
     });
 
-    communityManager.getCommunitesByQuery({}, null, ep.done('communities'));
-
+    Community.find({}, ep.done('communities'));
 };
 
-exports.profile = function(req, res, next){
+exports.profile = function(req, res, next) {
     var cid = req.params.cid;
 
     var ep = new EventProxy();
     ep.fail(next);
-    ep.all('community', function(community){
+    ep.all('community', function(community) {
         if (!community) {
             res.render404('社区不存在或已被删除。');
             return;
@@ -30,7 +75,7 @@ exports.profile = function(req, res, next){
             community: community
         });
     });
-    communityManager.getById(cid, ep.done('community'));
+    Community.findById(cid, ep.done('community'));
 };
 
 exports.create = function(req, res, next) {
@@ -51,7 +96,7 @@ exports.put = function(req, res, next) {
     var ep = new EventProxy();
     ep.fail(next);
     ep.all('save', function(obj) {
-        res.redirect('community/profile/'+obj._id);
+        res.redirect('community/profile/' + obj._id);
     });
 
     community.save(ep.done('save'));

@@ -42,6 +42,7 @@ router.get('/message', auth.userRequired, message.index);
 router.get('/community/create', auth.userRequired, community.create);
 router.post('/community/create', auth.userRequired, community.put);
 router.get('/community/profile/:cid', auth.userRequired, community.profile);
+router.get('/community/:cid', community.index);
 router.get('/cards', tab.tab_cards, community.cards);
 
 router.post('/upload', upload.image);

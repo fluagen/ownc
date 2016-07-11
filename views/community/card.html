@@ -1,13 +1,21 @@
-<div class="card">
+<div class="col-sm-12 col-xs-12 col-md-4 col-lg-3 card">
 	<ul class="list-group">
 		<li class="list-group-item card-title dot-ellipsis dot-resize-update">
-			<%= card.name %><%= card.name %><%= card.name %><%= card.name %><%= card.name %><%= card.name %><%= card.name %><%= card.name %><%= card.name %><%= card.name %><%= card.name %><%= card.name %><%= card.name %><%= card.name %>
+			<a href="/community/<%= card._id %>"><%= card.name %></a>
 		</li>
 		<li class="list-group-item card-bio dot-ellipsis dot-resize-update">
-			<%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %>
+			<%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %><%= card.bio %>
 		</li>
-		<li class="list-group-item card-operate">
-			<button>申请加入</button>
+		<li class="list-group-item card-footer">
+			<div class="operate">
+				<input name="apply-btn" type="button" class="btn btn-success" value="申请">
+			</div>
+			<div class="meta">
+				<span>话题：<%= card.topic_count%></span>
+				&nbsp;
+				<span>成员：<%= card.members.length%></span>
+			</div>
+			
 		</li>
 	</ul>
 </div>

@@ -190,18 +190,33 @@ abbr[title] {
       -ms-flex-wrap: wrap;
           flex-wrap: wrap; }
 
-.card {
-  width: -webkit-calc(50% - 10px);
-  width: calc(50% - 10px); }
-  .card .card-title {
-    font-weight: bold;
-    font-size: 14px;
-    height: 50px; }
-  .card .card-bio {
-    height: 100px; }
+.card .card-title {
+  font-weight: bold;
+  font-size: 14px;
+  height: 50px;
+  border-bottom: 1px dashed #DDD; }
 
-.card:nth-child(2n+0) {
-  margin-left: 20px; }
+.card .card-bio {
+  color: #666;
+  height: 100px; }
+
+.card .card-bio-no {
+  color: #c9cccf;
+  height: 100px; }
+
+.card .card-footer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
 
 /**topic list**/
 .topic-list {

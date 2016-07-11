@@ -152,24 +152,28 @@ abbr[title] {
 	flex-wrap: wrap;
 }
 .card {
-	width: calc(50% - 10px);
+	
 	.card-title {
 		font-weight: bold;
 		font-size: 14px;
 		//line-height: 20px;
 		height: 50px;
-
+		border-bottom: 1px dashed #DDD;
 	}
 	.card-bio {
+		color: #666;
 		height: 100px;
 
 	}
-	.card-operate {
-
+	.card-bio-no {
+		color: $gray-light-1;
+		height: 100px;
 	}
-}
-.card:nth-child(2n+0) {
-margin-left: 20px;
+	.card-footer {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
 }
 
 /**topic list**/

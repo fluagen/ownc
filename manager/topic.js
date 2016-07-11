@@ -2,13 +2,11 @@ var model = require('../model');
 var Topic = model.Topic;
 var EventProxy = require('eventproxy');
 var userManager = require('./user');
-var groupManager = require('./group');
 var replyManager = require('./reply');
 
 var getTopicsByQuery = function(query, opt, callback) {
     query.deleted = false;
     query.author_deleted = false;
-    query.group_deleted = false;
     Topic.find(query, {}, opt, callback);
 };
 
@@ -36,13 +34,11 @@ exports.getFullTopicById = function(id, callback) {
         }
         var proxy = new EventProxy();
         proxy.fail(callback);
-        proxy.all('author', 'group', function(author, group) {
+        proxy.all('author', function(author) {
             topic.author = author;
-            topic.group = group;
             ep.emit('full_topic', topic);
         });
         userManager.getUserById(topic.author_id, proxy.done('author'));
-        groupManager.getGroupById(topic.group_id, proxy.done('group'));
 
     });
     Topic.findOne({
@@ -70,14 +66,12 @@ exports.getFullTopicsByQuery = function(query, opt, callback) {
         topics.forEach(function(topic, i) {
             var proxy = new EventProxy();
             proxy.fail(callback);
-            proxy.all('author', 'group', 'lastReply', function(author, group, lastReply) {
+            proxy.all('author', 'lastReply', function(author, lastReply) {
                 topic.author = author;
-                topic.group = group;
                 topic.lastReply = lastReply;
                 ep.emit('topics_ready');
             });
             userManager.getUserById(topic.author_id, proxy.done('author'));
-            groupManager.getGroupById(topic.group_id, proxy.done('group'));
             if (topic.last_reply) {
                 replyManager.getFullReplyById(topic.last_reply, proxy.done('lastReply'));
             } else {
@@ -137,7 +131,6 @@ exports.save = function(title, content, author_id, group_id, private, callback) 
     topic.title = title;
     topic.content = content;
     topic.author_id = author_id;
-    topic.group_id = group_id;
     if (!private) {
         topic.private = false;
     } else {
