@@ -1,0 +1,23 @@
+<div class="col-sm-12 col-xs-12 col-md-4 col-lg-3 card">
+	<ul class="list-group">
+		<li class="list-group-item card-box">
+			<div class="card-header">
+				<div class="logo">logo</div>
+				<div class="info">
+					<div class="title dot-ellipsis dot-resize-update"><a href="/org/<%= card.orgid %>"><%= card.name %><%= card.name %><%= card.name %><%= card.name %><%= card.name %><%= card.name %><%= card.name %><%= card.name %></a></div>
+					<div class="meta">
+						<span>话题：<%= card.topic_count%></span>
+						&nbsp;
+						<span>成员：<%= card.members.length%></span>
+					</div>
+				</div>
+			</div>
+			<div class="card-bio">
+				<%= card.bio %>
+			</div>
+		</li>
+		<li class="list-group-item card-footer">
+			<input name="apply-btn" type="button" class="btn btn-success" value="申请">
+		</li>
+	</ul>
+</div>

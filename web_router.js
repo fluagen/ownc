@@ -11,6 +11,7 @@ var topic = require('./controller/topic');
 var reply = require('./controller/reply');
 var message = require('./controller/message');
 var community = require('./controller/community');
+var organization = require('./controller/organization');
 
 
 var router = express.Router();
@@ -39,11 +40,16 @@ router.post('/reply/:reply_id/up', auth.userRequired, reply.up);
 
 router.get('/message', auth.userRequired, message.index);
 
+router.get('/org/create', auth.userRequired, organization.create);
+router.post('/org/create', auth.userRequired, organization.put);
+router.get('/org/:orgid', organization.index);
+router.get('/cards', tab.tab_cards, organization.cards);
+
 router.get('/community/create', auth.userRequired, community.create);
 router.post('/community/create', auth.userRequired, community.put);
 router.get('/community/profile/:cid', auth.userRequired, community.profile);
 router.get('/community/:cid', community.index);
-router.get('/cards', tab.tab_cards, community.cards);
+
 
 router.post('/upload', upload.image);
 

@@ -181,14 +181,31 @@ abbr[title] {
     min-width: 30px; }
 
 /**card**/
-.card-box {
+.card-box .logo {
+  margin-right: 10px; }
+
+.card-box .card-header {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-wrap: wrap;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+  display: flex; }
+  .card-box .card-header .info {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
+    .card-box .card-header .info .title {
+      font-weight: bold;
+      font-size: 14px;
+      height: 20px; }
+
+.card-box .card-bio {
+  margin-top: 10px;
+  border: 0;
+  border-top: 1px dashed #DDD;
+  padding: 10px 0px;
+  color: #666;
+  height: 100px; }
 
 .card .card-title {
   font-weight: bold;

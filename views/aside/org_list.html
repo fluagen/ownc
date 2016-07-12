@@ -1,0 +1,15 @@
+<div>
+	<ul class="list-group">
+		<li class="list-group-item">
+			已有社区
+		</li>
+		<%
+		for(var i=0; i< orgs.length; i++){
+			var org = orgs[i];
+		%>
+		<li class="list-group-item">
+			<%= org.name%>
+		</li>
+		<%}%>
+	</ul>
+</div>

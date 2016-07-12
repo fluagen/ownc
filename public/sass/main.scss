@@ -148,8 +148,31 @@ abbr[title] {
 
 /**card**/
 .card-box {
-	display: flex;
-	flex-wrap: wrap;
+
+	.logo {
+		margin-right: 10px;
+	}
+
+	.card-header {
+		display: flex;
+		.info {
+			flex: 1;
+			.title {
+				font-weight: bold;
+				font-size: 14px;
+				height: 20px;
+			}
+		}
+	}
+	.card-bio {
+		margin-top: 10px;
+		border:0;
+		border-top: 1px dashed #DDD;
+		padding: 10px 0px;
+		color: #666;
+		height: 100px;
+	}
+
 }
 .card {
 	
