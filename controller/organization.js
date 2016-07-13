@@ -16,21 +16,29 @@ exports.cards = function(req, res, next) {
     Organization.find({}, ep.done('orgs'));
 };
 
+var is_member = function(organization, user) {
+    if (!user) {
+        console.log('user is null');
+        return false;
+    }
+    var members = organization.members ? organization.members : [];
+    var rst =  _.some(members, function(o) {
+        return o.toString() === user._id;
+    });
+    return rst;
+};
+
 exports.index = function(req, res, next) {
     var orgid = req.params.orgid;
+    var user = req.session.user;
     var ep = new EventProxy();
     ep.fail(next);
-    var user = req.session.user;
-    if (!user) {
-        user = {
-            _id: 'anonymous'
-        };
-    }
 
     ep.all('org', 'topics', function(org, topics) {
         res.render('org/index', {
             topics: topics,
-            org: org
+            org: org,
+            is_member: is_member
         });
     });
 
@@ -42,9 +50,7 @@ exports.index = function(req, res, next) {
         var query = {
             'org_id': orgid
         };
-        var members = org.members ? org.members : [];
-        var index = _.indexOf(members, user._id);
-        if (index === -1) {
+        if (!is_member(org, user)) {
             query.opened = true;
         }
 

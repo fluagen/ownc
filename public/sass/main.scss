@@ -146,6 +146,13 @@ abbr[title] {
 	}
 }
 
+.box {
+    background-color: #fff;
+    padding: 10px;
+    margin: 0 0 20px 0;
+    border-radius: 3px;
+    box-shadow: 0 .2em 0 0 #ddd,0 0 0 1px #ddd;
+}
 /**card**/
 .card-box {
 
@@ -158,9 +165,10 @@ abbr[title] {
 		.info {
 			flex: 1;
 			.title {
+				padding: 5px 0px;
 				font-weight: bold;
 				font-size: 14px;
-				height: 20px;
+				height: 30px;
 			}
 		}
 	}

@@ -1,51 +1,44 @@
 <% layout('layout') -%>
 <div class="row">
-	<div class="col-md-9">
+	<div class="col-md-8">
+		
 		<% if (typeof(error) !== 'undefined' && error) { %>
 		<div class="message-tip">
 			<p class="bg-danger"><%= error%></p>
 		</div>
 		<%}%>
-		<form class="form-horizontal" id="topic-form" action="/topic/create" method="post">
+		
+		<form id="topic-form" action="/topic/create" method="post">
 			<div class="form-group">
-				<label class="col-md-2 control-label" for="title">标题</label>
-				<div class="col-md-10">
-					<input id="title" name="title" type="text" placeholder="" class="form-control input-md" required="" value="<%= typeof(title) !== 'undefined' && title || '' %>"></input>
-				</div>
+				<input id="title" name="title" type="text" placeholder="" class="form-control input-md" required="" value="<%= typeof(title) !== 'undefined' && title || '' %>"></input>
 			</div>
 			<div class="form-group">
-				<label class="col-md-2 control-label" for="t_content">正文</label>
-				<div class="col-md-10">
-					<div class="editor-box topic-editor">
-						<textarea class="form-control editor-text" id="t_content" name="t_content" rows="10" placeholder=""><%= typeof(content) !== 'undefined' && content || '' %></textarea>
-					</div>
-					<div class="preview-box topic-preview markdown-body">
-					</div>
+				<div class="editor-box topic-editor">
+					<textarea class="form-control editor-text" id="t_content" name="t_content" rows="10" placeholder=""><%= typeof(content) !== 'undefined' && content || '' %></textarea>
+				</div>
+				<div class="preview-box topic-preview markdown-body">
 				</div>
 				
 			</div>
 			<div class="form-group">
-				<label class="col-md-2 control-label" for=""></label>
-				<div class="col-md-10">
-					<div class="editor-bar-box">
-						<div class="editor-bar-buttons">
-							<button class="btn btn-primary" id="save-btn" name="save-btn">
-							保存</button>
-							<button class="btn btn-primary" id="edit-btn" type="button" name="edit-btn">
-							编辑</button>
-							<button class="btn btn-primary" id="preview-btn" type="button" name="preview-btn">
-							预览</button>
-						</div>
-						<div class="editor-bar-fa">
-							<a title="上传图片" id="fileupload_btn" href="javascript:void(0);"><i class="fa fa-image" aria-hidden="true"></i></a>
-							<input id="fileupload" name="file_image" type="file" style="display:none">
-						</div>
+				<div class="editor-bar-box">
+					<div class="editor-bar-buttons">
+						<button class="btn btn-primary" id="save-btn" name="save-btn">
+						保存</button>
+						<button class="btn btn-primary" id="edit-btn" type="button" name="edit-btn">
+						编辑</button>
+						<button class="btn btn-primary" id="preview-btn" type="button" name="preview-btn">
+						预览</button>
+					</div>
+					<div class="editor-bar-fa">
+						<a title="上传图片" id="fileupload_btn" href="javascript:void(0);"><i class="fa fa-image" aria-hidden="true"></i></a>
+						<input id="fileupload" name="file_image" type="file" style="display:none">
 					</div>
 				</div>
 			</div>
 		</form>
 	</div>
-	<div class="col-md-3">
+	<div class="col-md-4">
 		<%- partial('./aside/about') %>
 	</div>
 </div>

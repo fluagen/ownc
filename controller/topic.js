@@ -8,6 +8,7 @@ var replyManager = require('../manager/reply');
 var model = require('../model');
 var TopicCollect = model.TopicCollect;
 var TopicFollow = model.TopicFollow;
+var Organization = model.Organization;
 
 var is_uped = function(user, reply) {
     if (!reply.ups) {
@@ -67,7 +68,21 @@ exports.index = function(req, res, next) {
 };
 
 exports.create = function(req, res, next) {
-    res.render('topic/edit');
+    var orgid = req.params.orgid;
+    var ep = new EventProxy();
+    ep.fail(next);
+    ep.all('org', function(org) {
+        if (!org) {
+            org = null;
+        }
+        res.render('topic/edit', {
+            org: org
+        });
+    });
+
+    Organization.findOne({
+        orgid: orgid
+    }, ep.done('org'));
 };
 
 exports.put = function(req, res, next) {
@@ -162,7 +177,7 @@ exports.follow = function(req, res, next) {
             action: action
         });
     });
-    ep.all('topic','topic_follow', function(topic, topic_follow) {
+    ep.all('topic', 'topic_follow', function(topic, topic_follow) {
         if (topic_follow) {
             topic_follow.remove(ep.done(function() {
                 topic.follow_count -= 1;

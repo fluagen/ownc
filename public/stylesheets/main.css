@@ -180,6 +180,15 @@ abbr[title] {
     margin-left: 10px;
     min-width: 30px; }
 
+.box {
+  background-color: #fff;
+  padding: 10px;
+  margin: 0 0 20px 0;
+  -webkit-border-radius: 3px;
+          border-radius: 3px;
+  -webkit-box-shadow: 0 .2em 0 0 #ddd,0 0 0 1px #ddd;
+          box-shadow: 0 .2em 0 0 #ddd,0 0 0 1px #ddd; }
+
 /**card**/
 .card-box .logo {
   margin-right: 10px; }
@@ -195,9 +204,10 @@ abbr[title] {
         -ms-flex: 1;
             flex: 1; }
     .card-box .card-header .info .title {
+      padding: 5px 0px;
       font-weight: bold;
       font-size: 14px;
-      height: 20px; }
+      height: 30px; }
 
 .card-box .card-bio {
   margin-top: 10px;
