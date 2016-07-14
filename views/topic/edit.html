@@ -7,8 +7,13 @@
 			<p class="bg-danger"><%= error%></p>
 		</div>
 		<%}%>
-		
-		<form id="topic-form" action="/topic/create" method="post">
+		<%
+		var action = "/topic/create";
+		if(typeof(organization) !== 'undefined' && organization){
+			action = "/org/"+organization.id+"/topic/create";
+		}
+		%>
+		<form id="topic-form" action="<%= action%>" method="post">
 			<div class="form-group">
 				<input id="title" name="title" type="text" placeholder="" class="form-control input-md" required="" value="<%= typeof(title) !== 'undefined' && title || '' %>"></input>
 			</div>
@@ -39,6 +44,13 @@
 		</form>
 	</div>
 	<div class="col-md-4">
+		<%
+		if(typeof(organization) !== 'undefined' && organization){
+		%>
+		<%- partial('./aside/org_card', {
+		organization : organization
+		}) %>
+		<%}%>
 		<%- partial('./aside/about') %>
 	</div>
 </div>

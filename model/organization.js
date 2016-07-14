@@ -4,7 +4,7 @@ var Schema    = mongoose.Schema;
 var ObjectId  = Schema.ObjectId;
 
 var OrganizationSchema = new Schema({
-  orgid: { type: String},
+  id: { type: String},
   name: { type: String},
   avatar: { type: String },
   bio: { type: String },

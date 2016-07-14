@@ -68,21 +68,7 @@ exports.index = function(req, res, next) {
 };
 
 exports.create = function(req, res, next) {
-    var orgid = req.params.orgid;
-    var ep = new EventProxy();
-    ep.fail(next);
-    ep.all('org', function(org) {
-        if (!org) {
-            org = null;
-        }
-        res.render('topic/edit', {
-            org: org
-        });
-    });
-
-    Organization.findOne({
-        orgid: orgid
-    }, ep.done('org'));
+    res.render('topic/edit');
 };
 
 exports.put = function(req, res, next) {

@@ -23,9 +23,9 @@
 		if(current_user){
 		%>
 			<% if(is_member(org, current_user)){%>
-			<%- partial('./aside/org_topic_new', {orgid: org.orgid}) %>
+			<%- partial('./aside/org_topic_new', {orgid: org.id}) %>
 			<%} else{%>
-			<%- partial('./aside/org_apply', {orgid: org.orgid}) %>
+			<%- partial('./aside/org_apply', {orgid: org.id}) %>
 			<%}%>
 		<%}%>
 		<%- partial('./aside/about') %>

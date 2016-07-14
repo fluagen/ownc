@@ -31,3 +31,21 @@ exports.bcompare = function(str, hash, callback) {
 exports.makeGravatar = function(email) {
     return 'http://www.gravatar.com/avatar/' + utility.md5(email.toLowerCase()) + '?size=48';
 };
+
+exports.validateTopicTitle = function(title) {
+    var rst = {
+        success: true,
+        error: ''
+    };
+    if (!title) {
+        rst.success = false;
+        rst.error = "标题不能为空";
+        return rst;
+    }
+    if (title.length > 140) {
+        rst.success = false;
+        rst.error = "标题不能大于140字数";
+        return rst;
+    }
+    return rst;
+};

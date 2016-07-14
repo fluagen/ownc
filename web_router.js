@@ -42,16 +42,16 @@ router.get('/message', auth.userRequired, message.index);
 
 router.get('/org/create', auth.userRequired, organization.create);
 router.post('/org/create', auth.userRequired, organization.put);
-router.get('/org/:orgid', organization.index);
+router.get('/org/:oid', organization.index);
 router.get('/cards', tab.tab_cards, organization.cards);
-router.get('/org/:orgid/topic/create', auth.userRequired, topic.create);
-router.post('/org/:orgid/topic/create', auth.userRequired, topic.put);
+router.get('/org/:oid/topic/create', auth.userRequired, organization.createTopic);
+router.post('/org/:oid/topic/create', auth.userRequired, organization.putTopic);
 
 
-router.get('/community/create', auth.userRequired, community.create);
-router.post('/community/create', auth.userRequired, community.put);
-router.get('/community/profile/:cid', auth.userRequired, community.profile);
-router.get('/community/:cid', community.index);
+// router.get('/community/create', auth.userRequired, community.create);
+// router.post('/community/create', auth.userRequired, community.put);
+// router.get('/community/profile/:cid', auth.userRequired, community.profile);
+// router.get('/community/:cid', community.index);
 
 
 router.post('/upload', upload.image);
