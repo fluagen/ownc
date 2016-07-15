@@ -2,11 +2,16 @@ var EventProxy = require('eventproxy');
 var validator = require('validator');
 var _ = require('lodash');
 
+var model = require('../model');
+var Topic = model.Topic;
+
+var at = require('../common/at');
+
 var topicManager = require('../manager/topic');
 var replyManager = require('../manager/reply');
 var userManager = require('../manager/user');
 var message = require('../common/message');
-var at = require('../common/at');
+
 
 exports.add = function(req, res, next) {
     var tid = req.params.tid;
@@ -63,7 +68,7 @@ exports.add = function(req, res, next) {
         }
         userManager.getUserById(topic.author_id, ep.done('topicAuthor'));
     });
-    topicManager.getTopicById(tid, ep.done('topic'));
+    Topic.findById(tid, ep.done('topic'));
 };
 
 exports.delete = function(req, res, next) {

@@ -1,28 +1,31 @@
 var config = require('../config');
-var userManager = require('../manager/user');
 var EventProxy = require('eventproxy');
+var tools = require('../common/tools');
+var model = require('../model');
+var User = model.User;
+var Organization = model.Organization;
 
 /**
  * 需要登录
  */
-exports.userRequired = function (req, res, next) {
-  if (!req.session || !req.session.user || !req.session.user._id) {
-    return res.renderError(403, '需要登录，或会话已过期。');
-  }
-
-  next();
-};
-exports.blockUser = function () {
-  return function (req, res, next) {
-    if (req.path === '/signout') {
-      return next();
+exports.userRequired = function(req, res, next) {
+    if (!req.session || !req.session.user || !req.session.user._id) {
+        return res.renderError(403, '需要登录，或会话已过期。');
     }
 
-    if (req.session.user && req.session.user.is_block && req.method !== 'GET') {
-        return res.renderError(403, '您已被管理员屏蔽了。');
-    }
     next();
-  };
+};
+exports.blockUser = function() {
+    return function(req, res, next) {
+        if (req.path === '/signout') {
+            return next();
+        }
+
+        if (req.session.user && req.session.user.is_block && req.method !== 'GET') {
+            return res.renderError(403, '您已被管理员屏蔽了。');
+        }
+        next();
+    };
 };
 
 function gen_session(user, res) {
@@ -58,6 +61,30 @@ exports.authUser = function(req, res, next) {
         }
         var auth = auth_token.split('$$$$');
         var user_id = auth[0];
-        userManager.getUserById(user_id, ep.done('get_user'));
+        User.findById(user_id, ep.done('get_user'));
     }
+};
+
+/**
+ * organization 权限验证
+ */
+exports.organizationRequired = function(req, res, next) {
+    var oid = req.params.oid;
+    if (typeof(oid) === 'undefined' || !oid) {
+        return res.render404('社区不存在，或已被删除。');
+    }
+    var user = req.session.user;
+    var ep = new EventProxy();
+    ep.fail(next);
+    ep.all('organization', function(organization) {
+        if (!organization) {
+            return res.render404('社区不存在，或已被删除。');
+        }
+        if (!tools.is_member(organization.members, user)) {
+            return res.renderError(403, '你没有此操作权限。');
+        }
+        next();
+    });
+
+    Organization.findOne({id: oid}, ep.done('organization'));
 };

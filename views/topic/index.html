@@ -15,9 +15,9 @@
 						if(topic.last_reply){
 						%>
 						<span>&nbsp;•&nbsp;</span>
-						最后由<a href="#"><%= topic.lastReply.author.loginid%></a>
-						<abbr class="timeago" title="<%= topic.lastReply.create_at_fmt() %>" >
-							于<%= topic.lastReply.create_at_ago()%>回复
+						最后由<a href="#"><%= topic.last_reply_author%></a>
+						<abbr class="timeago" title="<%= topic.last_reply_at_fmt() %>" >
+							于<%= topic.last_reply_at_ago()%>回复
 						</abbr>
 						<%}%>
 						<span>&nbsp;•&nbsp; </span>

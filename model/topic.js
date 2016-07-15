@@ -2,17 +2,17 @@ var mongoose  = require('mongoose');
 var BaseModel = require("./base_model");
 var Schema    = mongoose.Schema;
 var ObjectId  = Schema.ObjectId;
+var tools = require('../common/tools');
 
 var TopicSchema = new Schema({
   title: { type: String },
   content: { type: String },
   author_id: { type: ObjectId },
   org_id: { type: String },
-  group_id: {type: ObjectId},
   top: { type: Boolean, default: false }, // 置顶帖
   good: {type: Boolean, default: false}, // 精华帖
   lock: {type: Boolean, default: false}, // 被锁定主题
-  opened: {type: Boolean, default: true}, // 私有的
+  opened: {type: Boolean, default: false}, // 私有的
   deleted: {type: Boolean, default: false},
   create_at: { type: Date, default: Date.now },
   update_at: { type: Date, default: Date.now },
@@ -25,11 +25,19 @@ var TopicSchema = new Schema({
   follow_count: { type: Number, default: 0 },
  
   last_reply: { type: ObjectId },
-  last_reply_author_loginid: {type: String},
+  last_reply_author: {type: String},
   last_reply_at: { type: Date, default: Date.now }
 });
 
 TopicSchema.plugin(BaseModel);
+TopicSchema.plugin(function (schema) {
+  schema.methods.last_reply_at_ago = function () {
+    return tools.formatDate(this.last_reply_at, true);
+  };
+  schema.methods.last_reply_at_fmt = function () {
+    return tools.formatDate(this.last_reply_at, false);
+  };
+});
 TopicSchema.index({create_at: -1});
 TopicSchema.index({top: -1, last_reply_at: -1});
 TopicSchema.index({author_id: 1, create_at: -1});

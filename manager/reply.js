@@ -2,6 +2,7 @@ var model = require('../model');
 var Reply = model.Reply;
 var EventProxy = require('eventproxy');
 var userManager = require('./user');
+var User = model.User;
 
 exports.getRepliesByTopicId = function(topicId, callback) {
     Reply.find({
@@ -70,4 +71,29 @@ exports.save = function(topicId, content, authorId, callback) {
     reply.content = content;
     reply.author_id = authorId;
     reply.save(callback);
+};
+
+exports.getFullReplies = function(topic_id, callback){
+var ep = new EventProxy();
+    ep.fail(callback);
+    ep.all('replies', function(replies) {
+        if (!replies || replies.length === 0) {
+            return callback(null, []);
+        }
+        ep.after('reply_each', replies.length, function(){
+            return callback(null, replies);
+        });
+        replies.forEach(function(reply, i) {
+            var proxy = new EventProxy();
+            proxy.fail(callback);
+            proxy.all('author', function(author) {
+                reply.author = author;
+                ep.emit('reply_each');
+            });
+            User.findById(reply.author_id, proxy.done('author'));
+        });
+    });
+    Reply.find({
+        topic_id: topic_id
+    }, ep.done('replies'));
 };

@@ -23,53 +23,42 @@ exports.cards = function(req, res, next) {
     Organization.find({}, ep.done('orgs'));
 };
 
-var is_member = function(organization, user) {
-    if (!user) {
-        console.log('user is null');
-        return false;
-    }
-    var members = organization.members ? organization.members : [];
-    var rst = _.some(members, function(o) {
-        return o.toString() === user._id;
-    });
-    return rst;
-};
-
 exports.index = function(req, res, next) {
-    var org_id = req.params.oid;
+    var oid = req.params.oid;
     var user = req.session.user;
     var ep = new EventProxy();
     ep.fail(next);
 
-    ep.all('org', 'topics', function(org, topics) {
+    ep.all('organization', 'topics', function(organization, topics) {
         res.render('org/index', {
             topics: topics,
-            org: org,
-            is_member: is_member
+            organization: organization
         });
     });
 
-    ep.all('org', function(org) {
-        if (!org) {
-            res.render404('社区不存在或已被删除。');
-            return;
-        }
+    ep.all('organization', function(organization) {
         var query = {
-            'id': org_id
+            'org_id': oid
         };
-        if (!is_member(org, user)) {
-            query.opened = true;
-        }
-
         var opt = {
             sort: '-top -last_reply_at'
         };
+        if (!organization.is_member) {
+            query.opened = true;
+        }
         topicManager.getFullTopicsByQuery(query, opt, ep.done('topics'));
     });
 
     Organization.findOne({
-        id: org_id
-    }, ep.done('org'));
+        id: oid
+    }, ep.done(function(organization) {
+        if (!organization) {
+            res.render404('社区不存在或已被删除。');
+            return;
+        }
+        organization.is_member = tools.is_member(organization.members, user);
+        ep.emit('organization', organization);
+    }));
 };
 
 exports.create = function(req, res, next) {
@@ -140,6 +129,7 @@ exports.putTopic = function(req, res, next) {
         topic.content = content;
         topic.author_id = user._id;
         topic.org_id = oid;
+        topic.opened = false;
         topic.save(ep.done(function(topic) {
             User.findById(user._id, ep.done(function(user) {
                 user.topic_count += 1;

@@ -3,8 +3,8 @@
 	<div class="col-md-9">
 		<ul class="list-group">
 			<li class="list-group-item">
-				<div><%= org.name%></div>
-				<div><%= org.bio%></div>
+				<div><%= organization.name%></div>
+				<div><%= organization.bio%></div>
 			</li>
 			<%
 			if(typeof(topics) !== 'undefined' && topics && topics.length > 0){
@@ -19,15 +19,7 @@
 		</ul>
 	</div>
 	<div class="col-md-3">
-		<%
-		if(current_user){
-		%>
-			<% if(is_member(org, current_user)){%>
-			<%- partial('./aside/org_topic_new', {orgid: org.id}) %>
-			<%} else{%>
-			<%- partial('./aside/org_apply', {orgid: org.id}) %>
-			<%}%>
-		<%}%>
+		
 		<%- partial('./aside/about') %>
 	</div>
 </div>

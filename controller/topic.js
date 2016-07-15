@@ -1,6 +1,8 @@
 var EventProxy = require('eventproxy');
 var validator = require('validator');
 
+var tools = require('../common/tools');
+
 var topicManager = require('../manager/topic');
 var userManager = require('../manager/user');
 var replyManager = require('../manager/reply');
@@ -9,6 +11,8 @@ var model = require('../model');
 var TopicCollect = model.TopicCollect;
 var TopicFollow = model.TopicFollow;
 var Organization = model.Organization;
+var Topic = model.Topic;
+var User = model.User;
 
 var is_uped = function(user, reply) {
     if (!reply.ups) {
@@ -36,16 +40,17 @@ exports.index = function(req, res, next) {
             is_followed: is_followed
         });
     });
-    ep.all('topic', function(topic) {
-        replyManager.getFullRepliesByTopicId(topic._id, ep.done('replies'));
-    });
-    topicManager.getFullTopicById(tid, ep.done(function(topic) {
+
+    topicManager.getFullTopic(tid, ep.done(function(topic) {
         if (!topic) {
             res.render404('话题不存在或已被删除。');
             return;
         }
         topic.visit_count += 1;
         topic.save();
+
+        replyManager.getFullReplies(topic._id, ep.done('replies'));
+
         ep.emit('topic', topic);
     }));
     var user = req.session.user;
@@ -54,17 +59,15 @@ exports.index = function(req, res, next) {
             user_id: user._id,
             topic_id: tid
         }, ep.done('is_collected'));
-
+        
         TopicFollow.findOne({
             user_id: user._id,
             topic_id: tid
         }, ep.done('is_followed'));
-
     } else {
         ep.emit('is_collected', null);
         ep.emit('is_followed', null);
     }
-
 };
 
 exports.create = function(req, res, next) {
@@ -74,7 +77,7 @@ exports.create = function(req, res, next) {
 exports.put = function(req, res, next) {
     var title = req.body.title;
     var content = req.body.t_content;
-    var group_id = req.body.group_id;
+    var user = req.session.user;
     var ep = new EventProxy();
     ep.fail(next);
     if (title !== undefined) {
@@ -83,37 +86,40 @@ exports.put = function(req, res, next) {
     if (content !== undefined) {
         content = validator.trim(content);
     }
-    //TODO 验证group权限
 
-    ep.all('prop_error', function(error) {
-        res.render('topic/edit', {
-            title: title,
-            content: content,
-            error: error
-        });
-    });
-    if (!title) {
-        ep.emit('prop_error', '标题不能为空');
-        return;
-    }
-    if (title.length > 140) {
-        ep.emit('prop_error', '标题不能大于140字数');
-        return;
-    }
-
-    ep.all('topic', 'user_updated', function(topic) {
+    ep.all('topic', 'user_update', function(topic) {
         return res.redirect('/topic/' + topic._id);
     });
 
-    topicManager.save(title, content, req.session.user._id, null, false, ep.done(function(topic) {
-        userManager.getUserById(req.session.user._id, ep.done(function(user) {
-            user.topic_count += 1;
-            user.save();
-            req.session.user = user;
-            ep.emit('user_updated');
+    ep.all('validate_fail', function(rst) {
+        res.render('topic/edit', {
+            title: title,
+            content: content,
+            error: rst.error
+        });
+    });
+    ep.all('validate_success', function() {
+        var topic = new Topic();
+        topic.title = title;
+        topic.content = content;
+        topic.author_id = user._id;
+        topic.opened = true;
+        topic.save(ep.done(function(topic) {
+            User.findById(user._id, ep.done(function(user) {
+                user.topic_count += 1;
+                user.save();
+                req.session.user = user;
+                ep.emit('user_update');
+            }));
+            ep.emit('topic', topic);
         }));
-        ep.emit('topic', topic);
-    }));
+    });
+    var rst = tools.validateTopicTitle(title);
+    if (rst.success) {
+        ep.emit('validate_success');
+    } else {
+        ep.emit('validate_fail', rst);
+    }
 };
 
 exports.collect = function(req, res, next) {
@@ -149,7 +155,7 @@ exports.collect = function(req, res, next) {
         user_id: user_id,
         topic_id: topic_id
     }, ep.done('topic_collect'));
-    topicManager.getTopicById(topic_id, ep.done('topic'));
+    Topic.findById(topic_id, ep.done('topic'));
 };
 
 exports.follow = function(req, res, next) {
@@ -185,5 +191,5 @@ exports.follow = function(req, res, next) {
         user_id: user_id,
         topic_id: topic_id
     }, ep.done('topic_follow'));
-    topicManager.getTopicById(topic_id, ep.done('topic'));
+    Topic.findById(topic_id, ep.done('topic'));
 };

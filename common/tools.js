@@ -1,6 +1,7 @@
 var bcrypt = require('bcrypt');
 var moment = require('moment');
 var utility = require('utility');
+var _ = require('lodash');
 
 moment.locale('zh-cn'); // 使用中文
 
@@ -47,5 +48,18 @@ exports.validateTopicTitle = function(title) {
         rst.error = "标题不能大于140字数";
         return rst;
     }
+    return rst;
+};
+
+exports.is_member = function(members, user) {
+    if (!user) {
+        return false;
+    }
+    if (!members) {
+        members = [];
+    }
+    var rst = _.some(members, function(o) {
+        return o.toString() === user._id;
+    });
     return rst;
 };
