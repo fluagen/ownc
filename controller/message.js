@@ -7,8 +7,6 @@ var i18n = {
 
 exports.index = function(req, res, next) {
     var user = req.session.user;
-    console.log('======message ctrl=========');
-    console.log(user._id);
     var ep = new EventProxy();
     ep.fail(next);
     ep.all('messages', function(messages) {

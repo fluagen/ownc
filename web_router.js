@@ -34,8 +34,8 @@ router.post('/topic/:tid/collect', auth.userRequired, topic.collect);
 router.post('/topic/:tid/follow', auth.userRequired, topic.follow);
 
 router.post('/:tid/reply', auth.userRequired, reply.add);
-router.get('/reply/:reply_id/edit', auth.userRequired, reply.showEdit);
-router.post('/reply/:reply_id/edit', auth.userRequired, reply.update);
+// router.get('/reply/:reply_id/edit', auth.userRequired, reply.showEdit);
+// router.post('/reply/:reply_id/edit', auth.userRequired, reply.update);
 router.post('/reply/:reply_id/up', auth.userRequired, reply.up);
 
 router.get('/message', auth.userRequired, message.index);

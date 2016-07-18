@@ -7,15 +7,15 @@
 				
 				<form class="form-horizontal" action="/org/create" method="post">
 					<div class="form-group">
-						<label class="col-md-4 control-label" for="loginid">名称</label>
+						<label class="col-md-4 control-label" for="org_id">ID</label>
 						<div class="col-md-6">
-							<input id="name" name="name" type="text" placeholder="" class="form-control input-md" required="" value="<%= typeof(name) !== 'undefined' && name || '' %>"></input>
+							<input name="org_id" type="text" placeholder="" class="form-control input-md" required="" value="<%= typeof(org_id) !== 'undefined' && org_id || '' %>"></input>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-md-4 control-label" for="org_id">社区ID</label>
+						<label class="col-md-4 control-label" for="loginid">名称</label>
 						<div class="col-md-6">
-							<input name="org_id" type="text" placeholder="" class="form-control input-md" required="" value="<%= typeof(org_id) !== 'undefined' && org_id || '' %>"></input>
+							<input id="name" name="name" type="text" placeholder="" class="form-control input-md" required="" value="<%= typeof(name) !== 'undefined' && name || '' %>"></input>
 						</div>
 					</div>
 					<div class="form-group">

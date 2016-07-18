@@ -1,4 +1,10 @@
 <% layout('layout') -%>
 <div class="row">
-	<%- partial('./card', orgs) %>
+	<div class="col-md-9">
+		<%- partial('./card', organization) %>
+	</div>
+	<div class="col-md-3">
+		<%- partial('../aside/org_new') %>
+	</div>
+	
 </div>

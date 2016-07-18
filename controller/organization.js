@@ -14,13 +14,13 @@ var tools = require('../common/tools');
 exports.cards = function(req, res, next) {
     var ep = new EventProxy();
     ep.fail(next);
-    ep.all('orgs', function(orgs) {
+    ep.all('organization', function(organization) {
         res.render('org/cards', {
-            orgs: orgs
+            organization: organization
         });
     });
 
-    Organization.find({}, ep.done('orgs'));
+    Organization.find({}, ep.done('organization'));
 };
 
 exports.index = function(req, res, next) {
@@ -46,7 +46,7 @@ exports.index = function(req, res, next) {
         if (!organization.is_member) {
             query.opened = true;
         }
-        topicManager.getFullTopicsByQuery(query, opt, ep.done('topics'));
+        topicManager.getFullTopics(query, opt, ep.done('topics'));
     });
 
     Organization.findOne({
