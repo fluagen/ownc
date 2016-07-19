@@ -3,6 +3,8 @@ var BaseModel = require("./base_model");
 var Schema    = mongoose.Schema;
 var ObjectId  = Schema.ObjectId;
 
+var utility = require('utility');
+
 var OrganizationSchema = new Schema({
   id: { type: String},
   name: { type: String},
@@ -27,5 +29,10 @@ var OrganizationSchema = new Schema({
 
 OrganizationSchema.plugin(BaseModel);
 OrganizationSchema.index({create_at: -1});
+OrganizationSchema.virtual('avatar_url').get(function () {
+  var url = this.avatar || ('//cdn.v2ex.co/gravatar/' + utility.md5(this.id) + '?d=retro');
+
+  return url;
+});
 
 mongoose.model('Organization', OrganizationSchema);

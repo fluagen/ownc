@@ -3,6 +3,8 @@ var BaseModel = require("./base_model");
 var Schema    = mongoose.Schema;
 var ObjectId  = Schema.ObjectId;
 
+var utility = require('utility');
+
 var UserSchema = new Schema({
   loginid: { type: String},
   name: { type: String},
@@ -21,6 +23,11 @@ var UserSchema = new Schema({
 });
 
 UserSchema.plugin(BaseModel);
+UserSchema.virtual('avatar_url').get(function () {
+  var url = this.avatar || ('//cdn.v2ex.co/gravatar/' + utility.md5(this.email.toLowerCase()) + '?d=retro');
+
+  return url;
+});
 UserSchema.index({create_at: -1});
 
 mongoose.model('User', UserSchema);

@@ -41,6 +41,7 @@
             self.initReplyUp();
             self.initTopicCollect();
             self.initTopicFollow();
+            self.initApplyOrganization();
         },
         initAtAuthor: function() {
             var allAuthors = $('.author').map(function(idx, ele) {
@@ -191,13 +192,13 @@
                         var currentCount = Number($count.text().trim()) || 0;
                         if (data.action === 'bookmark') {
                             $this.addClass('active');
-                            $count.text(currentCount+1);
+                            $count.text(currentCount + 1);
                         } else {
                             $this.removeClass('active');
-                            currentCount = currentCount -1;
-                            if(currentCount){
+                            currentCount = currentCount - 1;
+                            if (currentCount) {
                                 $count.text(currentCount);
-                            }else{
+                            } else {
                                 $count.text('');
                             }
                         }
@@ -226,13 +227,13 @@
                         var currentCount = Number($count.text().trim()) || 0;
                         if (data.action === 'follow') {
                             $this.addClass('active');
-                            $count.text(currentCount+1);
+                            $count.text(currentCount + 1);
                         } else {
                             $this.removeClass('active');
-                            currentCount = currentCount -1;
-                            if(currentCount){
+                            currentCount = currentCount - 1;
+                            if (currentCount) {
                                 $count.text(currentCount);
-                            }else{
+                            } else {
                                 $count.text('');
                             }
                         }
@@ -245,6 +246,24 @@
                         return;
                     }
                 });
+            });
+        },
+        initApplyOrganization: function() {
+            
+            $('.organization .apply').click(function() {
+                //alert('aaa');
+                $('#applyModal').modal();
+            });
+            $('#applyModal').on('show.bs.modal', function(e) {
+                $('#applyModal textarea').val('');
+            });
+            $('#apply-submit').click(function(){
+                var visible = $('#applyModal').is(":visible");
+                alert(visible);
+                if(visible){
+
+                }
+
             });
         }
 
