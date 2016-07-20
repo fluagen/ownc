@@ -46,7 +46,7 @@ router.get('/org/:oid', organization.index);
 router.get('/cards', tab.tab_cards, organization.cards);
 router.get('/org/:oid/topic/create', auth.userRequired, auth.organizationRequired, organization.createTopic);
 router.post('/org/:oid/topic/create', auth.userRequired, auth.organizationRequired, organization.putTopic);
-router.get('/org/:oid/apply', auth.userRequired,  organization.put);
+router.post('/org/:oid/apply', auth.userRequired,  organization.apply);
 
 
 // router.get('/community/create', auth.userRequired, community.create);

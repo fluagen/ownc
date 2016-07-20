@@ -172,3 +172,18 @@ exports.putTopic = function(req, res, next) {
     }));
 
 };
+
+exports.apply = function(req, res, next){
+var oid = req.params.oid;
+var user = req.session.user;
+
+Organization.findOne({
+        'id': oid
+    }, ep.done(function(organization) {
+        if (!organization) {
+            return res.render404('社区不存在或已被删除。');
+        }
+
+        ep.emit('organization', organization);
+    }));
+};

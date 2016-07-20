@@ -53,3 +53,13 @@ exports.sendAtMessage = function(sender_id, receiver_id, topic_id, reply_id, cal
         callback(null, msg);
     });
 };
+
+exports.sendApplyMessage = function(sender_id, receiver_id, org_id) {
+    var message = new Message();
+    message.receiver_id = receiver_id;
+    message.sender_id = sender_id;
+    message.org_id = org_id;
+    message.type = 'apply_organization';
+
+    message.save();
+};

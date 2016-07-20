@@ -250,19 +250,31 @@
         },
         initApplyOrganization: function() {
             
-            $('.organization .apply').click(function() {
-                //alert('aaa');
-                $('#applyModal').modal();
-            });
+            var self = this;
             $('#applyModal').on('show.bs.modal', function(e) {
                 $('#applyModal textarea').val('');
             });
             $('#apply-submit').click(function(){
                 var visible = $('#applyModal').is(":visible");
-                alert(visible);
-                if(visible){
-
+                if(!visible){
+                    return;
                 }
+                var orgid = $('.organization .apply').attr('id');
+                $.ajax({
+                    url: '/org/' + orgid + '/apply',
+                    method: 'POST',
+                }).done(function(data) {
+                    if (data.success) {
+                        self.alertMessageBar($('.list-group'), "alert-info", "申请加入请求已发送");
+                    } else {
+                         self.alertMessageBar($('.list-group'), "alert-danger", data.message);
+                    }
+                }).fail(function(xhr) {
+                    if (xhr.status === 403) {
+                        window.location.href = '/login-required';
+                        return;
+                    }
+                });
 
             });
         }

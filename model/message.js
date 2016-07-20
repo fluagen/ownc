@@ -6,19 +6,19 @@ var ObjectId  = Schema.ObjectId;
 /*
  * type:
  *
- * reply 			xx 回复了你的话题
- * at_topic 		xx 在话题中提到了你
- * at_reply 		xx 在话题中回复了你
- * apply_group      xx 请求加入 xx组
- * apply_group_ok   xx 申请加入 xx组 的请求通过
- * apply_group_no   xx 申请加入 xx组 的请求被拒绝
+ * reply           xx 回复了你的话题
+ * at_topic      xx 在话题中提到了你
+ * at_reply     xx 在话题中回复了你
+ * apply          xx 请求加入 xx
+ * apply_ok    xx 申请加入 xx 的请求通过
+ * apply_no    xx 申请加入 xx 的请求被拒绝
  */
 
 var MessageSchema = new Schema({
   type: { type: String },
   receiver_id: { type: ObjectId},
   sender_id: { type: ObjectId },
-  group_id: { type: ObjectId },
+  org_id: { type: ObjectId },
   topic_id: { type: ObjectId },
   reply_id: { type: ObjectId },
   has_read: { type: Boolean, default: false },
