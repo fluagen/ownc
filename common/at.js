@@ -1,16 +1,7 @@
-/*!
- * nodeclub - topic mention user controller.
- * Copyright(c) 2012 fengmk2 <fengmk2@gmail.com>
- * Copyright(c) 2012 muyuan
- * MIT Licensed
- */
-
-/**
- * Module dependencies.
- */
-
-var userManager = require('../manager/user');
-var Message = require('./message');
+var model = require('../model');
+var User = model.User;
+var Message = model.Message;
+var MessageType = require('./message_type');
 var EventProxy = require('eventproxy');
 var _ = require('lodash');
 var markdownit = require('./markdownit');
@@ -44,31 +35,27 @@ var fetchUsers = function(text) {
 exports.fetchUsers = fetchUsers;
 
 
-exports.sendMessageToMentionUsers = function(text, sender_id, topic_id, reply_id, callback) {
-    if (typeof reply_id === 'function') {
-        callback = reply_id;
-        reply_id = null;
-    }
-    callback = callback || _.noop;
-
+exports.sendMessage = function(text, sender_id, topic_id, reply_id, callback) {
     var loginids = fetchUsers(text);
-    userManager.getUsersByLoginids(loginids, function(err, users) {
-        if (err || !users) {
-            return callback(err);
-        }
-        var ep = new EventProxy();
-        ep.fail(callback);
+    if (loginids.length === 0) {
+        return callback(null, []);
+    }
 
-        users = users.filter(function(user) {
-            return !user._id.equals(sender_id);
-        });
+    loginids = loginids.filter(function(loginid) {
+        return !loginid.equals(sender_id);
+    });
+    var type = MessageType.At.reply;
+    if (!reply_id) {
+        type = MessageType.At.topic;
+    }
 
-        ep.after('sent', users.length, function() {
-            callback();
-        });
-
-        users.forEach(function(user) {
-            Message.sendAtMessage(sender_id, user._id, topic_id, reply_id, ep.done('sent'));
-        });
+    loginids.forEach(function(loginid) {
+        var message = new Message();
+        message.sender_id = sender_id;
+        message.receiver_id = loginid;
+        message.topic_id = topic_id;
+        message.reply_id = reply_id;
+        message.type = type;
+        message.save();
     });
 };

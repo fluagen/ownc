@@ -12,9 +12,9 @@ var OrganizationSchema = new Schema({
   bio: { type: String },
   location: {type: String},
   topic_count: { type: Number, default: 0 },
-  creator_id: { type: ObjectId },
-  admin_ids: [Schema.Types.ObjectId],
-  members: [Schema.Types.ObjectId],
+  creator_id: { type: String },
+  admin_ids: [Schema.Types.String],
+  members: [Schema.Types.String],
   create_at: { type: Date, default: Date.now },
   groups: [{
     id: {type: String},

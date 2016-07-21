@@ -30,7 +30,7 @@ exports.add = function(req, res, next) {
         return;
     }
 
-    ep.all('reply', 'update_user_reply_count', 'update_topic_last_reply', 'send_reply_message', 'send_at_message', function(reply) {
+    ep.all('reply', 'update_user_reply_count', 'update_topic_last_reply', 'send_at_message', function(reply) {
         res.redirect('/topic/' + tid + '#' + reply._id);
     });
 
@@ -58,10 +58,7 @@ exports.add = function(req, res, next) {
             }));
         }));
         if (topic.author_id.toString() !== user._id.toString()) {
-            // send message to topic author
-            message.sendReplyMessage(user._id, topic.author_id, topic._id, reply._id, ep.done('send_reply_message'));
-        } else {
-            ep.emit('send_reply_message');
+            message.reply(user._id, topic.author_id, topic._id, reply._id);
         }
         var n_content = content.replace('@' + topicAuthor.loginid + ' ', '');
         at.sendMessageToMentionUsers(n_content, user._id, topic._id, reply._id, ep.done('send_at_message'));
