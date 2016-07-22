@@ -181,9 +181,17 @@ exports.apply = function(req, res, next) {
     ep.fail(next);
 
     ep.all('organization', function(organization) {
-        apply.join(user.loginid, oid, ep.done(function() {
+        if (!organization) {
+            return res.status(404);
+        }
+        apply.join(user.loginid, organization, ep.done(function(rst) {
+            var message = '申请加入成功';
+            if (!rst) {
+                message = '申请加入失败';
+            }
             return res.send({
-                success: true
+                success: rst,
+                message: message
             });
         }));
     });

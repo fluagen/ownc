@@ -5,26 +5,24 @@ var EventProxy = require('eventproxy');
 var MessageType = require('./message_type');
 var _ = require('lodash');
 
-exports.join = function(sender_id, org_id, callback) {
-    callback = callback || _.noop;
+exports.join = function(sender_id, organization, callback) {
+    if (!organization || !organization.admin_ids || organization.admin_ids.length === 0) {
+        return callback(null, false);
+    }
     var ep = new EventProxy();
     ep.fail(callback);
-    Organization.findOne({
-        'id': org_id
-    }, ep.done(function(organization) {
-        if (!organization) {
-            return callback();
-        }
-        var admins = organization.admin_ids;
-        admins.forEach(function(id) {
-            var message = new Message();
-            message.receiver_id = id;
-            message.sender_id = sender_id;
-            message.org_id = org_id;
-            message.type = MessageType.Apply.Organization.join;
-            message.save();
-        });
-    }));
+    var admins = organization.admin_ids;
+    ep.after('message', admins.length, function() {
+        return callback(null, true);
+    });
+    admins.forEach(function(id) {
+        var message = new Message();
+        message.receiver_id = id;
+        message.sender_id = sender_id;
+        message.org_id = org_id;
+        message.type = MessageType.Apply.Organization.join;
+        message.save(ep.done('message'));
+    });
 };
 
 exports.pass = function(sender_id, receiver_id, org_id, callback) {

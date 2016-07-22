@@ -267,11 +267,15 @@
                     if (data.success) {
                         self.alertMessageBar($('.list-group'), "alert-info", "申请加入请求已发送");
                     } else {
-                         self.alertMessageBar($('.list-group'), "alert-danger", data.message);
+                        self.alertMessageBar($('.list-group'), "alert-danger", data.message);
                     }
                 }).fail(function(xhr) {
                     if (xhr.status === 403) {
                         window.location.href = '/login-required';
+                        return;
+                    }
+                    if(xhr.status === 404){
+                        alert('404错误');
                         return;
                     }
                 });
