@@ -261,7 +261,7 @@
                 }
                 var orgid = $('.organization .apply').attr('id');
                 $.ajax({
-                    url: '/org/' + orgid + '/apply',
+                    url: '/qun/' + orgid + '/apply',
                     method: 'POST',
                 }).done(function(data) {
                     if (data.success) {

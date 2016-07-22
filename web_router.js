@@ -40,13 +40,13 @@ router.post('/reply/:reply_id/up', auth.userRequired, reply.up);
 
 router.get('/message', auth.userRequired, message.index);
 
-router.get('/org/create', auth.userRequired, organization.create);
-router.post('/org/create', auth.userRequired, organization.put);
-router.get('/org/:oid', organization.index);
+router.get('/qun/create', auth.userRequired, organization.create);
+router.post('/qun/create', auth.userRequired, organization.put);
+router.get('/qun/:oid', organization.index);
 router.get('/cards', tab.tab_cards, organization.cards);
-router.get('/org/:oid/topic/create', auth.userRequired, auth.organizationRequired, organization.createTopic);
-router.post('/org/:oid/topic/create', auth.userRequired, auth.organizationRequired, organization.putTopic);
-router.post('/org/:oid/apply', auth.userRequired,  organization.apply);
+router.get('/qun/:oid/topic/create', auth.userRequired, auth.organizationRequired, organization.createTopic);
+router.post('/qun/:oid/topic/create', auth.userRequired, auth.organizationRequired, organization.putTopic);
+router.post('/qun/:oid/apply', auth.userRequired,  organization.apply);
 
 
 // router.get('/community/create', auth.userRequired, community.create);

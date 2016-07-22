@@ -5,9 +5,10 @@ var model = require('../model');
 var Topic = model.Topic;
 var User = model.User;
 var Reply = model.Reply;
+var Message = model.Message;
 
 var at = require('../common/at');
-var message = require('../common/message');
+var MessageType = require('../common/message_type');
 
 // var topicManager = require('../manager/topic');
 // var replyManager = require('../manager/reply');
@@ -58,10 +59,16 @@ exports.add = function(req, res, next) {
             }));
         }));
         if (topic.author_id.toString() !== user._id.toString()) {
-            message.reply(user._id, topic.author_id, topic._id, reply._id);
+            var message = new Message();
+            message.sender_id = user.loginid;
+            message.receiver_id = topicAuthor.loginid;
+            message.topic_id = topic._id;
+            message.reply_id = reply._id;
+            message.type = MessageType.Reply;
+            message.save();
         }
         var n_content = content.replace('@' + topicAuthor.loginid + ' ', '');
-        at.sendMessageToMentionUsers(n_content, user._id, topic._id, reply._id, ep.done('send_at_message'));
+        at.sendMessage(n_content, user._id, topic._id, reply._id, ep.done('send_at_message'));
         ep.emit('reply', reply);
     });
     ep.all('topic', function(topic) {

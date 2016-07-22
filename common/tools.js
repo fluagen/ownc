@@ -59,7 +59,7 @@ exports.is_member = function(members, user) {
         members = [];
     }
     var rst = _.some(members, function(o) {
-        return o.toString() === user._id;
+        return o === user.loginid;
     });
     return rst;
 };

@@ -1,5 +1,4 @@
 var model = require('../model');
-var User = model.User;
 var Message = model.Message;
 var MessageType = require('./message_type');
 var EventProxy = require('eventproxy');

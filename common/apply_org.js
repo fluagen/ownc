@@ -3,8 +3,10 @@ var Organization = model.Organization;
 var Message = model.Message;
 var EventProxy = require('eventproxy');
 var MessageType = require('./message_type');
+var _ = require('lodash');
 
 exports.join = function(sender_id, org_id, callback) {
+    callback = callback || _.noop;
     var ep = new EventProxy();
     ep.fail(callback);
     Organization.findOne({
@@ -26,7 +28,7 @@ exports.join = function(sender_id, org_id, callback) {
 };
 
 exports.pass = function(sender_id, receiver_id, org_id, callback) {
-
+    callback = callback || _.noop;
     var ep = new EventProxy();
     ep.fail(callback);
 
@@ -54,7 +56,7 @@ exports.pass = function(sender_id, receiver_id, org_id, callback) {
 };
 
 exports.refuse = function(sender_id, receiver_id, org_id, callback) {
-
+    callback = callback || _.noop;
     var ep = new EventProxy();
     ep.fail(callback);
 

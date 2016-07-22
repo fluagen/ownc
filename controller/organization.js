@@ -9,6 +9,7 @@ var User = model.User;
 var topicManager = require('../manager/topic');
 
 var tools = require('../common/tools');
+var apply = require('../common/apply_org');
 
 
 exports.cards = function(req, res, next) {
@@ -66,22 +67,22 @@ exports.create = function(req, res, next) {
 };
 exports.put = function(req, res, next) {
     var name = req.body.name;
-    var org_id = req.body.org_id;
+    var oid = req.body.oid;
     var bio = req.body.bio;
     var user = req.session.user;
 
     var organization = new Organization();
     organization.name = name;
-    organization.id = org_id;
+    organization.id = oid;
     organization.bio = bio;
-    organization.creator_id = user._id;
-    organization.members = [user._id];
+    organization.creator_id = user.loginid;
+    organization.members = [user.loginid];
 
 
     var ep = new EventProxy();
     ep.fail(next);
     ep.all('save', function(org) {
-        res.redirect('/org/' + org.id);
+        res.redirect('/qun/' + org.id);
     });
 
     organization.save(ep.done('save'));
@@ -173,11 +174,21 @@ exports.putTopic = function(req, res, next) {
 
 };
 
-exports.apply = function(req, res, next){
-var oid = req.params.oid;
-var user = req.session.user;
+exports.apply = function(req, res, next) {
+    var oid = req.params.oid;
+    var user = req.session.user;
+    var ep = new EventProxy();
+    ep.fail(next);
 
-Organization.findOne({
+    ep.all('organization', function(organization) {
+        apply.join(user.loginid, oid, ep.done(function() {
+            return res.send({
+                success: true
+            });
+        }));
+    });
+
+    Organization.findOne({
         'id': oid
     }, ep.done(function(organization) {
         if (!organization) {
