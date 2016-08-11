@@ -11,7 +11,7 @@ var topic = require('./controller/topic');
 var reply = require('./controller/reply');
 var message = require('./controller/message');
 var community = require('./controller/community');
-var organization = require('./controller/organization');
+var qun = require('./controller/qun');
 
 
 var router = express.Router();
@@ -40,13 +40,13 @@ router.post('/reply/:reply_id/up', auth.userRequired, reply.up);
 
 router.get('/message', auth.userRequired, message.index);
 
-router.get('/qun/create', auth.userRequired, organization.create);
-router.post('/qun/create', auth.userRequired, organization.put);
-router.get('/qun/:oid', organization.index);
-router.get('/cards', tab.tab_cards, organization.cards);
-router.get('/qun/:oid/topic/create', auth.userRequired, auth.organizationRequired, organization.createTopic);
-router.post('/qun/:oid/topic/create', auth.userRequired, auth.organizationRequired, organization.putTopic);
-router.post('/qun/:oid/apply', auth.userRequired,  organization.apply);
+router.get('/qun/list', qun.list);
+router.get('/qun/create', auth.userRequired, qun.create);
+router.post('/qun/create', auth.userRequired, qun.put);
+router.get('/qun/:qid', qun.index);
+router.get('/qun/:qid/topic/create', auth.userRequired, auth.qunRequired, qun.createTopic);
+router.post('/qun/:qid/topic/create', auth.userRequired, auth.qunRequired, qun.putTopic);
+router.post('/qun/:qid/apply', auth.userRequired,  qun.apply);
 
 
 // router.get('/community/create', auth.userRequired, community.create);

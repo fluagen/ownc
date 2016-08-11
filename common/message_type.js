@@ -1,9 +1,3 @@
-
-var models = require('../model');
-var Message = models.Message;
-
-
-
 var Type = {
     Reply: 'reply', //回复话题
     At: {
@@ -11,10 +5,10 @@ var Type = {
         reply: 'at_reply' //回复中at
     },
     Apply: {
-        Organization: {
-            join: 'apply_organization_join', // 请求加入xx
-            pass: 'apply_organization_pass', // 申请加入xx的请求通过
-            refuse: 'apply_organization_refuse' // 申请加入xx的请求被拒绝
+        Qun: {
+            join: 'apply_qun_join', // 请求加入xx
+            pass: 'apply_qun_pass', // 申请加入xx的请求通过
+            refuse: 'apply_qun_refuse' // 申请加入xx的请求被拒绝
         }
     }
 };

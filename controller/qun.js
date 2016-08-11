@@ -3,122 +3,123 @@ var validator = require('validator');
 var _ = require('lodash');
 
 var model = require('../model');
-var Organization = model.Organization;
+var Qun = model.Qun;
 var Topic = model.Topic;
 var User = model.User;
 var topicManager = require('../manager/topic');
 
 var tools = require('../common/tools');
-var apply = require('../common/apply_org');
+var apply = require('../common/apply_qun');
 
 
-exports.cards = function(req, res, next) {
+exports.list = function(req, res, next) {
     var ep = new EventProxy();
     ep.fail(next);
-    ep.all('organization', function(organization) {
-        res.render('org/cards', {
-            organization: organization
+    ep.all('quns', function(quns) {
+        console.log(quns.length);
+        res.render('qun/list', {
+            quns: quns
         });
     });
 
-    Organization.find({}, ep.done('organization'));
+    Qun.find({}, ep.done('quns'));
 };
 
 exports.index = function(req, res, next) {
-    var oid = req.params.oid;
+    var qid = req.params.qid;
     var user = req.session.user;
     var ep = new EventProxy();
     ep.fail(next);
 
-    ep.all('organization', 'topics', function(organization, topics) {
-        res.render('org/index', {
+    ep.all('qun', 'topics', function(qun, topics) {
+        res.render('qun/index', {
             topics: topics,
-            organization: organization
+            qun: qun
         });
     });
 
-    ep.all('organization', function(organization) {
+    ep.all('qun', function(qun) {
         var query = {
-            'org_id': oid
+            'qun_id': qid,
+            'deleted': false
         };
         var opt = {
             sort: '-top -last_reply_at'
         };
-        if (!organization.is_member) {
+        if (!qun.is_member) {
             query.opened = true;
         }
         topicManager.getFullTopics(query, opt, ep.done('topics'));
     });
 
-    Organization.findOne({
-        id: oid
-    }, ep.done(function(organization) {
-        if (!organization) {
-            res.render404('社区不存在或已被删除。');
+    Qun.findOne({
+        id: qid
+    }, ep.done(function(qun) {
+        if (!qun) {
+            res.render404('群不存在或已被删除。');
             return;
         }
-        organization.is_member = tools.is_member(organization.members, user);
-        ep.emit('organization', organization);
+        qun.is_member = tools.is_member(qun.members, user);
+        ep.emit('qun', qun);
     }));
 };
 
 exports.create = function(req, res, next) {
-    res.render('org/edit');
+    res.render('qun/edit');
 };
 exports.put = function(req, res, next) {
     var name = req.body.name;
-    var oid = req.body.oid;
+    var qid = req.body.qid;
     var bio = req.body.bio;
     var user = req.session.user;
 
-    var organization = new Organization();
-    organization.name = name;
-    organization.id = oid;
-    organization.bio = bio;
-    organization.creator_id = user.loginid;
-    organization.members = [user.loginid];
+    var qun = new Qun();
+    qun.name = name;
+    qun.id = qid;
+    qun.bio = bio;
+    qun.opened = false;
+    qun.creator_id = user.loginid;
+    qun.members = [user.loginid];
 
 
     var ep = new EventProxy();
     ep.fail(next);
-    ep.all('save', function(org) {
-        res.redirect('/qun/' + org.id);
+    ep.all('qun', function(qun) {
+        res.redirect('/qun/' + qun.id);
     });
-
-    organization.save(ep.done('save'));
-
+    qun.save(ep.done('qun'));
 };
 
 exports.createTopic = function(req, res, next) {
-    var oid = req.params.oid;
+    var qid = req.params.qid;
     var ep = new EventProxy();
     ep.fail(next);
-    ep.all('organization', function(organization) {
+    ep.all('qun', function(qun) {
         res.render('topic/edit', {
-            organization: organization
+            qun: qun
         });
     });
 
-    Organization.findOne({
-        id: oid
-    }, ep.done('organization'));
+    Qun.findOne({
+        id: qid
+    }, ep.done('qun'));
 };
 
 exports.putTopic = function(req, res, next) {
     var title = req.body.title;
     var content = req.body.t_content;
-    var oid = req.params.oid;
+    var qid = req.params.qid;
     var ep = new EventProxy();
     ep.fail(next);
-    ep.all('topic', 'user_update', 'organization_update', function(topic) {
+    ep.all('topic', 'user_update', 'qun_update', function(topic) {
         return res.redirect('/topic/' + topic._id);
     });
 
-    ep.all('validate_fail', 'organization', function(rst, organization) {
+    ep.all('validate_fail', 'qun', function(rst, qun) {
         return res.render('topic/edit', {
             title: title,
             content: content,
-            organization: organization,
+            qun: qun,
             error: rst.error
         });
     });
@@ -129,7 +130,7 @@ exports.putTopic = function(req, res, next) {
         topic.title = title;
         topic.content = content;
         topic.author_id = user._id;
-        topic.org_id = oid;
+        topic.q_id = qid;
         topic.opened = false;
         topic.save(ep.done(function(topic) {
             User.findById(user._id, ep.done(function(user) {
@@ -138,12 +139,12 @@ exports.putTopic = function(req, res, next) {
                 req.session.user = user;
                 ep.emit('user_update');
             }));
-            Organization.findOne({
-                'id': oid
-            }, ep.done(function(organization) {
-                organization.topic_count += 1;
-                organization.save();
-                ep.emit('organization_update');
+            Qun.findOne({
+                'id': qid
+            }, ep.done(function(qun) {
+                qun.topic_count += 1;
+                qun.save();
+                ep.emit('qun_update');
             }));
             ep.emit('topic', topic);
         }));
@@ -163,28 +164,28 @@ exports.putTopic = function(req, res, next) {
         ep.emit('validate_fail', rst);
     }
 
-    Organization.findOne({
-        'id': oid
-    }, ep.done(function(organization) {
-        if (!organization) {
-            return res.render404('社区不存在或已被删除。');
+    Qun.findOne({
+        'id': qid
+    }, ep.done(function(qun) {
+        if (!qun) {
+            return res.render404('群不存在或已被删除。');
         }
-        ep.emit('organization', organization);
+        ep.emit('qun', qun);
     }));
 
 };
 
 exports.apply = function(req, res, next) {
-    var oid = req.params.oid;
+    var qid = req.params.qid;
     var user = req.session.user;
     var ep = new EventProxy();
     ep.fail(next);
 
-    ep.all('organization', function(organization) {
-        if (!organization) {
+    ep.all('qun', function(qun) {
+        if (!qun) {
             return res.status(404);
         }
-        apply.join(user.loginid, organization, ep.done(function(rst) {
+        apply.join(user.loginid, qun, ep.done(function(rst) {
             var message = '申请加入成功';
             if (!rst) {
                 message = '申请加入失败';
@@ -196,13 +197,12 @@ exports.apply = function(req, res, next) {
         }));
     });
 
-    Organization.findOne({
-        'id': oid
-    }, ep.done(function(organization) {
-        if (!organization) {
-            return res.render404('社区不存在或已被删除。');
+    Qun.findOne({
+        'id': qid
+    }, ep.done(function(qun) {
+        if (!qun) {
+            return res.render404('群不存在或已被删除。');
         }
-
-        ep.emit('organization', organization);
+        ep.emit('qun', qun);
     }));
 };

@@ -5,17 +5,18 @@ var userManager = require('./user');
 var replyManager = require('./reply');
 
 var User = model.User;
-var Organization = model.Organization;
+var Qun = model.Qun;
+
 
 
 exports.getFullTopic = function(id, callback) {
     var ep = new EventProxy();
     ep.fail(callback);
 
-    ep.all('topic', 'author', 'organization', function(topic, author, reply, organization) {
+    ep.all('topic', 'author', 'qun', function(topic, author, reply, qun) {
         //增加附加属性
         topic.author = author;
-        topic.organization = organization;
+        topic.qun = qun;
 
         return callback(null, topic);
     });
@@ -26,13 +27,13 @@ exports.getFullTopic = function(id, callback) {
         //作者
         User.findById(topic.author_id, ep.done('author'));
 
-        //机构
-        if (topic.org_id) {
-            Organization.findOne({
-                id: topic.org_id
-            }, ep.done('organization'));
+        //群
+        if (topic.qun_id) {
+            Qun.findOne({
+                id: topic.qun_id
+            }, ep.done('qun'));
         } else {
-            ep.emit('organization', null);
+            ep.emit('qun', null);
         }
     });
     Topic.findById(id, ep.done('topic'));
@@ -52,20 +53,20 @@ exports.getFullTopics = function(query, opt, callback) {
         topics.forEach(function(topic, i) {
             var proxy = new EventProxy();
             proxy.fail(callback);
-            proxy.all('author', 'organization', function(author, organization) {
+            proxy.all('author', 'qun', function(author, qun) {
                 topic.author = author;
-                topic.organization = organization;
+                topic.qun = qun;
                 ep.emit('topic_each', topic);
             });
             //作者
             User.findById(topic.author_id, proxy.done('author'));
-            //机构
-            if (topic.org_id) {
-                Organization.findOne({
-                    id: topic.org_id
-                }, proxy.done('organization'));
+            //群
+            if (topic.qun_id) {
+                Qun.findOne({
+                    id: topic.qun_id
+                }, proxy.done('qun'));
             } else {
-                proxy.emit('organization', null);
+                proxy.emit('qun', null);
             }
         });
     });

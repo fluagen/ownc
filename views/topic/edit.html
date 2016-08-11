@@ -9,8 +9,8 @@
 		<%}%>
 		<%
 		var action = "/topic/create";
-		if(typeof(organization) !== 'undefined' && organization){
-			action = "/org/"+organization.id+"/topic/create";
+		if(typeof(qun) !== 'undefined' && qun){
+			action = "/qun/"+qun.id+"/topic/create";
 		}
 		%>
 		<form id="topic-form" action="<%= action%>" method="post">
@@ -44,13 +44,7 @@
 		</form>
 	</div>
 	<div class="col-md-4">
-		<%
-		if(typeof(organization) !== 'undefined' && organization){
-		%>
-		<%- partial('./aside/org_card', {
-		organization : organization
-		}) %>
-		<%}%>
+		
 		<%- partial('./aside/about') %>
 	</div>
 </div>

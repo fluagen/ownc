@@ -3,7 +3,7 @@ var EventProxy = require('eventproxy');
 var tools = require('../common/tools');
 var model = require('../model');
 var User = model.User;
-var Organization = model.Organization;
+var Qun = model.Qun;
 
 /**
  * 需要登录
@@ -66,25 +66,25 @@ exports.authUser = function(req, res, next) {
 };
 
 /**
- * organization 权限验证
+ * qun 权限验证
  */
-exports.organizationRequired = function(req, res, next) {
-    var oid = req.params.oid;
-    if (typeof(oid) === 'undefined' || !oid) {
-        return res.render404('社区不存在，或已被删除。');
+exports.qunRequired = function(req, res, next) {
+    var qid = req.params.qid;
+    if (typeof(qid) === 'undefined' || !qid) {
+        return res.render404('群不存在，或已被删除。');
     }
     var user = req.session.user;
     var ep = new EventProxy();
     ep.fail(next);
-    ep.all('organization', function(organization) {
-        if (!organization) {
-            return res.render404('社区不存在，或已被删除。');
+    ep.all('qun', function(qun) {
+        if (!qun) {
+            return res.render404('群不存在，或已被删除。');
         }
-        if (!tools.is_member(organization.members, user)) {
+        if (!tools.is_member(qun.members, user)) {
             return res.renderError(403, '你没有此操作权限。');
         }
         next();
     });
 
-    Organization.findOne({id: oid}, ep.done('organization'));
+    Qun.findOne({id: qid}, ep.done('qun'));
 };

@@ -8,11 +8,11 @@ var TopicSchema = new Schema({
   title: { type: String },
   content: { type: String },
   author_id: { type: ObjectId },
-  org_id: { type: String },
+  qun_id: { type: String },
   top: { type: Boolean, default: false }, // 置顶帖
   good: {type: Boolean, default: false}, // 精华帖
   lock: {type: Boolean, default: false}, // 被锁定主题
-  opened: {type: Boolean, default: false}, // 私有的
+  opened: {type: Boolean, default: true}, // 私有的
   deleted: {type: Boolean, default: false},
   create_at: { type: Date, default: Date.now },
   update_at: { type: Date, default: Date.now },

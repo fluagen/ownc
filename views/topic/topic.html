@@ -1,0 +1,35 @@
+<div class="list-group-item topic-list">
+	<div class="avatar">
+		<a href="javascript:void(0);"><img class="avatar-48" src="<%=topic.author.avatar_url%>">
+		</a>
+	</div>
+	<div class="info">
+		<div class="topic-title"><a href="/topic/<%= topic._id %>" title="<%= topic.title%>"><%= topic.title%></a></div>
+		<div class="meta">
+			<%
+			if(topic.qun){
+			%>
+			<a title="<%= topic.qun.name%>" href="/qun/<%=topic.qun.id %>"><%= topic.qun.id%></a>
+			<span>&nbsp;•&nbsp;</span>
+			<%}%>
+			<a href="#"><%= topic.author.loginid %></a>
+			<span>&nbsp;•&nbsp;</span>
+			<abbr class="timeago" title="<%= topic.create_at_fmt() %>" >
+				于<%= topic.create_at_ago()%>发布
+			</abbr>
+			<%
+			if(topic.last_reply){
+			%>
+			<span>&nbsp;•&nbsp;</span>
+			<a href="#"><%= topic.last_reply_author%></a>
+			<abbr class="timeago" title="<%= topic.last_reply_at_fmt() %>" >
+				于<%= topic.last_reply_at_ago()%>回复
+			</abbr>
+			<%}%>
+			
+		</div>
+	</div>
+	<div class="badge-reply-count">
+		<a href="/topic/<%= topic._id %>"><span class="badge "><%= topic.reply_count%></span></a>
+	</div>
+</div>

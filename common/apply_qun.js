@@ -5,13 +5,13 @@ var EventProxy = require('eventproxy');
 var MessageType = require('./message_type');
 var _ = require('lodash');
 
-exports.join = function(sender_id, organization, callback) {
-    if (!organization || !organization.admin_ids || organization.admin_ids.length === 0) {
+exports.join = function(sender_id, qun, callback) {
+    if (!qun || !qun.admin_ids || qun.admin_ids.length === 0) {
         return callback(null, false);
     }
     var ep = new EventProxy();
     ep.fail(callback);
-    var admins = organization.admin_ids;
+    var admins = qun.admin_ids;
     ep.after('message', admins.length, function() {
         return callback(null, true);
     });

@@ -12,7 +12,10 @@ exports.index = function(req, res, next) {
             topics: topics
         });
     });
-    var query = {};
+    var query = {
+        opened: true,
+        deleted: false
+    };
     var options = {
         sort: '-top -last_reply_at'
     };

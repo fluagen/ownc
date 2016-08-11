@@ -41,7 +41,7 @@
             self.initReplyUp();
             self.initTopicCollect();
             self.initTopicFollow();
-            self.initApplyOrganization();
+            self.initApplyQun();
         },
         initAtAuthor: function() {
             var allAuthors = $('.author').map(function(idx, ele) {
@@ -248,7 +248,7 @@
                 });
             });
         },
-        initApplyOrganization: function() {
+        initApplyQun: function() {
             
             var self = this;
             $('#applyModal').on('show.bs.modal', function(e) {
@@ -259,9 +259,9 @@
                 if(!visible){
                     return;
                 }
-                var orgid = $('.organization .apply').attr('id');
+                var qun_id = $('.organization .apply').attr('id');
                 $.ajax({
-                    url: '/qun/' + orgid + '/apply',
+                    url: '/qun/' + qun_id + '/apply',
                     method: 'POST',
                 }).done(function(data) {
                     if (data.success) {

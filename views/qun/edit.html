@@ -2,14 +2,14 @@
 <div class="row">
 	<div class="col-md-9">
 		<ul class="list-group">
-			<li class="list-group-item">创建社区</li>
+			<li class="list-group-item">创建群</li>
 			<li class="list-group-item">
 				
 				<form class="form-horizontal" action="/qun/create" method="post">
 					<div class="form-group">
-						<label class="col-md-4 control-label" for="oid">ID</label>
+						<label class="col-md-4 control-label" for="qid">ID</label>
 						<div class="col-md-6">
-							<input name="oid" type="text" placeholder="" class="form-control input-md" required="" value="<%= typeof(oid) !== 'undefined' && oid || '' %>"></input>
+							<input name="qid" type="text" placeholder="" class="form-control input-md" required="" value="<%= typeof(qid) !== 'undefined' && qid || '' %>"></input>
 						</div>
 					</div>
 					<div class="form-group">
