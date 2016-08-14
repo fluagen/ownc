@@ -10,7 +10,7 @@ var replyManager = require('../manager/reply');
 var model = require('../model');
 var TopicCollect = model.TopicCollect;
 var TopicFollow = model.TopicFollow;
-var Organization = model.Organization;
+var Qun = model.Qun;
 var Topic = model.Topic;
 var User = model.User;
 
@@ -59,7 +59,7 @@ exports.index = function(req, res, next) {
             user_id: user._id,
             topic_id: tid
         }, ep.done('is_collected'));
-        
+
         TopicFollow.findOne({
             user_id: user._id,
             topic_id: tid
@@ -76,50 +76,71 @@ exports.create = function(req, res, next) {
 
 exports.put = function(req, res, next) {
     var title = req.body.title;
+    var qid = req.params.qid;
     var content = req.body.t_content;
     var user = req.session.user;
     var ep = new EventProxy();
     ep.fail(next);
+
     if (title !== undefined) {
         title = validator.trim(title);
     }
     if (content !== undefined) {
         content = validator.trim(content);
     }
+    var error;
+    if (!title) {
+        error = "标题不能为空";
+    } else if (title.length > 140) {
+        error = "标题不能大于140字数";
+    }
+    if (error) {
+        return res.render('topic/edit', {
+            title: title,
+            content: content,
+            error: error
+        });
+    }
 
-    ep.all('topic', 'user_update', function(topic) {
+    ep.all('topic', 'user', 'qun', function(topic) {
         return res.redirect('/topic/' + topic._id);
     });
 
-    ep.all('validate_fail', function(rst) {
-        res.render('topic/edit', {
-            title: title,
-            content: content,
-            error: rst.error
-        });
-    });
-    ep.all('validate_success', function() {
-        var topic = new Topic();
-        topic.title = title;
-        topic.content = content;
-        topic.author_id = user._id;
-        topic.opened = true;
-        topic.save(ep.done(function(topic) {
-            User.findById(user._id, ep.done(function(user) {
-                user.topic_count += 1;
-                user.save();
-                req.session.user = user;
-                ep.emit('user_update');
-            }));
-            ep.emit('topic', topic);
-        }));
-    });
-    var rst = tools.validateTopicTitle(title);
-    if (rst.success) {
-        ep.emit('validate_success');
+
+    var topic = new Topic();
+    topic.title = title;
+    topic.content = content;
+    topic.author_id = user._id;
+    if (qid) {
+        topic.qun_id = qid;
+        topic.opened = false;
     } else {
-        ep.emit('validate_fail', rst);
+        topic.opened = true;
     }
+    topic.save(ep.done(function(topic) {
+        User.findById(user._id, ep.done(function(user) {
+            user.topic_count += 1;
+            user.save();
+            req.session.user = user;
+            ep.emit('user');
+        }));
+
+
+        if (qid) {
+            Qun.findOne({
+                id: qid
+            }, ep.done(function(qun) {
+                qun.topic_count += 1;
+                qun.save();
+                ep.emit('qun');
+            }));
+
+        } else {
+            ep.emit('qun');
+        }
+
+        ep.emit('topic', topic);
+    }));
 };
 
 exports.collect = function(req, res, next) {

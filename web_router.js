@@ -1,4 +1,3 @@
-
 var express = require('express');
 
 var auth = require('./middleware/auth');
@@ -44,9 +43,9 @@ router.get('/qun/list', qun.list);
 router.get('/qun/create', auth.userRequired, qun.create);
 router.post('/qun/create', auth.userRequired, qun.put);
 router.get('/qun/:qid', qun.index);
-router.get('/qun/:qid/topic/create', auth.userRequired, auth.qunRequired, qun.createTopic);
-router.post('/qun/:qid/topic/create', auth.userRequired, auth.qunRequired, qun.putTopic);
-router.post('/qun/:qid/apply', auth.userRequired,  qun.apply);
+router.get('/qun/:qid/topic/create', auth.userRequired, auth.qunRequired, topic.create);
+router.post('/qun/:qid/topic/create', auth.userRequired, auth.qunRequired, topic.put);
+router.post('/qun/:qid/apply', auth.userRequired, qun.apply);
 
 
 // router.get('/community/create', auth.userRequired, community.create);

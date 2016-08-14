@@ -83,6 +83,7 @@ exports.qunRequired = function(req, res, next) {
         if (!tools.is_member(qun.members, user)) {
             return res.renderError(403, '你没有此操作权限。');
         }
+        res.locals.qun = qun;
         next();
     });
 

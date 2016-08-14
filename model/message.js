@@ -18,7 +18,7 @@ var MessageSchema = new Schema({
   type: { type: String },
   receiver_id: { type: String},
   sender_id: { type: String },
-  org_id: { type: String },
+  qun_id: { type: String },
   topic_id: { type: ObjectId },
   reply_id: { type: ObjectId },
   has_read: { type: Boolean, default: false },

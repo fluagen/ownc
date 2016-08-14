@@ -1,14 +1,16 @@
 <div class="list-group-item notification">
 				<div class="avatar">
-					<a href="javascript:void(0);"><img class="avatar-32" src="https://ruby-china-files.b0.upaiyun.com/user/large_avatar/15774.jpg" alt="15774">
+					<a href="javascript:void(0);"><img class="avatar-32" src="<%= message.receiver.avatar_url%>" >
 					</a>
 				</div>
-				<%if(message.type === 'reply'){%>
+				<%if(message.type === MessageType.Reply){%>
 					<%- partial('./reply', {sender: message.sender, topic: message.topic, reply: message.reply}) %>
-				<%}else if(message.type === 'at_reply'){%>
+				<%}else if(message.type === MessageType.At.reply){%>
 					<%- partial('./at_reply', {sender: message.sender, topic: message.topic, reply: message.reply}) %>
-				<%}else if(message.type === 'at_topic'){%>
+				<%}else if(message.type === MessageType.At.topic){%>
 					<%- partial('./at_topic', {sender: message.sender, topic: message.topic}) %>
+				<%}else if(message.type === MessageType.Apply.Qun.join){ %>
+					<%- partial('./apply_qun_join', {sender: message.sender, qun: message.qun}) %>
 				<%}%>
 				<div class="time">
 					<%= message.create_at_fmt()%>
