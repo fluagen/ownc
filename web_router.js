@@ -45,8 +45,9 @@ router.post('/qun/create', auth.userRequired, qun.put);
 router.get('/qun/:qid', qun.index);
 router.get('/qun/:qid/topic/create', auth.userRequired, auth.qunRequired, topic.create);
 router.post('/qun/:qid/topic/create', auth.userRequired, auth.qunRequired, topic.put);
-router.post('/qun/:qid/apply', auth.userRequired, qun.apply);
-
+router.post('/qun/:qid/apply/join', auth.userRequired, qun.join);
+router.post('/qun/:qid/apply/pass', auth.userRequired, qun.pass);
+router.post('/qun/:qid/apply/refuse', auth.userRequired, qun.refuse);
 
 // router.get('/community/create', auth.userRequired, community.create);
 // router.post('/community/create', auth.userRequired, community.put);

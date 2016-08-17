@@ -49,6 +49,7 @@ exports.pass = function(sender_id, receiver_id, qun, callback) {
         msg.save();
 
         //add qun member
+        
         qun.members = qun.members.push(receiver_id);
 
     });

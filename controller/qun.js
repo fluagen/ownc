@@ -6,6 +6,7 @@ var model = require('../model');
 var Qun = model.Qun;
 var Topic = model.Topic;
 var User = model.User;
+var Message = model.Message;
 var topicManager = require('../manager/topic');
 
 var tools = require('../common/tools');
@@ -88,34 +89,77 @@ exports.put = function(req, res, next) {
     qun.save(ep.done('qun'));
 };
 
-exports.apply = function(req, res, next) {
+exports.join = function(req, res, next) {
     var qid = req.params.qid;
     var user = req.session.user;
     var ep = new EventProxy();
     ep.fail(next);
 
     ep.all('qun', function(qun) {
-        if (!qun) {
-            return res.status(404);
-        }
         apply.join(user.loginid, qun, ep.done(function(rst) {
-            var message = '申请加入成功';
-            if (!rst) {
-                message = '申请加入失败';
-            }
             return res.send({
-                success: rst,
-                message: message
+                success: rst
             });
         }));
     });
 
     Qun.findOne({
         'id': qid
-    }, ep.done(function(qun) {
-        if (!qun) {
-            return res.render404('群不存在或已被删除。');
+    }, ep.done('qun'));
+};
+
+exports.pass = function(req, res, next) {
+    var user = req.session.user;
+    var qid = req.params.qid;
+    var applicant = req.body.applicant;
+
+    var ep = new EventProxy();
+    ep.fail(next);
+
+    ep.all('qun', function(qun, message) {
+        if (_.indexOf(qun.admin_ids, user.loginid) === -1) {
+            //不是群管理员
+            res.send({
+                success: false,
+                action: '你没有此操作权限。'
+            });
         }
-        ep.emit('qun', qun);
-    }));
+        apply.pass(user.loginid, applicant, qun);
+        res.send({
+            success: true
+        });
+
+    });
+
+    Qun.findOne({
+        'id': qid
+    }, ep.done('qun'));
+};
+
+exports.refuse = function(req, res, next) {
+    var user = req.session.user;
+    var qid = req.params.qid;
+    var applicant = req.body.applicant;
+
+    var ep = new EventProxy();
+    ep.fail(next);
+
+    ep.all('qun', function(qun, message) {
+        if (_.indexOf(qun.admin_ids, user.loginid) === -1) {
+            //不是群管理员
+            res.send({
+                success: false,
+                action: '你没有此操作权限。'
+            });
+        }
+        apply.refuse(user.loginid, applicant, qun);
+        res.send({
+            success: true
+        });
+
+    });
+
+    Qun.findOne({
+        'id': qid
+    }, ep.done('qun'));
 };
