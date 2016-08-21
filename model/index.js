@@ -22,6 +22,7 @@ require('./topic_collect');
 require('./topic_follow');
 require('./community');
 require('./qun');
+require('./invitation');
 
 exports.Topic = mongoose.model('Topic');
 exports.Reply = mongoose.model('Reply');
@@ -32,6 +33,7 @@ exports.TopicCollect = mongoose.model('TopicCollect');
 exports.TopicFollow = mongoose.model('TopicFollow');
 exports.Community = mongoose.model('Community');
 exports.Qun = mongoose.model('Qun');
+exports.Invitation = mongoose.model('Invitation');
 
 
 

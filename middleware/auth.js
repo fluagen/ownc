@@ -68,7 +68,7 @@ exports.authUser = function(req, res, next) {
 /**
  * qun 权限验证
  */
-exports.qunRequired = function(req, res, next) {
+exports.qunMemberRequired = function(req, res, next) {
     var qid = req.params.qid;
     if (typeof(qid) === 'undefined' || !qid) {
         return res.render404('群不存在，或已被删除。');
@@ -81,6 +81,28 @@ exports.qunRequired = function(req, res, next) {
             return res.render404('群不存在，或已被删除。');
         }
         if (!tools.is_member(qun.members, user)) {
+            return res.renderError(403, '你没有此操作权限。');
+        }
+        res.locals.qun = qun;
+        next();
+    });
+
+    Qun.findOne({id: qid}, ep.done('qun'));
+};
+
+exports.qunAdminRequired = function(req, res, next) {
+    var qid = req.params.qid;
+    if (typeof(qid) === 'undefined' || !qid) {
+        return res.render404('群不存在，或已被删除。');
+    }
+    var user = req.session.user;
+    var ep = new EventProxy();
+    ep.fail(next);
+    ep.all('qun', function(qun) {
+        if (!qun) {
+            return res.render404('群不存在，或已被删除。');
+        }
+        if (!tools.is_member(qun.members, user) || !tools.is_member(qun.admin_ids, user)) {
             return res.renderError(403, '你没有此操作权限。');
         }
         res.locals.qun = qun;

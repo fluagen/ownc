@@ -12,6 +12,10 @@ var topicManager = require('../manager/topic');
 var tools = require('../common/tools');
 var apply = require('../common/apply_qun');
 
+var Invitation = model.Invitation;
+var shortid = require('shortid');
+//shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+
 
 exports.list = function(req, res, next) {
     var ep = new EventProxy();
@@ -89,77 +93,50 @@ exports.put = function(req, res, next) {
     qun.save(ep.done('qun'));
 };
 
+exports.invitation = function(req, res, next) {
+    var qid = req.params.qid;
+    var code = shortid.generate();
+    var ep = new EventProxy();
+    ep.fail(next);
+    ep.all('invitation', function(invitation) {
+        return res.send({
+            code: invitation.code
+        });
+    });
+
+    var invitation = new Invitation();
+    invitation.code = code;
+    invitation.qun_id = qid;
+    invitation.save(ep.done('invitation'));
+};
+
 exports.join = function(req, res, next) {
+
     var qid = req.params.qid;
-    var user = req.session.user;
+    var code = req.body.code;
     var ep = new EventProxy();
     ep.fail(next);
-
-    ep.all('qun', function(qun) {
-        apply.join(user.loginid, qun, ep.done(function(rst) {
+    ep.all('invitation', function(invitation) {
+        if (!invitation) {
             return res.send({
-                success: rst
-            });
-        }));
-    });
-
-    Qun.findOne({
-        'id': qid
-    }, ep.done('qun'));
-};
-
-exports.pass = function(req, res, next) {
-    var user = req.session.user;
-    var qid = req.params.qid;
-    var applicant = req.body.applicant;
-
-    var ep = new EventProxy();
-    ep.fail(next);
-
-    ep.all('qun', function(qun, message) {
-        if (_.indexOf(qun.admin_ids, user.loginid) === -1) {
-            //不是群管理员
-            res.send({
-                success: false,
-                action: '你没有此操作权限。'
+                success: false
             });
         }
-        apply.pass(user.loginid, applicant, qun);
-        res.send({
+        invitation.remove();
+
+        return res.send({
             success: true
         });
 
     });
 
-    Qun.findOne({
-        'id': qid
-    }, ep.done('qun'));
+    Invitation.findOne({
+        code: code,
+        qun_id: qid
+    }, ep.done('invitation'));
+
 };
 
-exports.refuse = function(req, res, next) {
-    var user = req.session.user;
-    var qid = req.params.qid;
-    var applicant = req.body.applicant;
+exports.joinByUrl = function(req, res, next){
 
-    var ep = new EventProxy();
-    ep.fail(next);
-
-    ep.all('qun', function(qun, message) {
-        if (_.indexOf(qun.admin_ids, user.loginid) === -1) {
-            //不是群管理员
-            res.send({
-                success: false,
-                action: '你没有此操作权限。'
-            });
-        }
-        apply.refuse(user.loginid, applicant, qun);
-        res.send({
-            success: true
-        });
-
-    });
-
-    Qun.findOne({
-        'id': qid
-    }, ep.done('qun'));
 };

@@ -43,16 +43,10 @@ router.get('/qun/list', qun.list);
 router.get('/qun/create', auth.userRequired, qun.create);
 router.post('/qun/create', auth.userRequired, qun.put);
 router.get('/qun/:qid', qun.index);
-router.get('/qun/:qid/topic/create', auth.userRequired, auth.qunRequired, topic.create);
-router.post('/qun/:qid/topic/create', auth.userRequired, auth.qunRequired, topic.put);
-router.post('/qun/:qid/apply/join', auth.userRequired, qun.join);
-router.post('/qun/:qid/apply/pass', auth.userRequired, qun.pass);
-router.post('/qun/:qid/apply/refuse', auth.userRequired, qun.refuse);
-
-// router.get('/community/create', auth.userRequired, community.create);
-// router.post('/community/create', auth.userRequired, community.put);
-// router.get('/community/profile/:cid', auth.userRequired, community.profile);
-// router.get('/community/:cid', community.index);
+router.get('/qun/:qid/topic/create', auth.userRequired, auth.qunMemberRequired, topic.create);
+router.post('/qun/:qid/topic/create', auth.userRequired, auth.qunMemberRequired, topic.put);
+router.post('/qun/:qid/i/code/create',  qun.invitation);
+router.post('/qun/:qid/i/join', qun.join);
 
 
 router.post('/upload', upload.image);

@@ -35,7 +35,8 @@
     "eventproxy": "*",
     "linkify-it": "*",
     "markdown-it": "*",
-    "multer": "*"
+    "multer": "*",
+    "shortid": "*"
   },
   "devDependencies": {
     "gulp": "*",
