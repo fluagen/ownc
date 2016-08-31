@@ -37,6 +37,7 @@ exports.index = function(req, res, next) {
 
     ep.all('qun', 'topics', function(qun, topics) {
         res.render('qun/index', {
+            action: 'topic',
             topics: topics,
             qun: qun
         });
@@ -95,6 +96,23 @@ exports.put = function(req, res, next) {
 
 exports.invitation = function(req, res, next) {
     var qid = req.params.qid;
+    var user = req.session.user;
+    var ep = new EventProxy();
+    ep.fail(next);
+    ep.all('qun', function(qun) {
+        res.render('qun/index', {
+            action: 'invitation',
+            qun: qun
+        });
+    });
+    Qun.findOne({
+        id: qid
+    }, ep.done('qun'));
+
+};
+
+exports.createInvitation = function(req, res, next) {
+    var qid = req.params.qid;
     var code = shortid.generate();
     var ep = new EventProxy();
     ep.fail(next);
@@ -110,24 +128,30 @@ exports.invitation = function(req, res, next) {
     invitation.save(ep.done('invitation'));
 };
 
-exports.join = function(req, res, next) {
-
+exports.checkInvitation = function(req, res, next) {
     var qid = req.params.qid;
     var code = req.body.code;
+    var user = req.session.user;
+
     var ep = new EventProxy();
     ep.fail(next);
-    ep.all('invitation', function(invitation) {
-        if (!invitation) {
+    ep.all('invitation', 'qun', function(invitation, qun) {
+        if (!invitation || !qun) {
+            return res.send({
+                success: false
+            });
+        }
+        if (tools.is_member(qun.members, user)) {
             return res.send({
                 success: false
             });
         }
         invitation.remove();
-
+        qun.members.push(user.loginid);
+        qun.save();
         return res.send({
             success: true
         });
-
     });
 
     Invitation.findOne({
@@ -135,8 +159,31 @@ exports.join = function(req, res, next) {
         qun_id: qid
     }, ep.done('invitation'));
 
+    Qun.findOne({
+        id: qid
+    }, ep.done('qun'));
+
 };
 
-exports.joinByUrl = function(req, res, next){
+exports.join = function(req, res, next) {
+    var qid = req.params.qid;
+    var user = req.session.user;
+    var ep = new EventProxy();
+    ep.fail(next);
+    ep.all('qun', function(qun) {
+        if (tools.is_member(qun.members, user)) {
+            return res.redirect('/qun/' + qid);
+        }
+        return res.render('qun/join', {
+            qun: qun
+        });
+    });
+
+    Qun.findOne({
+        id: qid
+    }, ep.done('qun'));
+};
+
+exports.joinByUrl = function(req, res, next) {
 
 };

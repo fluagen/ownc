@@ -41,7 +41,7 @@
             self.initReplyUp();
             self.initTopicCollect();
             self.initTopicFollow();
-            self.initApplyQun();
+            self.initJoinQun();
         },
         initAtAuthor: function() {
             var allAuthors = $('.author').map(function(idx, ele) {
@@ -248,38 +248,30 @@
                 });
             });
         },
-        initApplyQun: function() {
-            
+        initJoinQun: function() {
             var self = this;
-            $('#applyModal').on('show.bs.modal', function(e) {
-                $('#applyModal textarea').val('');
-            });
-            $('#apply-submit').click(function(){
-                var visible = $('#applyModal').is(":visible");
-                if(!visible){
-                    return;
-                }
-                var qun_id = $('.organization .apply').attr('id');
+             $('.join-btn').click(function() {
+                var qid = $(this).attr('id');
+                var code = $('.join-code').val();
+                var $this = $(this);
                 $.ajax({
-                    url: '/qun/' + qun_id + '/apply',
-                    method: 'POST',
+                    url: '/qun/' + qid + '/join',
+                    data: {code: code},
+                    method: 'POST'
                 }).done(function(data) {
                     if (data.success) {
-                        self.alertMessageBar($('.list-group'), "alert-info", "申请加入请求已发送");
+                        self.alertMessageBar($('.join-box'), "alert-danger", "加入成功，点击<a href=\"/qun/"+qid+"\">这里</a>进入群。");
+                        return;
                     } else {
-                        self.alertMessageBar($('.list-group'), "alert-danger", data.message);
+                        self.alertMessageBar($('.join-box'), "alert-danger", "邀请码无效，或已被使用。");
+                        return;
                     }
                 }).fail(function(xhr) {
                     if (xhr.status === 403) {
                         window.location.href = '/login-required';
                         return;
                     }
-                    if(xhr.status === 404){
-                        alert('404错误');
-                        return;
-                    }
                 });
-
             });
         }
 

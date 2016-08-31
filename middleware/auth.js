@@ -5,12 +5,20 @@ var model = require('../model');
 var User = model.User;
 var Qun = model.Qun;
 
+
+exports.loginRequired = function(req, res, next) {
+    res.render('sign/signin', {
+        alertType: 'alert-danger',
+        message: '需要登录后才能继续操作。'
+    });
+};
+
 /**
  * 需要登录
  */
 exports.userRequired = function(req, res, next) {
     if (!req.session || !req.session.user || !req.session.user._id) {
-        return res.renderError(403, '需要登录，或会话已过期。');
+        return res.status(301).redirect('/login-required');
     }
 
     next();
@@ -87,7 +95,9 @@ exports.qunMemberRequired = function(req, res, next) {
         next();
     });
 
-    Qun.findOne({id: qid}, ep.done('qun'));
+    Qun.findOne({
+        id: qid
+    }, ep.done('qun'));
 };
 
 exports.qunAdminRequired = function(req, res, next) {
@@ -102,12 +112,14 @@ exports.qunAdminRequired = function(req, res, next) {
         if (!qun) {
             return res.render404('群不存在，或已被删除。');
         }
-        if (!tools.is_member(qun.members, user) || !tools.is_member(qun.admin_ids, user)) {
+        if (qun.creator_id !== user.loginid && !tools.is_member(qun.admin_ids, user)) {
             return res.renderError(403, '你没有此操作权限。');
         }
         res.locals.qun = qun;
         next();
     });
 
-    Qun.findOne({id: qid}, ep.done('qun'));
+    Qun.findOne({
+        id: qid
+    }, ep.done('qun'));
 };

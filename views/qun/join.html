@@ -1,0 +1,27 @@
+<% layout('layout') -%>
+<div class="row">
+	<div class="col-md-9 ">
+		<ul class="list-group">
+			<li class="list-group-item">加入群</li>
+			<li class="list-group-item">
+				<div class="form-horizontal join-box">
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="code">邀请码</label>
+						<div class="col-md-4">
+							<input id="code" name="code" type="text" placeholder="" class="form-control input-md join-code" required=""></input>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="join-btn"></label>
+						<div class="col-md-8">
+							<button name="join-btn" id="<%= qun.id%>" type="button" class="btn btn-success join-btn">发送
+							</button>
+						</div>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div class="col-md-3">
+	</div>
+</div>

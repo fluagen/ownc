@@ -89,6 +89,7 @@ exports.showLogin = function(req, res, next) {
 };
 
 exports.login = function(req, res, next) {
+    console.log(req.headers.referer);
     var loginid = req.body.loginid;
     var passwd = req.body.passwd;
     var ep = new EventProxy();
@@ -138,11 +139,4 @@ exports.logout = function(req, res, next) {
         path: '/'
     });
     res.redirect('/');
-};
-
-exports.loginRequired = function(req, res, next) {
-    res.render('sign/signin', {
-        msgtype: 'alert-warning',
-        msg: '需要登录后才能继续操作。'
-    });
 };

@@ -1,7 +1,7 @@
 @import "vars";
 
 body {
-	background: #e9eaed;
+	background: #ececec;
 	color: $black;
 	font-family: Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN", Roboto, "Heiti SC", "Microsoft Yahei", sans-serif;
 }
@@ -114,6 +114,13 @@ abbr[title] {
     box-shadow: 0 .2em 0 0 #ddd,0 0 0 1px #ddd;
 }
 
+.list-item-heading {
+	background-color: #f8f8f8;
+}
+.btn-pref .btn {
+    border-radius:0 !important;
+}
+
 /**notification**/
 .notification {
 	display: flex;
@@ -156,60 +163,6 @@ abbr[title] {
 	}
 }
 
-/**card**/
-.card-box {
-
-	.logo {
-		margin-right: 10px;
-	}
-
-	.card-header {
-		display: flex;
-		.info {
-			flex: 1;
-			.title {
-				padding: 5px 0px;
-				font-weight: bold;
-				font-size: 14px;
-				height: 30px;
-			}
-		}
-	}
-	.card-bio {
-		margin-top: 10px;
-		border:0;
-		border-top: 1px dashed #DDD;
-		padding: 10px 0px;
-		color: #666;
-		height: 100px;
-	}
-
-}
-.card {
-	
-	.card-title {
-		font-weight: bold;
-		font-size: 14px;
-		//line-height: 20px;
-		height: 50px;
-		border-bottom: 1px dashed #DDD;
-	}
-	.card-bio {
-		color: #666;
-		height: 100px;
-
-	}
-	.card-bio-no {
-		color: $gray-light-1;
-		height: 100px;
-	}
-	.card-footer {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-}
-
 .super.button {
     background-image: url("/public/img/bg_blended_light.png");
     padding: 4px 8px 4px 8px;
@@ -237,40 +190,30 @@ abbr[title] {
 
 
 
-/**organization**/
-.organization {
+/**qun**/
+.qun-heading {
 	display: flex;
 
 	.avatar {
 		margin-right: 10px;
-		min-width: 70px;
-		img {
-			@include avatar(65px, 65px);
-		}
+		min-width: 90px;
 	}
 	.info {
-		flex: 1;
-		.organization-header {
-			display: flex;
-			.title {
+		.qun-name {
 				flex: 1;
 				color: #333;
 				font-size: 14px;
 				font-weight: bold;
 			}
-			.meta {
-				min-width:  100px;
-				strong {
-					color: #999;
-				}
-			}
-		}
-		.organization-bio {
+		.qun-bio {
 			padding: 10px 0px;
 			font-size: 12px;
 			color: #999;
 		}
 	}
+}
+.qun-tab {
+	border-radius:0 !important;
 }
 
 /**topic list**/

@@ -14,7 +14,7 @@ var app = express();
 var config = require('./config');
 var webRouter = require('./web_router');
 var auth = require('./middleware/auth');
-var notify = require('./middleware/notify');
+var notice = require('./middleware/notice');
 var tab = require('./middleware/tab');
 
 
@@ -50,7 +50,7 @@ app.use(session({
 }));
 
 //自定义中间件
-app.use(notify.errorMessage);
+app.use(notice.alertMessage);
 app.use(auth.authUser);
 
 

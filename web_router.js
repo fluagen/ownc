@@ -23,7 +23,7 @@ router.post('/signup', sign.signup);
 router.get('/signin', sign.showLogin);
 router.post('/signin', sign.login);
 router.get('/logout', sign.logout);
-router.get('/login-required', sign.loginRequired);
+router.get('/login-required', auth.loginRequired);
 
 
 router.get('/topic/create', auth.userRequired, topic.create);
@@ -45,8 +45,10 @@ router.post('/qun/create', auth.userRequired, qun.put);
 router.get('/qun/:qid', qun.index);
 router.get('/qun/:qid/topic/create', auth.userRequired, auth.qunMemberRequired, topic.create);
 router.post('/qun/:qid/topic/create', auth.userRequired, auth.qunMemberRequired, topic.put);
-router.post('/qun/:qid/i/code/create',  qun.invitation);
-router.post('/qun/:qid/i/join', qun.join);
+router.get('/qun/:qid/i/code/create',  auth.userRequired, auth.qunAdminRequired, qun.createInvitation);
+router.get('/qun/:qid/invitation',  auth.userRequired, auth.qunAdminRequired, qun.invitation);
+router.get('/qun/:qid/join', auth.userRequired, qun.join);
+router.post('/qun/:qid/join', auth.userRequired, qun.checkInvitation);
 
 
 router.post('/upload', upload.image);
