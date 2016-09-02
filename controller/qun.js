@@ -70,28 +70,64 @@ exports.index = function(req, res, next) {
 };
 
 exports.create = function(req, res, next) {
-    res.render('qun/edit');
+    res.render('qun/create');
+};
+var validateQun = function(name, bio, callback) {
+    
+    var rst;
+    if (!name) {
+        rst = "名称不能为空";
+    } else if (name.length > 15) {
+        rst = "名称不能大于15字数";
+    }
+    if (rst) {
+        return callback(null, rst);
+    }
+    var ep = new EventProxy();
+    ep.fail(callback);
+    ep.all('quns', function(quns) {
+        if (quns && quns.length > 0) {
+            rst = "名称已被使用";
+        }
+        return callback(null, rst);
+    });
+    Qun.find({
+        name: name
+    }, ep.done('quns'));
 };
 exports.put = function(req, res, next) {
     var name = req.body.name;
-    var qid = req.body.qid;
     var bio = req.body.bio;
-    var user = req.session.user;
-
-    var qun = new Qun();
-    qun.name = name;
-    qun.id = qid;
-    qun.bio = bio;
-    qun.opened = false;
-    qun.creator_id = user.loginid;
-    qun.members = [user.loginid];
-
+    if (name !== undefined) {
+        name = validator.trim(name);
+    }
+    if (bio !== undefined) {
+        bio = validator.trim(bio);
+    }
     var ep = new EventProxy();
     ep.fail(next);
     ep.all('qun', function(qun) {
-        res.redirect('/qun/' + qun.id);
+        res.redirect('/qun/' + qun.qid);
     });
-    qun.save(ep.done('qun'));
+    ep.all('validateQun', function(rst) {
+        if (rst && rst.length > 0) {
+            return res.render('qun/create', {
+                name: name,
+                bio: bio,
+                error: rst
+            });
+        }
+        var user = req.session.user;
+        var qun = new Qun();
+        qun.qid = qun._id.toString();
+        qun.name = name;
+        qun.bio = bio;
+        qun.opened = false;
+        qun.creator_id = user.loginid;
+        qun.members = [user.loginid];
+        qun.save(ep.done('qun'));
+    });
+    validateQun(name, bio, ep.done('validateQun'));
 };
 
 exports.invitation = function(req, res, next) {

@@ -39,8 +39,8 @@ exports.signup = function(req, res, next) {
     passwd = validator.trim(passwd);
     repasswd = validator.trim(repasswd);
 
-    if (loginid.length < 5 || !tools.validateId(loginid)) {
-        ep.emit('prop_err', '登录名至少5位字母、数字。');
+    if (loginid.length < 5 || loginid.length > 15 || !tools.validateId(loginid)) {
+        ep.emit('prop_err', '登录名需要5到15位字母、数字。');
         return;
     }
     if (!validator.isEmail(email)) {
