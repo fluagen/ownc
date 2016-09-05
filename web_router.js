@@ -42,6 +42,7 @@ router.get('/message', auth.userRequired, message.index);
 router.get('/qun/list', qun.list);
 router.get('/qun/create', auth.userRequired, qun.create);
 router.post('/qun/create', auth.userRequired, qun.put);
+router.get('/qun/explore', qun.explore);
 router.get('/qun/:qid', qun.index);
 router.get('/qun/:qid/topic/create', auth.userRequired, auth.qunMemberRequired, topic.create);
 router.post('/qun/:qid/topic/create', auth.userRequired, auth.qunMemberRequired, topic.put);
@@ -49,6 +50,8 @@ router.get('/qun/:qid/i/code/create',  auth.userRequired, auth.qunAdminRequired,
 router.get('/qun/:qid/invitation',  auth.userRequired, auth.qunAdminRequired, qun.invitation);
 router.get('/qun/:qid/join', auth.userRequired, qun.join);
 router.post('/qun/:qid/join', auth.userRequired, qun.checkInvitation);
+
+
 
 
 router.post('/upload', upload.image);

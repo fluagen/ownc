@@ -8,7 +8,7 @@ var TopicSchema = new Schema({
   title: { type: String },
   content: { type: String },
   author_id: { type: ObjectId },
-  qun_id: { type: String },
+  qun_id: { type: ObjectId },
   top: { type: Boolean, default: false }, // 置顶帖
   good: {type: Boolean, default: false}, // 精华帖
   lock: {type: Boolean, default: false}, // 被锁定主题
@@ -25,8 +25,6 @@ var TopicSchema = new Schema({
   follow_count: { type: Number, default: 0 },
  
   last_reply: { type: ObjectId },
-  last_reply_author: {type: String},
-  last_reply_at: { type: Date, default: Date.now }
 });
 
 TopicSchema.plugin(BaseModel);

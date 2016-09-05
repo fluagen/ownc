@@ -12,9 +12,9 @@ var QunSchema = new Schema({
   bio: { type: String },
   location: {type: String},
   topic_count: { type: Number, default: 0 },
+  member_count: { type: Number, default: 0 },
   creator_id: { type: String },
-  admin_ids: [Schema.Types.String],
-  members: [Schema.Types.String],
+  opened: {type: Boolean, default: false},
   create_at: { type: Date, default: Date.now }
 });
 

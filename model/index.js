@@ -16,23 +16,21 @@ mongoose.connect(config.db, {
 require('./topic');
 require('./reply');
 require('./user');
-require('./group');
 require('./message');
 require('./topic_collect');
 require('./topic_follow');
-require('./community');
 require('./qun');
+require('./qun_member');
 require('./invitation');
 
 exports.Topic = mongoose.model('Topic');
 exports.Reply = mongoose.model('Reply');
 exports.User = mongoose.model('User');
-exports.Group = mongoose.model('Group');
 exports.Message = mongoose.model('Message');
 exports.TopicCollect = mongoose.model('TopicCollect');
 exports.TopicFollow = mongoose.model('TopicFollow');
-exports.Community = mongoose.model('Community');
 exports.Qun = mongoose.model('Qun');
+exports.QunMember = mongoose.model('QunMember');
 exports.Invitation = mongoose.model('Invitation');
 
 

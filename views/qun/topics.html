@@ -1,0 +1,12 @@
+<% layout('layout') -%>
+<div class="row">
+	<div class="col-md-9">
+		<%- partial('../topic/topic', topics) %>
+	</div>
+	<div class="col-md-3">
+		<%if(current_user){%>
+		<%- partial('./aside/topic_new') %>
+		<%}%>
+		<%- partial('./aside/about') %>
+	</div>
+</div>
