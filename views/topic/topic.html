@@ -9,7 +9,7 @@
 			<%
 			if(topic.qun){
 			%>
-			<a title="<%= topic.qun.name%>" href="/qun/<%=topic.qun.id %>"><%= topic.qun.id%></a>
+			<a title="<%= topic.qun.name%>" href="/qun/<%=topic.qun.qid %>"><%= topic.qun.name%></a>
 			<span>&nbsp;•&nbsp;</span>
 			<%}%>
 			<a href="#"><%= topic.author.loginid %></a>
@@ -18,12 +18,12 @@
 				于<%= topic.create_at_ago()%>发布
 			</abbr>
 			<%
-			if(topic.last_reply){
+			if(topic.lastReply){
 			%>
 			<span>&nbsp;•&nbsp;</span>
-			<a href="#"><%= topic.last_reply_author%></a>
-			<abbr class="timeago" title="<%= topic.last_reply_at_fmt() %>" >
-				于<%= topic.last_reply_at_ago()%>回复
+			<a href="#"><%= topic.lastReply.author.loginid%></a>
+			<abbr class="timeago" title="<%= topic.lastReply.create_at_fmt() %>" >
+				于<%= topic.lastReply.create_at_ago()%>回复
 			</abbr>
 			<%}%>
 			

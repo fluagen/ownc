@@ -1,6 +1,6 @@
 var config = require('../config');
 var EventProxy = require('eventproxy');
-var tools = require('../common/tools');
+var qunHelper = require('../common/qun_helper');
 var model = require('../model');
 var User = model.User;
 var Qun = model.Qun;
@@ -88,15 +88,16 @@ exports.qunMemberRequired = function(req, res, next) {
         if (!qun) {
             return res.render404('群不存在，或已被删除。');
         }
-        if (!tools.is_member(qun.members, user)) {
+        if (!qunHelper.is_member(qun.members, user)) {
             return res.renderError(403, '你没有此操作权限。');
         }
         res.locals.qun = qun;
+        req.body.qun = qun;
         next();
     });
 
     Qun.findOne({
-        id: qid
+        qid: qid
     }, ep.done('qun'));
 };
 
@@ -112,14 +113,15 @@ exports.qunAdminRequired = function(req, res, next) {
         if (!qun) {
             return res.render404('群不存在，或已被删除。');
         }
-        if (qun.creator_id !== user.loginid && !tools.is_member(qun.admin_ids, user)) {
+        if (qun.creator_id !== user.loginid && !qunHelper.is_admin(qun.members, user)) {
             return res.renderError(403, '你没有此操作权限。');
         }
         res.locals.qun = qun;
+        req.body.qun = qun;
         next();
     });
 
     Qun.findOne({
-        id: qid
+        qid: qid
     }, ep.done('qun'));
 };

@@ -74,9 +74,19 @@ exports.create = function(req, res, next) {
     res.render('topic/edit');
 };
 
+var check = function(title) {
+    var rst;
+    if (!title) {
+        rst = "标题不能为空";
+    } else if (title.length > 140) {
+        rst = "标题不能大于140字数";
+    }
+    return rst;
+};
+
 exports.put = function(req, res, next) {
     var title = req.body.title;
-    var qid = req.params.qid;
+    var qun = req.body.qun;
     var content = req.body.t_content;
     var user = req.session.user;
     var ep = new EventProxy();
@@ -88,21 +98,16 @@ exports.put = function(req, res, next) {
     if (content !== undefined) {
         content = validator.trim(content);
     }
-    var error;
-    if (!title) {
-        error = "标题不能为空";
-    } else if (title.length > 140) {
-        error = "标题不能大于140字数";
-    }
-    if (error) {
+    var rst = check(title);
+    if (rst) {
         return res.render('topic/edit', {
             title: title,
             content: content,
-            error: error
+            error: rst
         });
     }
 
-    ep.all('topic', 'user', 'qun', function(topic) {
+    ep.all('topic', function(topic) {
         return res.redirect('/topic/' + topic._id);
     });
 
@@ -111,34 +116,20 @@ exports.put = function(req, res, next) {
     topic.title = title;
     topic.content = content;
     topic.author_id = user._id;
-    if (qid) {
-        topic.qun_id = qid;
+    if (qun) {
+        topic.qun_id = qun._id;
         topic.opened = false;
-    } else {
-        topic.opened = true;
-    }
+    } 
     topic.save(ep.done(function(topic) {
         User.findById(user._id, ep.done(function(user) {
             user.topic_count += 1;
             user.save();
             req.session.user = user;
-            ep.emit('user');
         }));
-
-
-        if (qid) {
-            Qun.findOne({
-                id: qid
-            }, ep.done(function(qun) {
-                qun.topic_count += 1;
-                qun.save();
-                ep.emit('qun');
-            }));
-
-        } else {
-            ep.emit('qun');
-        }
-
+        if (qun) {
+            qun.topic_count += 1;
+            qun.save();
+        } 
         ep.emit('topic', topic);
     }));
 };

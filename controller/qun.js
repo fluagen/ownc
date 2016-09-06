@@ -40,6 +40,7 @@ exports.explore = function(req, res, next) {
         }
         res.render('qun/topics', {
             topics: topics,
+            quns: [],
             action: 'explore'
         });
     });
@@ -58,6 +59,9 @@ exports.explore = function(req, res, next) {
 
 exports.follow = function(req, res, next) {
     var user = req.session.user;
+    if (!user) {
+        return res.redirect('/qun/explore');
+    }
     var ep = new EventProxy();
     ep.fail(next);
     ep.all('topics', 'quns', function(topics, quns) {
@@ -67,17 +71,16 @@ exports.follow = function(req, res, next) {
             action: 'follow'
         });
     });
-    ep.all('qunMembers', function(qunMembers) {
-        if (!qunMembers || qunMembers.length === 0) {
+    ep.all('quns', function(quns) {
+        if (!quns || quns.length === 0) {
             ep.emit('topics', []);
-            ep.emit('quns', []);
             return;
         }
-        var qids = _.map(qunMembers, 'qun_id');
-        qids = _.uniq(qids);
+        var qun_ids = _.map(quns, '_id');
+        //qun_ids = _.uniq(qun_ids);
         var query = {
             'qun_id': {
-                '$in': qids
+                '$in': qun_ids
             },
             'deleted': false
         };
@@ -85,16 +88,10 @@ exports.follow = function(req, res, next) {
             sort: '-top -last_reply_at'
         };
         topicHelper.affixTopics(query, opt, ep.done('topics'));
-        query = {
-            'qid': {
-                '$in': qids
-            }
-        };
-        Qun.find(query, ep.done('quns'));
     });
-    QunMember.find({
-        'member_id': user._id
-    }, ep.done('qunMembers'));
+    Qun.find({
+        'members.id': user.loginid
+    }, ep.done('quns'));
 };
 
 exports.index = function(req, res, next) {
@@ -132,15 +129,8 @@ exports.index = function(req, res, next) {
             res.render404('群不存在或已被删除。');
             return;
         }
-        QunMember.find({
-            'qun_id': qun._id
-        }, ep.done(function(qunMembers) {
-            var members = _.map(qunMembers, 'member_id');
-            members = _.uniq(members);
-            qun.members = members;
-            qun.is_member = qunHelper.is_member(members, user);
-            ep.emit('qun', qun);
-        }));
+        qun.is_member = qunHelper.is_member(qun.members, user);
+        ep.emit('qun', qun);
     }));
 };
 
@@ -198,15 +188,11 @@ exports.put = function(req, res, next) {
         qun.name = name;
         qun.bio = bio;
         qun.creator_id = user.loginid;
-        qun.member_count = 1;
-        qun.save(ep.done(function(qun) {
-            var qunMember = new QunMember();
-            qunMember.member_id = user._id;
-            qunMember.qun_id = qun._id;
-            qunMember.type = 0;
-            qunMember.save();
-            ep.emit('qun', qun);
-        }));
+        qun.members.push({
+            'id': user.loginid,
+            'type': 0
+        });
+        qun.save(ep.done('qun'));
     });
     check(name, bio, ep.done('check'));
 };

@@ -5,7 +5,11 @@
 	</div>
 	<div class="col-md-3">
 		<%if(current_user){%>
-		<%- partial('./aside/topic_new') %>
+			<%- partial('./aside/qun_follow', {
+			quns: quns
+			}) %>
+
+			<%- partial('./aside/qun_new') %>
 		<%}%>
 		<%- partial('./aside/about') %>
 	</div>

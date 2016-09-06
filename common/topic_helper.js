@@ -2,6 +2,7 @@ var EventProxy = require('eventproxy');
 var model = require('../model');
 var Topic = model.Topic;
 var User = model.User;
+var Qun = model.Qun;
 
 var replyHelper = require('./reply_helper');
 
