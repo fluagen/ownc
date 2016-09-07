@@ -31,16 +31,46 @@ exports.list = function(req, res, next) {
     Qun.find({}, ep.done('quns'));
 };
 
+var popular = function(callback) {
+    var ep = new EventProxy();
+    ep.fail(callback);
+    ep.all('quns', function(quns) {
+        if (!quns) {
+            return callback(null, []);
+        }
+        return callback(null, quns);
+    });
+    Qun.find({}, {}, {
+        sort: '-topic_count -members.length'
+    }, ep.done('quns'));
+
+};
+
+var recent = function(callback) {
+    var ep = new EventProxy();
+    ep.fail(callback);
+    ep.all('quns', function(quns) {
+        if (!quns) {
+            return callback(null, []);
+        }
+        return callback(null, quns);
+    });
+    Qun.find({}, {}, {
+        sort: '-create_at'
+    }, ep.done('quns'));
+};
+
 exports.explore = function(req, res, next) {
     var ep = new EventProxy();
     ep.fail(next);
-    ep.all('topics', function(topics) {
+    ep.all('topics', 'popular','recent', function(topics, popular, recent) {
         if (!topics) {
             topics = [];
         }
         res.render('qun/topics', {
             topics: topics,
-            quns: [],
+            popular: popular,
+            recent: recent,
             action: 'explore'
         });
     });
@@ -55,6 +85,8 @@ exports.explore = function(req, res, next) {
         sort: '-top -last_reply_at'
     };
     topicHelper.affixTopics(query, opt, ep.done('topics'));
+    popular(ep.done('popular'));
+    recent(ep.done('recent'));
 };
 
 exports.follow = function(req, res, next) {
@@ -64,10 +96,12 @@ exports.follow = function(req, res, next) {
     }
     var ep = new EventProxy();
     ep.fail(next);
-    ep.all('topics', 'quns', function(topics, quns) {
+    ep.all('topics', 'quns', 'popular', 'recent', function(topics, quns, popular, recent) {
         return res.render('qun/topics', {
             topics: topics,
             quns: quns,
+            popular: popular,
+            recent: recent,
             action: 'follow'
         });
     });
@@ -92,6 +126,8 @@ exports.follow = function(req, res, next) {
     Qun.find({
         'members.id': user.loginid
     }, ep.done('quns'));
+    popular(ep.done('popular'));
+    recent(ep.done('recent'));
 };
 
 exports.index = function(req, res, next) {

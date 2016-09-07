@@ -1,0 +1,31 @@
+<div>
+	<ul class="list-group">
+		<li class="list-group-item">
+			新入驻群
+		</li>
+		<%
+		if(typeof(quns) === 'undefined'){
+		  return;
+		}
+		for(var i=0; i< quns.length; i++){
+		var qun = quns[i];
+		%>
+		<li class="list-group-item qun-heading">
+			<div class="avatar">
+				<a href="javascript:void(0);"><img class="avatar-48" src="<%= qun.avatar_url%>"></a>
+			</div>
+			<div class="info">
+				<div class="qun-name"><a href="/qun/<%= qun.qid%>"><%= qun.name%></a></div>
+				<div class="qun-bio">
+					<%= qun.bio%>
+				</div>
+				<div>
+					<div>话题 <%= qun.topic_count%></div>
+				</div>
+			</div>
+		</li>
+		<%
+		}
+		%>
+	</ul>
+</div>
