@@ -1,33 +1,15 @@
 <% layout('layout') -%>
 <div class="row">
 	<div class="col-md-9">
-		<ul class="list-group">
-			<%for(var i=0; i< quns.length; i++) {
-			var qun = quns[i];
-			%>
-				<li class="list-group-item organization">
-					<div class="avatar">
-						<a href="/qun/<%=qun.id%>">
-						<img class="avatar-65" src="<%= qun.avatar_url%>">
-						</a>
-					</div>
-					<div class="info">
-						<div class="organization-header">
-							<div class="title"><a href="/qun/<%=qun.id%>"><%= qun.name%></a></div>
-							<div class="meta">
-								<span>话题 &nbsp;<strong><%= qun.topic_count%></strong></span>
-								&nbsp;&nbsp;
-								<span>成员 &nbsp;<strong><%= qun.member_count%></strong></span>
-							</div>
-						</div>
-						<div class="organization-bio">
-							<%= qun.bio%>
-						</div>
-					</div>
-				</li>
-			<%}%>
-			
-		</ul>
+		<div class="list-group">
+			<div class="list-group-item">我加入的群</div>
+			<div class="list-group-item">
+				<ul class="list-inline">
+					 <%- partial('./card', { collection: quns, as: 'qun' }) %>
+				</ul>
+			</div>
+		</div>
+		
 	</div>
 	<div class="col-md-3">
 		<%- partial('./aside/qun_new') %>

@@ -17,6 +17,7 @@ var router = express.Router();
 
 // home page
 router.get('/', tab.tab_open, site.index);
+router.get('/follow', auth.userRequired, site.follow);
 
 router.get('/signup', sign.showSignup);
 router.post('/signup', sign.signup);
@@ -39,7 +40,7 @@ router.post('/reply/:reply_id/up', auth.userRequired, reply.up);
 
 router.get('/message', auth.userRequired, message.index);
 
-router.get('/qun', qun.follow);
+router.get('/qun', qun.list);
 router.get('/qun/list', qun.list);
 router.get('/qun/create', auth.userRequired, qun.create);
 router.post('/qun/create', auth.userRequired, qun.put);

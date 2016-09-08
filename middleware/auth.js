@@ -9,7 +9,7 @@ var Qun = model.Qun;
 exports.loginRequired = function(req, res, next) {
     res.render('sign/signin', {
         alertType: 'alert-danger',
-        message: '需要登录后才能继续操作。'
+        message: '需要登录，或会话已过期。'
     });
 };
 
