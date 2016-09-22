@@ -42,7 +42,7 @@
           animation-name: bounceIn; }
 
 body {
-  background: #ececec;
+  background: #e9eaed;
   color: #222527;
   font-family: Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN", Roboto, "Heiti SC", "Microsoft Yahei", sans-serif; }
 
@@ -65,13 +65,15 @@ body {
   -webkit-box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.1), 0 1px 0 0 rgba(0, 0, 0, 0.1);
           box-shadow: 0 0px 2px 0 rgba(0, 0, 0, 0.1), 0 1px 0 0 rgba(0, 0, 0, 0.1); }
 
-.topnav .main-nav > li > a:hover,
-.topnav .main-nav > li.active a,
-.topnav .main-nav > li.active a:hover {
+.topnav .main-nav > li > a:hover, .topnav .main-nav > li.active a, .topnav .main-nav > li.active a:hover {
   border-bottom: 3px solid #EB5424;
   color: #EB5424;
   background: transparent;
   padding-bottom: 12px; }
+
+.list-header {
+  color: #959897;
+  background-color: #f8f8f8; }
 
 .avatar-box {
   margin-right: 10px; }
@@ -146,8 +148,8 @@ abbr[title] {
   margin: 0 0 20px 0;
   -webkit-border-radius: 3px;
           border-radius: 3px;
-  -webkit-box-shadow: 0 .2em 0 0 #ddd,0 0 0 1px #ddd;
-          box-shadow: 0 .2em 0 0 #ddd,0 0 0 1px #ddd; }
+  -webkit-box-shadow: 0 .2em 0 0 #ddd, 0 0 0 1px #ddd;
+          box-shadow: 0 .2em 0 0 #ddd, 0 0 0 1px #ddd; }
 
 .list-item-heading {
   background-color: #f8f8f8; }
@@ -230,22 +232,33 @@ abbr[title] {
   .qun-heading .avatar {
     margin-right: 10px;
     min-width: 90px; }
-  .qun-heading .info .qun-name {
-    -webkit-box-flex: 1;
-    -webkit-flex: 1;
-        -ms-flex: 1;
-            flex: 1;
-    color: #333;
-    font-size: 14px;
-    font-weight: bold; }
-  .qun-heading .info .qun-bio {
-    padding: 10px 0px;
-    font-size: 12px;
-    color: #999; }
+    .qun-heading .avatar img {
+      width: 80px;
+      height: 80px;
+      -webkit-border-radius: 4px;
+              border-radius: 4px; }
+  .qun-heading .info {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between; }
+    .qun-heading .info .bio {
+      padding: 10px 0px;
+      font-size: 14px;
+      color: #959897; }
 
-.qun-tab {
-  -webkit-border-radius: 0 !important;
-          border-radius: 0 !important; }
+.invitation-codearea .list-group-item {
+  width: 100px;
+  min-height: 50px; }
 
 /**topic list**/
 .topic-list {

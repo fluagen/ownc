@@ -245,7 +245,7 @@ exports.invitation = function(req, res, next) {
         });
     });
     Qun.findOne({
-        id: qid
+        qid: qid
     }, ep.done('qun'));
 
 };
