@@ -16,7 +16,7 @@ var qun = require('./controller/qun');
 var router = express.Router();
 
 // home page
-router.get('/', tab.tab_open, site.index);
+router.get('/', tab.com, site.index);
 router.get('/follow', auth.userRequired, site.follow);
 
 router.get('/signup', sign.showSignup);
@@ -27,9 +27,9 @@ router.get('/logout', sign.logout);
 router.get('/login-required', auth.loginRequired);
 
 
-router.get('/topic/create', auth.userRequired, topic.create);
+router.get('/topic/create', auth.userRequired, tab.com, topic.create);
 router.post('/topic/create', auth.userRequired, topic.put);
-router.get('/topic/:tid', topic.index);
+router.get('/topic/:tid', tab.com, topic.index);
 router.post('/topic/:tid/collect', auth.userRequired, topic.collect);
 router.post('/topic/:tid/follow', auth.userRequired, topic.follow);
 

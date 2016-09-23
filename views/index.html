@@ -2,23 +2,27 @@
 <div class="row">
 	<div class="col-md-9">
 		<div class="list-group">
-			<div class="list-group-item list-header"><a href="/">活跃</a> <a href="/follow">我的群话题</a></div>
+			<div class="list-group-item list-header">
+				<ul class="list-inline topic-tab">
+					<li><a href="/" class="active">活跃</a></li>
+					<li><a href="/follow">群话题</a></li>
+				</ul>
+			</div>
 			<%- partial('./topic/topic', topics) %>
 		</div>
-
 	</div>
 	<div class="col-md-3">
 		<%if(current_user){%>
-			<%- partial('./aside/topic_new') %>
+		<%- partial('./aside/topic_new') %>
 		<%}%>
 		<%if(typeof(qun_follow) !== 'undefined' && qun_follow){%>
-			<%- partial('./aside/qun/follow', {quns: qun_follow}) %>
+		<%- partial('./aside/qun/follow', {quns: qun_follow}) %>
 		<%}%>
 		<%if(typeof(qun_popular) !== 'undefined' && qun_popular){%>
-			<%- partial('./aside/qun/popular', {quns: qun_popular}) %>
+		<%- partial('./aside/qun/popular', {quns: qun_popular}) %>
 		<%}%>
 		<%if(typeof(qun_recent) !== 'undefined' && qun_recent){%>
-			<%- partial('./aside/qun/recent', {quns: qun_recent}) %>
+		<%- partial('./aside/qun/recent', {quns: qun_recent}) %>
 		<%}%>
 		<%- partial('./aside/about') %>
 	</div>

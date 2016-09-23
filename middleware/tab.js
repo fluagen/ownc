@@ -15,3 +15,7 @@ exports.tab_open = function(req, res, next) {
 exports.tab_cards = function(req, res, next) {
     set_tab('cards', res, next);
 };
+
+exports.com = function(req, res, next) {
+	set_tab('com', res, next);
+};

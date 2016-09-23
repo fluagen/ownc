@@ -42,6 +42,7 @@
             self.initTopicCollect();
             self.initTopicFollow();
             self.initJoinQun();
+            self.initCreateInvitationCode();
         },
         initAtAuthor: function() {
             var allAuthors = $('.author').map(function(idx, ele) {
@@ -264,6 +265,27 @@
                         return;
                     } else {
                         self.alertMessageBar($('.join-box'), "alert-danger", "邀请码无效，或已被使用。");
+                        return;
+                    }
+                }).fail(function(xhr) {
+                    if (xhr.status === 403) {
+                        window.location.href = '/login-required';
+                        return;
+                    }
+                });
+            });
+        },
+        initCreateInvitationCode: function(){
+            $('.invitation-code-btn').click(function() {
+                var qid = $('.qun-header').attr('id');
+                var $this = $(this);
+                var codearea = $('.invitation-code-area');
+                $.ajax({
+                    url: '/qun/'+qid+'/i/code/create',
+                    method: 'GET'
+                }).done(function(data) {
+                    if(data.code){
+                        codearea.append('<p>'+data.code+'</p>');
                         return;
                     }
                 }).fail(function(xhr) {

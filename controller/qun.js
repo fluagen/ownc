@@ -247,7 +247,6 @@ exports.invitation = function(req, res, next) {
     Qun.findOne({
         qid: qid
     }, ep.done('qun'));
-
 };
 
 exports.createInvitation = function(req, res, next) {
@@ -280,13 +279,16 @@ exports.checkInvitation = function(req, res, next) {
                 success: false
             });
         }
-        if (tools.is_member(qun.members, user)) {
+        if (qunHelper.is_member(qun.members, user)) {
             return res.send({
                 success: false
             });
         }
         invitation.remove();
-        qun.members.push(user.loginid);
+        qun.members.push({
+            'id': user.loginid,
+            'type': 2
+        });
         qun.save();
         return res.send({
             success: true
@@ -299,7 +301,7 @@ exports.checkInvitation = function(req, res, next) {
     }, ep.done('invitation'));
 
     Qun.findOne({
-        id: qid
+        qid: qid
     }, ep.done('qun'));
 
 };
@@ -310,7 +312,7 @@ exports.join = function(req, res, next) {
     var ep = new EventProxy();
     ep.fail(next);
     ep.all('qun', function(qun) {
-        if (tools.is_member(qun.members, user)) {
+        if (qunHelper.is_member(qun.members, user)) {
             return res.redirect('/qun/' + qid);
         }
         return res.render('qun/join', {
@@ -319,7 +321,7 @@ exports.join = function(req, res, next) {
     });
 
     Qun.findOne({
-        id: qid
+        qid: qid
     }, ep.done('qun'));
 };
 
