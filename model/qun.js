@@ -28,7 +28,7 @@ var QunSchema = new Schema({
     },
     members: [{
         id: {
-            type: String
+            type: ObjectId
         },
         create_at: {
             type: Date,
@@ -40,11 +40,7 @@ var QunSchema = new Schema({
         } // 0 创建者、1 管理员、2普通成员
     }],
     creator_id: {
-        type: String
-    },
-    opened: {
-        type: Boolean,
-        default: false
+        type: ObjectId
     },
     create_at: {
         type: Date,

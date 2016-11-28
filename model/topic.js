@@ -11,15 +11,12 @@ var TopicSchema = new Schema({
   qun_id: { type: ObjectId },
   top: { type: Boolean, default: false }, // 置顶帖
   good: {type: Boolean, default: false}, // 精华帖
-  q_top: { type: Boolean, default: false }, // 群置顶帖
-  q_good: {type: Boolean, default: false}, // 群精华帖
   lock: {type: Boolean, default: false}, // 被锁定主题
   opened: {type: Boolean, default: true}, // 公开的
   deleted: {type: Boolean, default: false},
   create_at: { type: Date, default: Date.now },
   update_at: { type: Date, default: Date.now },
   ups: [Schema.Types.ObjectId],
-  downs: [Schema.Types.ObjectId],
   
   reply_count: { type: Number, default: 0 },
   visit_count: { type: Number, default: 0 },
@@ -27,6 +24,10 @@ var TopicSchema = new Schema({
   follow_count: { type: Number, default: 0 },
  
   last_reply: { type: ObjectId },
+  last_reply_author: { type: ObjectId },
+  last_reply_at: { type: Date, default: Date.now },
+
+  tag_id: { type: ObjectId }
 });
 
 TopicSchema.plugin(BaseModel);

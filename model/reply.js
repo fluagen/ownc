@@ -9,8 +9,7 @@ var ReplySchema = new Schema({
   author_id: { type: ObjectId },
   create_at: { type: Date, default: Date.now },
   update_at: { type: Date, default: Date.now },
-  ups: [Schema.Types.ObjectId],
-  downs: [Schema.Types.ObjectId]
+  ups: [Schema.Types.ObjectId]
 });
 
 ReplySchema.plugin(BaseModel);
