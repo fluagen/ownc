@@ -39,11 +39,8 @@ exports.myQuns = function(user_id, callback) {
         }
         return callback(null, quns);
     });
-
     var query = {
-        'members.id': user_id,
+        'members.id': user_id
     };
-
-    Qun.find(query, {}, ep.done('quns'));
-
+    Qun.find(query).exec(ep.done('quns'));
 };

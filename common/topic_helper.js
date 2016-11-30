@@ -4,21 +4,50 @@ var Topic = model.Topic;
 var User = model.User;
 var Qun = model.Qun;
 
+var _ = require('lodash');
+
 var replyHelper = require('./reply_helper');
 
-var affix = function(topic, callback) {
+exports.affixTopic = function(topic) {
     var ep = new EventProxy();
-    ep.fail(callback);
+    ep.fail(_.noop);
     if (!topic) {
-        return callback(null, null);
+        return;
+    }
+    ep.all('author', 'lastReply', function(author, lastReply) {
+        //增加附加属性
+        topic.author = author;
+        topic.lastReply = lastReply;
+        return;
+    });
+    //作者
+    User.findById(topic.author_id, ep.done('author'));
+    //回复
+    replyHelper.affixReply(topic.last_reply, ep.done('lastReply'));
+};
+
+exports.affixTopics = function(topics) {
+    if (!topics || topics.length === 0) {
+        return;
+    }
+    //遍历 增加附加属性
+    topics.forEach(function(topic, i) {
+        affixQunTopic(topic);
+    });
+};
+
+exports.affixQunTopic = function(topic) {
+    var ep = new EventProxy();
+    ep.fail(_.noop);
+    if (!topic) {
+        return;
     }
     ep.all('author', 'lastReply', 'qun', function(author, lastReply, qun) {
         //增加附加属性
         topic.author = author;
         topic.lastReply = lastReply;
         topic.qun = qun;
-
-        return callback(null, topic);
+        return;
     });
     //作者
     User.findById(topic.author_id, ep.done('author'));
@@ -28,34 +57,12 @@ var affix = function(topic, callback) {
     Qun.findById(topic.qun_id, ep.done('qun'));
 };
 
-exports.affixTopic = function(id, callback) {
-    var ep = new EventProxy();
-    ep.fail(callback);
-    ep.all('topic', function(affixTopic) {
-        return callback(null, affixTopic);
+exports.affixQunTopics = function(topics) {
+    if (!topics || topics.length === 0) {
+        return;
+    }
+    //遍历 增加附加属性
+    topics.forEach(function(topic, i) {
+        affixQunTopic(topic);
     });
-    Topic.findById(id, ep.done(function(topic) {
-        if (!topic) {
-            return ep.emit('topic', null);
-        }
-        affix(topic, ep.done('topic'));
-    }));
-};
-
-exports.affixTopics = function(query, opt, callback) {
-    var ep = new EventProxy();
-    ep.fail(callback);
-    ep.all('topics', function(topics) {
-        if (!topics || topics.length === 0) {
-            return callback(null, []);
-        }
-        ep.after('affix', topics.length, function(topics) {
-            return callback(null, topics);
-        });
-        //遍历 增加附加属性
-        topics.forEach(function(topic, i) {
-            affix(topic, ep.done('affix'));
-        });
-    });
-    Topic.find(query, {}, opt, ep.done('topics'));
 };

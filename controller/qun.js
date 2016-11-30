@@ -20,115 +20,148 @@ var shortid = require('shortid');
 
 
 
-exports.list = function(req, res, next) {
-    var ep = new EventProxy();
-    ep.fail(next);
-    ep.all('quns', function(quns) {
-        res.render('qun/list', {
-            quns: quns
-        });
-    });
+// exports.list = function(req, res, next) {
+//     var ep = new EventProxy();
+//     ep.fail(next);
+//     ep.all('quns', function(quns) {
+//         res.render('qun/list', {
+//             quns: quns
+//         });
+//     });
 
-    Qun.find({}, ep.done('quns'));
-};
+//     Qun.find({}, ep.done('quns'));
+// };
 
-var popular = function(callback) {
-    var ep = new EventProxy();
-    ep.fail(callback);
-    ep.all('quns', function(quns) {
-        if (!quns) {
-            return callback(null, []);
-        }
-        return callback(null, quns);
-    });
-    Qun.find({}, {}, {
-        sort: '-topic_count -members.length'
-    }, ep.done('quns'));
+// var popular = function(callback) {
+//     var ep = new EventProxy();
+//     ep.fail(callback);
+//     ep.all('quns', function(quns) {
+//         if (!quns) {
+//             return callback(null, []);
+//         }
+//         return callback(null, quns);
+//     });
+//     Qun.find({}, {}, {
+//         sort: '-topic_count -members.length'
+//     }, ep.done('quns'));
 
-};
+// };
 
-var recent = function(callback) {
-    var ep = new EventProxy();
-    ep.fail(callback);
-    ep.all('quns', function(quns) {
-        if (!quns) {
-            return callback(null, []);
-        }
-        return callback(null, quns);
-    });
-    Qun.find({}, {}, {
-        sort: '-create_at'
-    }, ep.done('quns'));
-};
+// var recent = function(callback) {
+//     var ep = new EventProxy();
+//     ep.fail(callback);
+//     ep.all('quns', function(quns) {
+//         if (!quns) {
+//             return callback(null, []);
+//         }
+//         return callback(null, quns);
+//     });
+//     Qun.find({}, {}, {
+//         sort: '-create_at'
+//     }, ep.done('quns'));
+// };
+
+// exports.explore = function(req, res, next) {
+//     var ep = new EventProxy();
+//     ep.fail(next);
+//     ep.all('topics', 'popular', 'recent', function(topics, popular, recent) {
+//         if (!topics) {
+//             topics = [];
+//         }
+//         res.render('qun/topics', {
+//             topics: topics,
+//             popular: popular,
+//             recent: recent,
+//             action: 'explore'
+//         });
+//     });
+//     var query = {
+//         'qun_id': {
+//             '$ne': null
+//         },
+//         'opened': true,
+//         'deleted': false
+//     };
+//     var opt = {
+//         sort: '-top -last_reply_at'
+//     };
+//     topicHelper.affixTopics(query, opt, ep.done('topics'));
+//     popular(ep.done('popular'));
+//     recent(ep.done('recent'));
+// };
+
+// exports.follow = function(req, res, next) {
+//     var user = req.session.user;
+//     if (!user) {
+//         return res.redirect('/qun/explore');
+//     }
+//     var ep = new EventProxy();
+//     ep.fail(next);
+//     ep.all('topics', 'quns', 'popular', 'recent', function(topics, quns, popular, recent) {
+//         return res.render('qun/topics', {
+//             topics: topics,
+//             quns: quns,
+//             popular: popular,
+//             recent: recent,
+//             action: 'follow'
+//         });
+//     });
+//     ep.all('quns', function(quns) {
+//         if (!quns || quns.length === 0) {
+//             ep.emit('topics', []);
+//             return;
+//         }
+//         var qun_ids = _.map(quns, '_id');
+//         //qun_ids = _.uniq(qun_ids);
+//         var query = {
+//             'qun_id': {
+//                 '$in': qun_ids
+//             },
+//             'deleted': false
+//         };
+//         var opt = {
+//             sort: '-top -last_reply_at'
+//         };
+//         topicHelper.affixTopics(query, opt, ep.done('topics'));
+//     });
+//     Qun.find({
+//         'members.id': user.loginid
+//     }, ep.done('quns'));
+//     popular(ep.done('popular'));
+//     recent(ep.done('recent'));
+// };
 
 exports.explore = function(req, res, next) {
+    var user = req.session.user;
     var ep = new EventProxy();
     ep.fail(next);
-    ep.all('topics', 'popular','recent', function(topics, popular, recent) {
-        if (!topics) {
+    ep.all('quns', 'topics', function(quns, topics) {
+        if (!quns) {
+            quns = [];
+        }
+        if (topics && topics.length > 0) {
+            topicHelper.affixQunTopics(topics);
+        }else{
             topics = [];
         }
-        res.render('qun/topics', {
+        res.render('qun/explore', {
             topics: topics,
-            popular: popular,
-            recent: recent,
-            action: 'explore'
-        });
-    });
-    var query = {
-        'qun_id': {
-            '$ne': null
-        },
-        'opened': true,
-        'deleted': false
-    };
-    var opt = {
-        sort: '-top -last_reply_at'
-    };
-    topicHelper.affixTopics(query, opt, ep.done('topics'));
-    popular(ep.done('popular'));
-    recent(ep.done('recent'));
-};
-
-exports.follow = function(req, res, next) {
-    var user = req.session.user;
-    if (!user) {
-        return res.redirect('/qun/explore');
-    }
-    var ep = new EventProxy();
-    ep.fail(next);
-    ep.all('topics', 'quns', 'popular', 'recent', function(topics, quns, popular, recent) {
-        return res.render('qun/topics', {
-            topics: topics,
-            quns: quns,
-            popular: popular,
-            recent: recent,
-            action: 'follow'
+            quns: quns
         });
     });
     ep.all('quns', function(quns) {
         if (!quns || quns.length === 0) {
             ep.emit('topics', []);
-            return;
         }
-        var qun_ids = _.map(quns, '_id');
-        //qun_ids = _.uniq(qun_ids);
-        var query = {
+        var qids = _.map(quns, 'qid');
+        Topic.find({
             'qun_id': {
-                '$in': qun_ids
+                $in: qids
             },
-            'deleted': false
-        };
-        var opt = {
-            sort: '-top -last_reply_at'
-        };
-        topicHelper.affixTopics(query, opt, ep.done('topics'));
+            'delete': false
+        }).sort('-last_reply_at -create_at').exec(ep.done('topics'));
     });
-    Qun.find({
-        'members.id': user.loginid
-    }, ep.done('quns'));
-    popular(ep.done('popular'));
-    recent(ep.done('recent'));
+    qunHelper.myQuns(user._id, ep.done('quns'));
 };
 
 exports.index = function(req, res, next) {

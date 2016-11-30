@@ -3,27 +3,26 @@ var _ = require('lodash');
 
 var model = require('../model');
 var Qun = model.Qun;
+var Topic = model.Topic;
 var topicHelper = require('../common/topic_helper');
 
 exports.index = function(req, res, next) {
     var ep = new EventProxy();
     ep.fail(next);
     ep.all('topics', function(topics) {
+        if (!topics && topics.length > 0) {
+            topicHelper.affixTopics(topics);
+        }
         return res.render('index', {
             topics: topics,
         });
     });
-    var query = {
-        'opened': true,
-        'deleted': false
-    };
-    var opt = {
-        sort: '-last_reply_at'
-    };
-    topicHelper.affixTopics(query, opt, ep.done('topics'));
+    Topic.find({
+        'delete': false
+    }).sort('-last_reply_at -create_at').exec(ep.done('topics'));
 };
 
-exports.follow = function(req, res, next){
+exports.follow = function(req, res, next) {
     var user = req.session.user;
     var ep = new EventProxy();
     ep.fail(next);
@@ -54,7 +53,7 @@ exports.follow = function(req, res, next){
     }, ep.done('quns'));
 };
 
-exports.popular = function(req, res, next){
+exports.popular = function(req, res, next) {
     var ep = new EventProxy();
     ep.fail(next);
     ep.all('topics', function(topics) {
@@ -62,7 +61,7 @@ exports.popular = function(req, res, next){
             topics: topics
         });
     });
-     var query = {
+    var query = {
         'opened': true,
         'deleted': false
     };
