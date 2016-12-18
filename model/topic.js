@@ -16,14 +16,13 @@ var TopicSchema = new Schema({
   deleted: {type: Boolean, default: false},
   create_at: { type: Date, default: Date.now },
   update_at: { type: Date, default: Date.now },
-  ups: [Schema.Types.ObjectId],
   
   reply_count: { type: Number, default: 0 },
   visit_count: { type: Number, default: 0 },
   collect_count: { type: Number, default: 0 },
   follow_count: { type: Number, default: 0 },
  
-  last_reply: { type: ObjectId },
+  last_reply_id: { type: ObjectId },
   last_reply_author: { type: ObjectId },
   last_reply_at: { type: Date, default: Date.now },
 

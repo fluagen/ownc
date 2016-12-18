@@ -70,7 +70,6 @@ app.use(tab.init);
 app.use('/', webRouter);
 
 app.use(function(err, req, res, next) {
-    console.error(err);
     return res.status(500).send('500 status');
 });
 

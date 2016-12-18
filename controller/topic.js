@@ -86,7 +86,6 @@ var check = function(title) {
 
 exports.put = function(req, res, next) {
     var title = req.body.title;
-    var qun = req.body.qun;
     var content = req.body.t_content;
     var user = req.session.user;
     var ep = new EventProxy();
@@ -98,12 +97,17 @@ exports.put = function(req, res, next) {
     if (content !== undefined) {
         content = validator.trim(content);
     }
-    var rst = check(title);
-    if (rst) {
+    var error;
+    if (!title) {
+        error = "标题不能为空";
+    } else if (title.length > 140) {
+        error = "标题不能大于140字数";
+    }
+    if (error) {
         return res.render('topic/edit', {
             title: title,
             content: content,
-            error: rst
+            error: error
         });
     }
 
@@ -116,20 +120,12 @@ exports.put = function(req, res, next) {
     topic.title = title;
     topic.content = content;
     topic.author_id = user._id;
-    if (qun) {
-        topic.qun_id = qun._id;
-        topic.opened = false;
-    } 
     topic.save(ep.done(function(topic) {
         User.findById(user._id, ep.done(function(user) {
             user.topic_count += 1;
             user.save();
             req.session.user = user;
         }));
-        if (qun) {
-            qun.topic_count += 1;
-            qun.save();
-        } 
         ep.emit('topic', topic);
     }));
 };

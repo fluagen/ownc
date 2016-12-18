@@ -15,15 +15,6 @@
 		<%if(current_user){%>
 		<%- partial('./aside/topic_new') %>
 		<%}%>
-		<%if(typeof(qun_follow) !== 'undefined' && qun_follow){%>
-		<%- partial('./aside/qun/follow', {quns: qun_follow}) %>
-		<%}%>
-		<%if(typeof(qun_popular) !== 'undefined' && qun_popular){%>
-		<%- partial('./aside/qun/popular', {quns: qun_popular}) %>
-		<%}%>
-		<%if(typeof(qun_recent) !== 'undefined' && qun_recent){%>
-		<%- partial('./aside/qun/recent', {quns: qun_recent}) %>
-		<%}%>
 		<%- partial('./aside/about') %>
 	</div>
 </div>
