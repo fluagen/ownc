@@ -26,7 +26,7 @@ var TopicSchema = new Schema({
   last_reply_author: { type: ObjectId },
   last_reply_at: { type: Date, default: Date.now },
 
-  tag_id: { type: ObjectId }
+  node_id: { type: String }
 });
 
 TopicSchema.plugin(BaseModel);

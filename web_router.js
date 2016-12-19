@@ -12,6 +12,8 @@ var message = require('./controller/message');
 var community = require('./controller/community');
 var qun = require('./controller/qun');
 
+var node = require('./controller/node');
+
 
 var router = express.Router();
 
@@ -56,7 +58,9 @@ router.get('/qun/explore', qun.explore);
 // router.post('/qun/:qid/join', auth.userRequired, qun.checkInvitation);
 
 
-
+router.get('/node/edit', node.create);
+router.post('/node/edit', node.put);
+router.get('/go/:node_id', node.index);
 
 router.post('/upload', upload.image);
 

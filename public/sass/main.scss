@@ -245,7 +245,8 @@ abbr[title] {
 /**topic list**/
 .topic-list {
 	display: flex;
-.avatar {
+
+	.avatar {
 		margin-right: 10px;
 		min-width: 50px;
 	}
@@ -275,11 +276,12 @@ abbr[title] {
 			}
 		}
 	}
-	
 	.last-reply {
+
 		display: flex;
-		justify-content: center;
+		justify-content: flex-end;
 		align-items: center;
+		min-width: 100px;
 	}
 	.badge-reply-count {
 		margin-top: 10px;

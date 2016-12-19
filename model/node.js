@@ -2,11 +2,17 @@ var mongoose = require('mongoose');
 var BaseModel = require("./base_model");
 var Schema = mongoose.Schema;
 
-var TagSchema = new Schema({
+var NodeSchema = new Schema({
     id: {
         type: String
     },
+    name: {
+        type: String
+    },
     bio: {
+        type: String
+    },
+    parent_id: {
         type: String
     },
     create_at: {
@@ -19,6 +25,6 @@ var TagSchema = new Schema({
     },
 });
 
-TagSchema.plugin(BaseModel);
+NodeSchema.plugin(BaseModel);
 
-mongoose.model('Tag', TagSchema);
+mongoose.model('Node', NodeSchema);

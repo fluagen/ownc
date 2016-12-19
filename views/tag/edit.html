@@ -1,0 +1,57 @@
+<% layout('layout') -%>
+<div class="row">
+	<div class="col-md-8">
+		<ul class="list-group">
+			<li class="list-group-item">新增节点</li>
+			<li class="list-group-item">
+				<% if (typeof(error) !== 'undefined' && error) { %>
+				<div class="message-tip">
+					<p class="bg-danger"><%= error%></p>
+				</div>
+				<%}%>
+				<form class="form-horizontal" action="/node/edit" method="post">
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="id">节点ID</label>
+						<div class="col-md-4">
+							<% if (typeof(id) !== 'undefined') { %>
+							<input id="id" name="id" type="text" placeholder="" class="form-control input-md" required="" value="<%=id%>"></input>
+							<% } else { %>
+							<input id="id" name="id" type="text" placeholder="" class="form-control input-md" required="" value=""></input>
+							<% } %>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="id">名称</label>
+						<div class="col-md-4">
+							<% if (typeof(name) !== 'undefined') { %>
+							<input id="name" name="name" type="text" placeholder="" class="form-control input-md" required="" value="<%=name%>"></input>
+							<% } else { %>
+							<input id="name" name="name" type="text" placeholder="" class="form-control input-md" required="" value=""></input>
+							<% } %>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="bio">简介</label>
+						<div class="col-md-4">
+							<% if (typeof(bio) !== 'undefined') { %>
+							<textarea class="form-control input-md" id="bio" name="bio" rows="4" placeholder=""><%= typeof(bio) !== 'undefined' && bio || '' %></textarea>
+							<% } else { %>
+							<textarea class="form-control input-md" id="bio" name="bio" rows="4" placeholder=""></textarea>
+							<% } %>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-4 control-label" for="save-btn"></label>
+						<div class="col-md-8">
+							<input name="save-btn" type="submit" class="btn btn-success" value="保存"></input>
+						</div>
+					</div>
+				</form>
+			</li>
+		</ul>
+	</div>
+	<div class="col-md-4">
+		
+		<%- partial('./aside/about') %>
+	</div>
+</div>
