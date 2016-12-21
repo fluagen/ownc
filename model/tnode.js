@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var BaseModel = require("./base_model");
 var Schema = mongoose.Schema;
 
-var NodeSchema = new Schema({
+var TNodeSchema = new Schema({
     id: {
         type: String
     },
@@ -25,6 +25,6 @@ var NodeSchema = new Schema({
     },
 });
 
-NodeSchema.plugin(BaseModel);
+TNodeSchema.plugin(BaseModel);
 
-mongoose.model('Node', NodeSchema);
+mongoose.model('TNode', TNodeSchema);

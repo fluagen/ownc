@@ -2,30 +2,34 @@ var EventProxy = require('eventproxy');
 var validator = require('validator');
 
 var model = require('../model');
-var Node = model.Node;
+var TNode = model.TNode;
 var Topic = model.Topic;
+
+var topicRepo = require('../repository/topic_repo');
 
 exports.index = function(req, res, next) {
     var node_id = req.params.node_id;
     var ep = new EventProxy();
     ep.fail(next);
     ep.all('node', 'topics', function(node, topics) {
-        res.render('tag/index', {
+        res.render('tnode/index', {
             node: node,
             topics: topics
         });
     });
-    Node.findOne({
+    TNode.findOne({
         'id': node_id
     }, ep.done('node'));
     Topic.find({
             'node_id': node_id
         })
         .sort('-last_reply_at -create_at')
-        .exec(ep.done('topics'));
+        .exec(ep.done(function(topics) {
+            topicRepo.affixTopics(topics, ep.done('topics'));
+        }));
 };
 exports.create = function(req, res, next) {
-    res.render('tag/edit');
+    res.render('tnode/edit');
 };
 
 exports.put = function(req, res, next) {
@@ -51,14 +55,14 @@ exports.put = function(req, res, next) {
         error = "节点名称不能为空";
     }
     if (error) {
-        return res.render('tag/edit', {
+        return res.render('tnode/edit', {
             id: title,
             name: content,
             bio: bio,
             error: error
         });
     }
-    var node = new Node();
+    var node = new TNode();
     node.id = id;
     node.name = name;
     node.bio = bio;

@@ -13,7 +13,7 @@ mongoose.connect(config.db, {
 });
 
 // models
-require('./node');
+require('./tnode');
 require('./topic');
 require('./reply');
 require('./user');
@@ -24,7 +24,7 @@ require('./qun');
 require('./qun_member');
 require('./invitation');
 
-exports.Node = mongoose.model('Node');
+exports.TNode = mongoose.model('TNode');
 exports.Topic = mongoose.model('Topic');
 exports.Reply = mongoose.model('Reply');
 exports.User = mongoose.model('User');

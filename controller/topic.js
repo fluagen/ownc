@@ -85,6 +85,7 @@ var check = function(title) {
 };
 
 exports.put = function(req, res, next) {
+    var nodeId = "qna";
     var title = req.body.title;
     var content = req.body.t_content;
     var user = req.session.user;
@@ -120,6 +121,7 @@ exports.put = function(req, res, next) {
     topic.title = title;
     topic.content = content;
     topic.author_id = user._id;
+    topic.node_id = nodeId;
     topic.save(ep.done(function(topic) {
         User.findById(user._id, ep.done(function(user) {
             user.topic_count += 1;
