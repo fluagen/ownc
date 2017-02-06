@@ -12,7 +12,7 @@ var message = require('./controller/message');
 var community = require('./controller/community');
 var qun = require('./controller/qun');
 
-var tnode = require('./controller/tnode');
+var group = require('./controller/group');
 
 
 var router = express.Router();
@@ -57,9 +57,9 @@ router.get('/qun/explore', qun.explore);
 // router.get('/qun/:qid/join', auth.userRequired, qun.join);
 // router.post('/qun/:qid/join', auth.userRequired, qun.checkInvitation);
 
-router.get('/node/edit', tnode.create);
-router.post('/node/edit', tnode.put);
-router.get('/go/:node_id', tnode.index);
+router.get('/group/create', group.create);
+router.post('/group/create', group.put);
+router.get('/go/:group_id', group.index);
 
 router.post('/upload', upload.image);
 
