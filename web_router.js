@@ -9,7 +9,6 @@ var sign = require('./controller/sign');
 var topic = require('./controller/topic');
 var reply = require('./controller/reply');
 var message = require('./controller/message');
-var community = require('./controller/community');
 var qun = require('./controller/qun');
 
 var group = require('./controller/group');
@@ -60,6 +59,8 @@ router.get('/qun/explore', qun.explore);
 router.get('/group/create', group.create);
 router.post('/group/create', group.put);
 router.get('/go/:group_id', group.index);
+
+router.get('/group/list', group.list);
 
 router.post('/upload', upload.image);
 

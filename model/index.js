@@ -20,7 +20,6 @@ require('./message');
 require('./topic_collect');
 require('./topic_follow');
 require('./qun');
-require('./qun_member');
 require('./invitation');
 require('./group');
 
@@ -32,8 +31,8 @@ exports.Message = mongoose.model('Message');
 exports.TopicCollect = mongoose.model('TopicCollect');
 exports.TopicFollow = mongoose.model('TopicFollow');
 exports.Qun = mongoose.model('Qun');
-exports.QunMember = mongoose.model('QunMember');
 exports.Invitation = mongoose.model('Invitation');
+exports.Groups = mongoose.model('Group');
 
 
 

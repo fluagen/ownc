@@ -249,8 +249,7 @@
     margin: 0;
     color: #C2627B;
     background-color: rgba(0, 0, 0, 0.04);
-    -webkit-border-radius: 3px;
-            border-radius: 3px;
+    border-radius: 3px;
     background-color: #F6F7FA;
     padding: 5px 2px 0px;
     border-bottom: 2px solid #ccc;
@@ -278,8 +277,7 @@
     overflow: auto;
     line-height: 1.45;
     background-color: #4e4e4e;
-    -webkit-border-radius: 3px;
-            border-radius: 3px;
+    border-radius: 3px;
     color: #fff;
     border: none; }
   .markdown-body .highlight pre, .markdown-reply .highlight pre {

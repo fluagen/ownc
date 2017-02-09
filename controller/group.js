@@ -72,3 +72,16 @@ exports.put = function(req, res, next) {
     });
     group.save(ep.done('group'));
 };
+
+exports.list = function(req, res, next) {
+    var ep = new EventProxy();
+    ep.fail(next);
+
+    ep.all('groups', function(groups) {
+        return res.send({
+            groups: groups
+        });
+    });
+
+    Group.find({}, ep.done('groups'));
+};

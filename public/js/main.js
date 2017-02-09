@@ -41,6 +41,7 @@
             self.initReplyUp();
             self.initTopicCollect();
             self.initTopicFollow();
+            self.initTypehead();
             self.initJoinQun();
             self.initCreateInvitationCode();
         },
@@ -249,19 +250,27 @@
                 });
             });
         },
+        initTypehead: function() {
+
+            $('select').select2({
+                 theme: "classic"
+            });
+
+
+        },
         initJoinQun: function() {
             var self = this;
-             $('.join-btn').click(function() {
+            $('.join-btn').click(function() {
                 var qid = $(this).attr('id');
                 var code = $('.join-code').val();
                 var $this = $(this);
                 $.ajax({
                     url: '/qun/' + qid + '/join',
-                    data: {code: code},
+                    data: { code: code },
                     method: 'POST'
                 }).done(function(data) {
                     if (data.success) {
-                        self.alertMessageBar($('.join-box'), "alert-danger", "加入成功，点击<a href=\"/qun/"+qid+"\">这里</a>进入群。");
+                        self.alertMessageBar($('.join-box'), "alert-danger", "加入成功，点击<a href=\"/qun/" + qid + "\">这里</a>进入群。");
                         return;
                     } else {
                         self.alertMessageBar($('.join-box'), "alert-danger", "邀请码无效，或已被使用。");
@@ -275,17 +284,17 @@
                 });
             });
         },
-        initCreateInvitationCode: function(){
+        initCreateInvitationCode: function() {
             $('.invitation-code-btn').click(function() {
                 var qid = $('.qun-header').attr('id');
                 var $this = $(this);
                 var codearea = $('.invitation-code-area');
                 $.ajax({
-                    url: '/qun/'+qid+'/i/code/create',
+                    url: '/qun/' + qid + '/i/code/create',
                     method: 'GET'
                 }).done(function(data) {
-                    if(data.code){
-                        codearea.append('<p>'+data.code+'</p>');
+                    if (data.code) {
+                        codearea.append('<p>' + data.code + '</p>');
                         return;
                     }
                 }).fail(function(xhr) {

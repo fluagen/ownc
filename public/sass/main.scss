@@ -397,3 +397,13 @@ abbr[title] {
 		}
 	}
 }
+
+.dropdown {
+  width: 100%;
+  &> * {
+    width: 100%;
+  }
+  a {
+    text-align:left;
+  }
+}

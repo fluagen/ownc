@@ -13,6 +13,9 @@ var TopicFollow = model.TopicFollow;
 var Qun = model.Qun;
 var Topic = model.Topic;
 var User = model.User;
+var Group = model.Group;
+
+
 
 var is_uped = function(user, reply) {
     if (!reply.ups) {
@@ -71,7 +74,19 @@ exports.index = function(req, res, next) {
 };
 
 exports.create = function(req, res, next) {
-    res.render('topic/edit');
+    var ep = new EventProxy();
+    ep.fail(next);
+
+    ep.all('groups', function(groups) {
+        if (!groups) {
+            groups = [];
+        }
+        res.render('topic/edit', {
+            groups: groups
+        });
+    });
+
+    Group.find({}, ep.done('groups'));
 };
 
 var check = function(title) {
@@ -85,10 +100,11 @@ var check = function(title) {
 };
 
 exports.put = function(req, res, next) {
-    var nodeId = "qna";
     var title = req.body.title;
     var content = req.body.t_content;
     var user = req.session.user;
+    var group_id = req.body.group_id;
+
     var ep = new EventProxy();
     ep.fail(next);
 
@@ -104,13 +120,22 @@ exports.put = function(req, res, next) {
     } else if (title.length > 140) {
         error = "标题不能大于140字数";
     }
-    if (error) {
+
+    ep.all('error', 'groups', function(error, groups) {
         return res.render('topic/edit', {
             title: title,
             content: content,
+            group_id: group_id,
+            groups: groups,
             error: error
         });
+    });
+    if (error) {
+        ep.emit('error', error);
+        Group.find({}, ep.done('groups'));
     }
+
+
 
     ep.all('topic', function(topic) {
         return res.redirect('/topic/' + topic._id);
@@ -121,7 +146,7 @@ exports.put = function(req, res, next) {
     topic.title = title;
     topic.content = content;
     topic.author_id = user._id;
-    topic.node_id = nodeId;
+    topic.group_id = group_id;
     topic.save(ep.done(function(topic) {
         User.findById(user._id, ep.done(function(user) {
             user.topic_count += 1;
