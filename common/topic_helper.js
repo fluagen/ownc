@@ -3,6 +3,7 @@ var model = require('../model');
 var Topic = model.Topic;
 var User = model.User;
 var Qun = model.Qun;
+var Group = model.Group;
 
 var _ = require('lodash');
 
@@ -14,16 +15,19 @@ exports.affixTopic = function(topic) {
     if (!topic) {
         return;
     }
-    ep.all('author', 'lastReply', function(author, lastReply) {
+    ep.all('author', 'lastReply', 'group', function(author, lastReply, group) {
         //增加附加属性
         topic.author = author;
         topic.lastReply = lastReply;
+        topic.group = group;
         return;
     });
     //作者
     User.findById(topic.author_id, ep.done('author'));
     //回复
     replyHelper.affixReply(topic.last_reply, ep.done('lastReply'));
+
+    Group.findOne(topic.group_id, ep.done('group'));
 };
 
 exports.affixTopics = function(topics) {
@@ -32,7 +36,7 @@ exports.affixTopics = function(topics) {
     }
     //遍历 增加附加属性
     topics.forEach(function(topic, i) {
-        affixQunTopic(topic);
+        affixTopic(topic);
     });
 };
 

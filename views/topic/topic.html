@@ -1,30 +1,31 @@
-<div class="list-group-item topic-list">
+<div class="list-group-item topic-item">
 	<div class="avatar">
 		<a href="javascript:void(0);"><img class="avatar-48" src="<%=topic.author.avatar_url%>">
 		</a>
 	</div>
-	<div class="reply-count-area">
-		<div class="count-up" title="点赞数"><%= topic.collect_count%></div>
-		<div class="count-set">
-			<span><%= topic.reply_count%></span>
-			<span>/</span>
-			<span><%= topic.visit_count%></span>
-		</div>
-	</div>
 	<div class="info">
-		<div class="topic-title"><a href="/topic/<%= topic._id %>" title="<%= topic.title%>"><%= topic.title%></a></div>
+		<div class="topic-title"><a href="/topic/<%= topic._id %>"><%= topic.title%></a></div>
 		<div class="meta">
-			<a href="#"><%= topic.author.loginid %></a>
+		<%
+		if (typeof(topic.group) !== 'undefined' && topic.group !== null) {
+		%>
+			<a class="category" href="#"><%= topic.group.name %></a>
+
+			<span>&nbsp;•&nbsp;</span>
+		<%}%>
+
+			
+			<strong><a href="#"><%= topic.author.loginid %></a></strong>
+
+			<span>&nbsp;•&nbsp;</span>
+
+			<span><%= topic.create_at_ago()%></span>
+
+
 		</div>
 	</div>
-	<div class="last-reply">
-		<%if(topic.lastReply){
-		var lastReply = topic.lastReply;
-		%>
-		<a href="javascript:void(0);"><img class="avatar-20" src="<%=lastReply.author.avatar_url%>">
-		</a>
-		&nbsp;<%= lastReply.create_at_ago()%>
-		<%}%>
+	<div class="badge-reply-count">
+		<a href="/topic/<%= topic._id %>"><span class="badge "><%= topic.reply_count%></span></a>
 	</div>
 	
 </div>

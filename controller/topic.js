@@ -103,7 +103,7 @@ exports.put = function(req, res, next) {
     var title = req.body.title;
     var content = req.body.t_content;
     var user = req.session.user;
-    var group_id = req.body.group_id;
+    var category = req.body.category;
 
     var ep = new EventProxy();
     ep.fail(next);
@@ -121,18 +121,18 @@ exports.put = function(req, res, next) {
         error = "标题不能大于140字数";
     }
 
-    ep.all('error', 'groups', function(error, groups) {
-        return res.render('topic/edit', {
-            title: title,
-            content: content,
-            group_id: group_id,
-            groups: groups,
-            error: error
-        });
-    });
     if (error) {
-        ep.emit('error', error);
+        ep.all('groups', function(groups) {
+            return res.render('topic/edit', {
+                title: title,
+                content: content,
+                category: category,
+                groups: groups,
+                error: error
+            });
+        });
         Group.find({}, ep.done('groups'));
+        return;
     }
 
 
@@ -141,12 +141,11 @@ exports.put = function(req, res, next) {
         return res.redirect('/topic/' + topic._id);
     });
 
-
     var topic = new Topic();
     topic.title = title;
     topic.content = content;
     topic.author_id = user._id;
-    topic.group_id = group_id;
+    topic.group_id = category;
     topic.save(ep.done(function(topic) {
         User.findById(user._id, ep.done(function(user) {
             user.topic_count += 1;

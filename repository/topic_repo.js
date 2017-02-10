@@ -2,6 +2,7 @@ var EventProxy = require('eventproxy');
 var model = require('../model');
 var Topic = model.Topic;
 var User = model.User;
+var Group = model.Group;
 
 var _ = require('lodash');
 
@@ -13,16 +14,21 @@ var affixTopic = function(topic, callback) {
     if (!topic) {
         return callback(null, null);
     }
-    ep.all('author', 'lastReply', function(author, lastReply) {
+    ep.all('author', 'lastReply', 'group', function(author, lastReply, group) {
         //增加附加属性
         topic.author = author;
         topic.lastReply = lastReply;
+        topic.group = group;
         return callback(null, topic);
     });
     //作者
     User.findById(topic.author_id, ep.done('author'));
     //回复
     replyRepo.affixReply(topic.last_reply_id, ep.done('lastReply'));
+
+    Group.findOne({id: topic.group_id}, ep.done('group'));
+
+
 };
 
 exports.affixTopics = function(topics, callback) {

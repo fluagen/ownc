@@ -15,11 +15,11 @@
 		%>
 		<form id="topic-form" action="<%= action%>" method="post">
 			<div class="form-group">
-				<select class="form-control select2">
+				<select class="form-control select2" name="category">
 					<%
 					var selected = "qna";
-					if (typeof(group_id) !== 'undefined') {
-					selected = group_id;
+					if (typeof(category) !== 'undefined') {
+					selected = category;
 					}
 					for(var i=0; i < groups.length; i++){
 						var group = groups[i];
