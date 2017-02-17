@@ -46,7 +46,7 @@ exports.add = function(req, res, next) {
         reply.author_id = user._id;
         reply.save(ep.done(function(reply) {
             topic.last_reply_id = reply._id;
-            topic.last_reply_author = user._id;
+            topic.last_reply_author = user.loginid;
             topic.last_reply_at = new Date();
             topic.reply_count += 1;
             topic.save(ep.done('update_topic_last_reply'));

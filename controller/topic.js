@@ -15,6 +15,9 @@ var Topic = model.Topic;
 var User = model.User;
 var Group = model.Group;
 
+var topicRepo = require('../repository/topic_repo');
+var replyRepo = require('../repository/reply_repo');
+
 
 
 var is_uped = function(user, reply) {
@@ -24,12 +27,61 @@ var is_uped = function(user, reply) {
     return reply.ups.indexOf(user._id) !== -1;
 };
 
+// exports.index = function(req, res, next) {
+
+//     var tid = req.params.tid;
+//     var ep = new EventProxy();
+//     ep.fail(next);
+//     ep.all('topic', 'replies', 'is_collected', 'is_followed', function(topic, replies, is_collected, is_followed) {
+//         if (!replies) {
+//             replies = [];
+//         } else {
+//             topic.lastReply = replies[replies.length - 1];
+//         }
+//         res.render('topic/index', {
+//             topic: topic,
+//             replies: replies,
+//             is_uped: is_uped,
+//             is_collected: is_collected,
+//             is_followed: is_followed
+//         });
+//     });
+
+//     topicManager.getFullTopic(tid, ep.done(function(topic) {
+//         if (!topic) {
+//             res.render404('话题不存在或已被删除。');
+//             return;
+//         }
+//         topic.visit_count += 1;
+//         topic.save();
+
+//         replyManager.getFullReplies(topic._id, ep.done('replies'));
+
+//         ep.emit('topic', topic);
+//     }));
+//     var user = req.session.user;
+//     if (user) {
+//         TopicCollect.findOne({
+//             user_id: user._id,
+//             topic_id: tid
+//         }, ep.done('is_collected'));
+
+//         TopicFollow.findOne({
+//             user_id: user._id,
+//             topic_id: tid
+//         }, ep.done('is_followed'));
+//     } else {
+//         ep.emit('is_collected', null);
+//         ep.emit('is_followed', null);
+//     }
+// };
+
 exports.index = function(req, res, next) {
 
     var tid = req.params.tid;
     var ep = new EventProxy();
     ep.fail(next);
-    ep.all('topic', 'replies', 'is_collected', 'is_followed', function(topic, replies, is_collected, is_followed) {
+    ep.all('topic', 'replies', function(topic, replies) {
         if (!replies) {
             replies = [];
         } else {
@@ -39,38 +91,28 @@ exports.index = function(req, res, next) {
             topic: topic,
             replies: replies,
             is_uped: is_uped,
-            is_collected: is_collected,
-            is_followed: is_followed
+            is_collected: false,
+            is_followed: false
         });
     });
 
-    topicManager.getFullTopic(tid, ep.done(function(topic) {
+    Topic.findById(tid, function(err, topic) {
+        if (err) {
+            next(err);
+            return;
+        }
         if (!topic) {
             res.render404('话题不存在或已被删除。');
             return;
         }
-        topic.visit_count += 1;
-        topic.save();
 
-        replyManager.getFullReplies(topic._id, ep.done('replies'));
-
-        ep.emit('topic', topic);
-    }));
-    var user = req.session.user;
-    if (user) {
-        TopicCollect.findOne({
-            user_id: user._id,
-            topic_id: tid
-        }, ep.done('is_collected'));
-
-        TopicFollow.findOne({
-            user_id: user._id,
-            topic_id: tid
-        }, ep.done('is_followed'));
-    } else {
-        ep.emit('is_collected', null);
-        ep.emit('is_followed', null);
-    }
+        topicRepo.affixGroup(topic, ep.done(function(topic) {
+            topic.visit_count += 1;
+            topic.save();
+            ep.emit('topic', topic);
+        }));
+        replyRepo.affixReplies(tid, ep.done('replies'));
+    });
 };
 
 exports.create = function(req, res, next) {
@@ -89,6 +131,25 @@ exports.create = function(req, res, next) {
     Group.find({}, ep.done('groups'));
 };
 
+exports.createByGid = function(req, res, next) {
+    var gid = req.params.gid;
+    var ep = new EventProxy();
+    ep.fail(next);
+
+    ep.all('groups', function(groups) {
+        if (!groups) {
+            groups = [];
+        }
+        res.render('topic/edit', {
+            groups: groups,
+            gid: gid
+        });
+    });
+
+    Group.find({}, ep.done('groups'));
+
+};
+
 var check = function(title) {
     var rst;
     if (!title) {
@@ -103,8 +164,10 @@ exports.put = function(req, res, next) {
     var title = req.body.title;
     var content = req.body.t_content;
     var user = req.session.user;
-    var category = req.body.category;
-
+    var gid = req.body.gid;
+    if (!gid) {
+        gid = "qna";
+    }
     var ep = new EventProxy();
     ep.fail(next);
 
@@ -126,7 +189,7 @@ exports.put = function(req, res, next) {
             return res.render('topic/edit', {
                 title: title,
                 content: content,
-                category: category,
+                gid: gid,
                 groups: groups,
                 error: error
             });
@@ -145,7 +208,7 @@ exports.put = function(req, res, next) {
     topic.title = title;
     topic.content = content;
     topic.author_id = user._id;
-    topic.group_id = category;
+    topic.group_id = gid;
     topic.save(ep.done(function(topic) {
         User.findById(user._id, ep.done(function(user) {
             user.topic_count += 1;

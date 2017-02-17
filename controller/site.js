@@ -17,9 +17,10 @@ exports.index = function(req, res, next) {
 
 
     Topic.find({
+        'qun_id': null,
         'deleted': false
     }).sort('-last_reply_at -create_at').exec(ep.done(function(topics) {
-        topicRepo.affixTopics(topics, ep.done('topics'));
+        topicRepo.affixTopics(topics, 'group', ep.done('topics'));
     }));
 };
 

@@ -4,12 +4,12 @@
 		</a>
 	</div>
 	<div class="info">
-		<div class="topic-title"><a href="/topic/<%= topic._id %>"><%= topic.title%></a></div>
+		<div class="topic-title"><a href="/qun/<%= topic.qun_id%>/topic/<%= topic._id %>"><%= topic.title%></a></div>
 		<div class="meta">
 		<%
-		if (typeof(topic.group) !== 'undefined' && topic.group !== null) {
+		if (typeof(topic.qun) !== 'undefined' && topic.qun !== null) {
 		%>
-			<a href="/go/<%= topic.group_id %>"><%= topic.group.name %></a>
+			<a href="/qun/<%= topic.qun_id %>"><%= topic.qun.name %></a>
 
 			<span>&nbsp;•&nbsp;</span>
 		<%}%>

@@ -7,33 +7,7 @@
 			<p class="bg-danger"><%= error%></p>
 		</div>
 		<%}%>
-		<%
-		var action = "/topic/create";
-		if(typeof(qun) !== 'undefined' && qun){
-			action = "/qun/"+qun.id+"/topic/create";
-		}
-		%>
-		<form id="topic-form" action="<%= action%>" method="post">
-			<div class="form-group">
-				<select class="form-control select2" name="gid">
-					<%
-					var selected = "qna";
-					if (typeof(gid) !== 'undefined') {
-						selected = gid;
-					}
-					for(var i=0; i < groups.length; i++){
-						var group = groups[i];
-					%>
-						<%
-						if(group.id === selected){
-						%>
-						<option value="<%= group.id%>" selected ="selected" ><%= group.name%></option>
-						<%}else{%>
-						<option value="<%= group.id%>" ><%= group.name%></option>
-						<%}%>
-					<%}%>
-				</select>
-			</div>
+		<form id="topic-form" action="/qun/<%= qun.id %>/topic/create" method="post">
 
 			<div class="form-group">
 				<input id="title" name="title" type="text" placeholder="" class="form-control input-md" required="" value="<%= typeof(title) !== 'undefined' && title || '' %>"></input>

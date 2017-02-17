@@ -6,7 +6,7 @@ var ObjectId = Schema.ObjectId;
 var utility = require('utility');
 
 var QunSchema = new Schema({
-    qid: {
+    id: {
         type: String,
         unique: true
     },
@@ -28,7 +28,7 @@ var QunSchema = new Schema({
     },
     members: [{
         id: {
-            type: ObjectId
+            type: String
         },
         create_at: {
             type: Date,
@@ -40,7 +40,7 @@ var QunSchema = new Schema({
         } // 0 创建者、1 管理员、2普通成员
     }],
     creator_id: {
-        type: ObjectId
+        type: String
     },
     create_at: {
         type: Date,
@@ -53,7 +53,7 @@ QunSchema.index({
     create_at: -1
 });
 QunSchema.virtual('avatar_url').get(function() {
-    var url = this.avatar || ('//cdn.v2ex.co/gravatar/' + utility.md5(this.qid) + '?d=retro');
+    var url = this.avatar || ('//cdn.v2ex.co/gravatar/' + utility.md5(this.id) + '?d=retro');
 
     return url;
 });

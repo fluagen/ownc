@@ -12,6 +12,7 @@ var message = require('./controller/message');
 var qun = require('./controller/qun');
 
 var group = require('./controller/group');
+var test = require('./controller/test_data');
 
 
 var router = express.Router();
@@ -30,6 +31,7 @@ router.get('/login-required', auth.loginRequired);
 
 router.get('/topic/create', auth.userRequired, tab.com, topic.create);
 router.post('/topic/create', auth.userRequired, topic.put);
+router.get('/topic/create/:gid', auth.userRequired, topic.createByGid);
 router.get('/topic/:tid', tab.com, topic.index);
 router.post('/topic/:tid/collect', auth.userRequired, topic.collect);
 router.post('/topic/:tid/follow', auth.userRequired, topic.follow);
@@ -42,7 +44,14 @@ router.post('/reply/:reply_id/up', auth.userRequired, reply.up);
 router.get('/message', auth.userRequired, message.index);
 
 
-router.get('/qun/explore', qun.explore);
+router.get('/qun', qun.explore);
+router.get('/qun/create', auth.userRequired, qun.create);
+router.post('/qun/create', auth.userRequired, qun.put);
+router.get('/qun/:qid', auth.userRequired, auth.qunMemberRequired, qun.index);
+router.get('/qun/:qid/topic/create', auth.userRequired, auth.qunMemberRequired, qun.createTopic);
+router.post('/qun/:qid/topic/create', auth.userRequired, auth.qunMemberRequired, qun.putTopic);
+router.get('/qun/:qid/topic/:tid', auth.userRequired, auth.qunMemberRequired, qun.topic);
+
 
 // router.get('/qun', qun.list);
 // router.get('/qun/list', qun.list);
@@ -63,5 +72,8 @@ router.get('/go/:group_id', group.index);
 router.get('/group/list', group.list);
 
 router.post('/upload', upload.image);
+
+router.get('/test/user', test.initUser);
+router.get('/test/group', test.initGroup);
 
 module.exports = router;

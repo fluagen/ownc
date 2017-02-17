@@ -1,64 +1,37 @@
 <% layout('layout') -%>
-<div class="row">
-	<div class="col-md-9">
-		<div class="list-group">
-			<div class="list-group-item qun-header" id="<%= qun.qid%>">
-				<div class="avatar">
-					<a href="javascript:void(0);"><img class="avatar-80" src="<%= qun.avatar_url%>"></a>
-				</div>
-				<div class="info">
-					<div class="qun-name"><%= qun.name%></div>
-					<div class="qun-bio">
-						<%= qun.bio%>
-					</div>
-					<div>
-						<%
-						if(qun.is_member){
-						%>
-						<button type="button" class="super normal button" onclick="location.href = '/qun/<%= qun.id%>/topic/create';">创建话题</button>
-						<%}else{%>
-						<button type="button" class="super normal button apply" onclick="location.href = '/qun/<%= qun.id%>/join';">加入群</button>
-						<%}%>
-					</div>
-				</div>
-				
-				
-			</div>
-			<div class="list-group-item btn-group btn-group-justified btn-group-lg qun-tab">
-				<div class="btn-group" role="group">
-					<button type="button" class="btn <%= action === 'topic' ? 'btn-primary' : 'btn-default' %>" href="#tab1">
-					<i class="fa fa-comments" aria-hidden="true"></i>
-					<div>话题 <%= qun.topic_count%></div>
-					</button>
-				</div>
-				<div class="btn-group" role="group">
-					<button type="button" class="btn btn-default" href="#tab2">
-					<i class="fa fa-users" aria-hidden="true"></i>
-					<div>成员 <%= qun.members.length%></div>
-					</button>
-				</div>
-				<div class="btn-group" role="group">
-					<a class="btn <%= action === 'invitation' ? 'btn-primary' : 'btn-default' %>" href="/qun/<%= qun.id%>/invitation">
-					<i class="fa fa-envelope-o" aria-hidden="true"></i>
-					<div>邀请</div>
-					</a>
-				</div>
-				
-			</div>
-			<%
-			if(action == 'topic'){
-			%>
-				<%- partial('../topic/topic', topics) %>
-			<%
-			}else if(action == 'invitation'){
-			%>
-				<%- partial('./invitation', {qun: qun}) %>
-			<%
-			}
-			%>
-		</div>
-	</div>
-	<div class="col-md-3">
-		<%- partial('./aside/about') %>
-	</div>
-</div>
+    <div class="row">
+        <div class="col-md-9">
+            <div class="list-group">
+                <div class="list-group-item group">
+                    <div class="avatar">
+                        <a href="javascript:void(0);">
+                            <img src="<%=qun.avatar_url%>">
+                        </a>
+                    </div>
+                    <div class="info">
+                        <div class="info-top">
+                            <div class="info-nav">
+                                <a href="/qun">群</a>
+                                <span class="chevron">&nbsp;›&nbsp;</span>
+                                <span><%= qun.name%></span>
+                            </div>
+                            <div class="tip">
+                                <span>话题总数</span>
+                                <strong class="gray"><%= topics.length%></strong>
+                            </div>
+                        </div>
+                        <div class="bio">
+                            <%= typeof(qun.bio) !== 'undefined' && qun.bio || '' %>
+                        </div>
+                        <div class="op">
+                            <button type="button" class="super normal button" onclick="location.href = '/qun/<%= qun.id %>/topic/create';">创建话题</button>
+                        </div>
+                    </div>
+                </div>
+                <%- partial('../qun_topic/topic', topics) %>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <%- partial('./aside/about') %>
+        </div>
+    </div>

@@ -68,9 +68,9 @@ app.use(tab.init);
 // routes
 app.use('/', webRouter);
 
-app.use(function(err, req, res, next) {
-    return res.status(500).send('500 status');
-});
+// app.use(function(err, req, res, next) {
+//     return res.status(500).send('500 status');
+// });
 
 app.listen(config.port, function() {
     console.log('Ownc listening on port', config.port);

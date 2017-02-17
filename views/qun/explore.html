@@ -2,13 +2,10 @@
 <div class="row">
 	<div class="col-md-9">
 		<div class="list-group">
-			<div class="list-group-item list-header">我的群</div>
-			<%- partial('./topic', { collection: quns, as: 'qun' }) %>
+			<%- partial('../qun_topic/topic', topics) %>
 		</div>
-		
 	</div>
 	<div class="col-md-3">
-		<%- partial('./aside/qun_new') %>
-		<%- partial('./aside/qun/follow') %>
+		<%- partial('./aside/about') %>
 	</div>
 </div>

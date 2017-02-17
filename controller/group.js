@@ -20,6 +20,7 @@ exports.index = function(req, res, next) {
     Group.findOne({
         'id': group_id
     }, ep.done('group'));
+
     Topic.find({
             'group_id': group_id
         })

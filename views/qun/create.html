@@ -13,20 +13,26 @@
 				<%}%>
 				<form class="form-horizontal" action="/qun/create" method="post">
 					<div class="form-group">
-						<label class="col-md-4 control-label" for="name">名称</label>
-						<div class="col-md-6">
+						<label class="col-md-3 control-label" for="qid">ID</label>
+						<div class="col-md-7">
+							<input id="qid" name="qid" type="text" placeholder="" class="form-control input-md" required="" value="<%= typeof(qid) !== 'undefined' && qid || '' %>"></input>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label" for="name">名称</label>
+						<div class="col-md-7">
 							<input id="name" name="name" type="text" placeholder="" class="form-control input-md" required="" value="<%= typeof(name) !== 'undefined' && name || '' %>"></input>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-md-4 control-label" for="bio">简介</label>
-						<div class="col-md-6">
+						<label class="col-md-3 control-label" for="bio">简介</label>
+						<div class="col-md-7">
 							<textarea class="form-control" id="bio" name="bio" rows="4" placeholder=""><%= typeof(bio) !== 'undefined' && bio || '' %></textarea>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-md-4 control-label" for="save-btn"></label>
-						<div class="col-md-8">
+						<label class="col-md-3 control-label" for="save-btn"></label>
+						<div class="col-md-9">
 							<input name="save-btn" type="submit" class="btn btn-success" value="保存"></input>
 						</div>
 					</div>

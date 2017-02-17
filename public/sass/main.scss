@@ -8,7 +8,7 @@ body {
 @mixin avatar($width, $height) {
     width: $width;
     height: $height;
-    border-radius: 50%;
+    border-radius: 4px;
 }
 
 .navbar {
@@ -265,7 +265,7 @@ abbr[title] {
         word-break: break-all;
         flex: 1;
         .topic-title {
-            margin-top: 0;
+            margin-top: 5px;
             margin-bottom: 8px;
             font-size: 22px;
             color: #333;
@@ -387,14 +387,14 @@ a:hover {
 
 .meta,
 .operate {
-    color: #ccc;
+    color: #ABA8A6;
     font-size: 12px;
     line-height: 20px;
     .timeago {
         font-size: 11px;
     }
-    a.anchor {
-        color: #d0d0d0;
+    a {
+        color: #ABA8A6;
     }
     a.category {
         background-color: #f5f5f5;
@@ -406,11 +406,16 @@ a:hover {
         vertical-align: baseline;
         border-radius: 3px;
         text-decoration: none;
+        &:hover {
+            background-color: #e2e2e2;
+            color: #777;
+        }
     }
 }
 
 .topic-item {
     display: flex;
+    align-items: center;
     .avatar {
         min-width: 50px;
         img {
@@ -429,22 +434,61 @@ a:hover {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            text-decoration: none;
+            a {
+                color: #222;
+            }
         }
     }
-    .last-reply {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        min-width: 100px;
-    }
     .badge-reply-count {
-    	.badge {
+        .badge {
             padding: 1px 10px;
             font-size: 10px;
         }
         .badge:hover {
             background-color: #555;
         }
-        
     }
+}
+
+.group {
+    display: flex;
+    .avatar {
+        min-width: 73px;
+        margin-right: 10px;
+        img {
+            @include avatar(73px,
+            73px);
+        }
+    }
+    .info {
+        flex: 1;
+        .info-top {
+            display: flex;
+            .info-nav {
+
+                flex: 1;
+            }
+            .tip {
+                color: #e2e2e2;
+                .gray{
+                    color: #999;
+                }
+            }
+
+        }
+        .bio {
+            margin: 5px 0px;
+            min-height: 20px;
+            color: #999;
+        }
+        .op {
+            
+        }
+    }
+}
+
+.chevron {
+    font-family: "Lucida Grande";
+    font-weight: 500;
 }

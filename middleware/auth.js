@@ -97,7 +97,7 @@ exports.qunMemberRequired = function(req, res, next) {
     });
 
     Qun.findOne({
-        qid: qid
+        id: qid
     }, ep.done('qun'));
 };
 
@@ -122,6 +122,6 @@ exports.qunAdminRequired = function(req, res, next) {
     });
 
     Qun.findOne({
-        qid: qid
+        id: qid
     }, ep.done('qun'));
 };

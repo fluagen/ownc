@@ -23,10 +23,12 @@ var TopicSchema = new Schema({
   follow_count: { type: Number, default: 0 },
  
   last_reply_id: { type: ObjectId },
-  last_reply_author: { type: ObjectId },
+  last_reply_author: { type: String },
   last_reply_at: { type: Date, default: Date.now },
 
-  group_id: { type: String }
+  group_id: { type: String },
+  group_name: { type: String }
+  
 });
 
 TopicSchema.plugin(BaseModel);
