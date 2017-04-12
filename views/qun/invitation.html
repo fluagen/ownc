@@ -1,8 +1,18 @@
-<div class="list-group-item ">
-	<div>方式1：以下专属邀请链接，请复制后分享给您的好友</div>
-	<div><input type="text" name="invitationURL"></input></div>
+<% layout('layout') -%>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="list-group">
+                <div class="list-group-item">
+                    <strong>方式1：以下专属邀请链接，请复制后分享给您的好友</strong>
+                    <div class="text-box">
+                    	http://www.baidu.com
+                    </div>
+                    <input class="btn btn-primary" value="复制">
+                </div>
 
-	<div>方式2：<a href="javascript:void(0);" class="btn btn-success invitation-code-btn">生成邀请码</a>&nbsp;&nbsp;复制生成的邀请码给您的好友</div>
-	<div class="invitation-code-area">
-	</div>
-</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <%- partial('./aside/about') %>
+        </div>
+    </div>

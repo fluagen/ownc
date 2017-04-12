@@ -1,27 +1,30 @@
-<li class="list-group-item reply-box" id="<%= reply._id%>">
-	<div class="avatar"><a href="#"><img class="avatar-48" src="<%= reply.author.avatar_url%>" alt="15774"></a></div>
-	<div class="info">
-		<div class="info-bar">
-			<div class="meta">
-				<a class="author" href="javascript:void(0);"><%= reply.author.loginid %></a>
-				<span>&nbsp;•&nbsp;</span>
-				<%= indexInCollection+1 %>楼
-				<span>&nbsp;•&nbsp;</span>
-				<abbr class="timeago" title="<%= reply.create_at_fmt() %>" >
-					<%= reply.create_at_ago()%>
-				</abbr>
-			</div>
-			<div class="operate">
-				<a class="opt-up <%= current_user && is_uped(current_user,reply) ? 'active' : '' %>" title="赞" href="javascript:void(0);">
-					<i class="fa fa-thumbs-up" aria-hidden="true"></i>
-					<span class="up-count"><%= reply.ups && reply.ups.length ? reply.ups.length : '' %></span>
-				</a>
-				<a class="opt-reply" title="回复" href="javascript:void(0);" onclick="replyOne('<%= reply.author.loginid %>');">
-					<i class="fa fa-reply" aria-hidden="true"></i>
-				</a>
-			</div>
-			
-		</div>
-		<div class="info-content markdown-reply"><%- markdown(reply.content) %></div>
-	</div>
+<li class="list-group-item reply-item">
+    <div class="avatar"><a href="#"><img class="avatar-48" src="<%= reply.author.avatar_url%>"></a></div>
+    <div class="reply-info">
+        <div class="reply-heading">
+            <div class="reply-heading-info">
+                <a href="javascript:void(0);">
+                    <%= reply.author.loginid %>
+                </a>
+                <span class="bio"></span>
+                <div class="meta">
+                    <%= indexInCollection+1 %>#
+                        <span>&nbsp;•&nbsp;</span>
+                        <span><%= reply.create_at_ago()%></span>
+                </div>
+            </div>
+            <div class="operate">
+                <a class="opt-up <%= current_user && is_uped(current_user,reply) ? 'active' : '' %>" title="赞" href="javascript:void(0);">
+                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                    <span class="up-count"><%= reply.ups && reply.ups.length ? reply.ups.length : '' %></span>
+                </a>
+                <a class="opt-reply" title="回复" href="javascript:void(0);" onclick="replyOne('<%= reply.author.loginid %>');">
+                    <i class="fa fa-reply" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+        <div class="info-content markdown-reply media-body">
+            <%- markdown(reply.content) %>
+        </div>
+    </div>
 </li>

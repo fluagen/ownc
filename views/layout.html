@@ -3,13 +3,11 @@
 	<head>
 		<!-- style -->
 		<%- Loader('/public/index.min.css')
-		.css('/public/libs/bootstrap/css/bootstrap.css')
+		.css('/public/assets/css/base.css')
 		.css('/public/libs/font-awesome/css/font-awesome.min.css')
 		.css('/public/libs/at/css/jquery.atwho.css')
 		.css('/public/bower_components/select2/dist/css/select2.css')
-		.css('public/bower_components/select2-bootstrap-theme/dist/select2-bootstrap.css')
-		.css('/public/stylesheets/main.css')
-		.css('/public/stylesheets/markdown.css')
+		.css('/public/assets/css/main.css')
 		.done(assets, config.site_static_host, config.mini_assets)
 		%>
 		<!-- scripts -->
@@ -28,6 +26,7 @@
 		.js('/public/libs/jquery.fileupload-validate.js')
 		.js('/public/libs/jquery.dotdotdot.js')
 		.js('/public/bower_components/select2/dist/js/select2.js')
+		.js('/public/bower_components/typeahead/dist/typeahead.bundle.js')
 		.js('/public/js/main.js')
 		.done(assets, config.site_static_host, config.mini_assets)
 		%>
@@ -41,7 +40,9 @@
 				</div>
 				<ul class="nav navbar-nav tab">
 					<li class="<%= typeof(tab) !== 'undefined' && tab === 'com' ? 'active' : '' %>" ><a href="/">社区</a></li>
-					<li class="<%= typeof(tab) !== 'undefined' && tab === 'qun' ? 'active' : '' %>"><a href="/qun/explore">群</a></li>
+					<%if(current_user){%>
+					<li class="<%= typeof(tab) !== 'undefined' && tab === 'qun' ? 'active' : '' %>"><a href="/qun">群</a></li>
+					<%}%>
 				</ul>
 				<%if(current_user){%>
 				<ul class="nav navbar-nav navbar-right">

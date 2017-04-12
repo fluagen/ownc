@@ -1,0 +1,37 @@
+<% layout('layout') -%>
+    <div class="row">
+        <div class="col-md-3">
+            <ul class="list-group">
+                <li class="list-group-item nav-aside">
+                    <ul class="list-group text-center">
+                        <a href="/qun/<%= qun.id %>/edit" class="list-group-item <%= action == 'edit' && 'active' || '' %>">
+                            <i class="text-md fa fa-list-alt" aria-hidden="true"></i> &nbsp;基本信息
+                        </a>
+                        <a href="/qun/<%=qun.id%>/edit_members" class="list-group-item <%= action == 'edit_members' && 'active' || '' %>">
+                            <i class="text-md fa fa-users" aria-hidden="true"></i> &nbsp;成员管理
+                        </a>
+                        <a href="/qun/<%=qun.id%>/invitation" class="list-group-item <%= action == 'invitation' && 'active' || '' %>">
+                            <i class="text-md fa fa-envelope" aria-hidden="true"></i> &nbsp;邀请加入
+                        </a>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <%
+        		if(action === 'edit'){
+        	%>
+                <%- partial('partials/admin_basic') %>
+            <%
+        		}else if(action === 'edit_members'){
+        	%>
+        		<%- partial('partials/admin_members') %>
+        	<%
+        		}else if(action === 'invitation'){
+        	%>
+        		<%- partial('partials/admin_invitation') %>
+        	<%
+        		}
+        	%>
+        </div>
+    </div>

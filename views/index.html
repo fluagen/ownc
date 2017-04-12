@@ -1,4 +1,9 @@
 <% layout('layout') -%>
+<% if (typeof(alerts) !== 'undefined' && alerts) { %>
+<div class="row">
+    <%- partial('./alert', alerts) %>
+</div>
+<%}%>
 <div class="row">
 	<div class="col-md-9">
 		<div class="list-group">

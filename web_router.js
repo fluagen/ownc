@@ -3,6 +3,7 @@ var express = require('express');
 var auth = require('./middleware/auth');
 var upload = require('./middleware/upload');
 var tab = require('./middleware/tab');
+var alerts = require('./middleware/alerts');
 
 var site = require('./controller/site');
 var sign = require('./controller/sign');
@@ -18,8 +19,7 @@ var test = require('./controller/test_data');
 var router = express.Router();
 
 // home page
-router.get('/', tab.com, site.index);
-router.get('/follow', auth.userRequired, site.follow);
+router.get('/', tab.com, alerts.print, site.index);
 
 router.get('/signup', sign.showSignup);
 router.post('/signup', sign.signup);
@@ -36,6 +36,8 @@ router.get('/topic/:tid', tab.com, topic.index);
 router.post('/topic/:tid/collect', auth.userRequired, topic.collect);
 router.post('/topic/:tid/follow', auth.userRequired, topic.follow);
 
+
+
 router.post('/:tid/reply', auth.userRequired, reply.add);
 // router.get('/reply/:reply_id/edit', auth.userRequired, reply.showEdit);
 // router.post('/reply/:reply_id/edit', auth.userRequired, reply.update);
@@ -47,10 +49,20 @@ router.get('/message', auth.userRequired, message.index);
 router.get('/qun', qun.explore);
 router.get('/qun/create', auth.userRequired, qun.create);
 router.post('/qun/create', auth.userRequired, qun.put);
-router.get('/qun/:qid', auth.userRequired, auth.qunMemberRequired, qun.index);
-router.get('/qun/:qid/topic/create', auth.userRequired, auth.qunMemberRequired, qun.createTopic);
-router.post('/qun/:qid/topic/create', auth.userRequired, auth.qunMemberRequired, qun.putTopic);
-router.get('/qun/:qid/topic/:tid', auth.userRequired, auth.qunMemberRequired, qun.topic);
+router.get('/qun/:qid/edit', auth.userRequired, auth.qunAdminRequired, qun.edit);
+router.get('/qun/:qid/edit_members', auth.userRequired, auth.qunAdminRequired, qun.edit_members);
+router.get('/qun/:qid/invitation', auth.userRequired, auth.qunAdminRequired, qun.invitation);
+router.get('/qun/:qid', auth.userRequired, auth.qunMemberRequired, alerts.print, qun.index);
+router.get('/join/:qid/i/:code', auth.userRequired, qun.join);
+
+
+router.get('/qun/:qid/topic/create', auth.userRequired, auth.qunMemberRequired, topic.createQunTopic);
+router.post('/qun/:qid/topic/create', auth.userRequired, auth.qunMemberRequired, topic.putQunTopic);
+router.get('/qun/:qid/topic/:tid', auth.userRequired, auth.qunMemberRequired, topic.qunTopic);
+
+
+
+
 
 
 // router.get('/qun', qun.list);

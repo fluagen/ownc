@@ -3,13 +3,21 @@
 		<a href="javascript:void(0);"><img class="avatar-48" src="<%=topic.author.avatar_url%>">
 		</a>
 	</div>
-	<div class="info">
+	<div class="topic-info">
 		<div class="topic-title"><a href="/topic/<%= topic._id %>"><%= topic.title%></a></div>
 		<div class="meta">
 		<%
 		if (typeof(topic.group) !== 'undefined' && topic.group !== null) {
 		%>
 			<a href="/go/<%= topic.group_id %>"><%= topic.group.name %></a>
+
+			<span>&nbsp;•&nbsp;</span>
+		<%}%>
+
+		<%
+		if (typeof(topic.qun) !== 'undefined' && topic.qun !== null) {
+		%>
+			<a href="/qun/<%= topic.qun_id %>"><%= topic.qun.name %></a>
 
 			<span>&nbsp;•&nbsp;</span>
 		<%}%>
@@ -25,7 +33,7 @@
 
 			最后由&nbsp;<a href="#"><%= topic.last_reply_author%></a>&nbsp;<%= topic.last_reply_at_ago()%>回复
 						
-<%}%>
+			<%}%>
 
 		</div>
 	</div>

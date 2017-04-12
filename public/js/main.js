@@ -30,6 +30,7 @@
             match.url = '/user/' + match.url.replace(/^@/, '');
         }
     });
+
     var ownc = {
         init: function() {
             var self = this;
@@ -41,7 +42,7 @@
             self.initReplyUp();
             self.initTopicCollect();
             self.initTopicFollow();
-            self.initTypehead();
+            self.initSelect2();
             self.initJoinQun();
             self.initCreateInvitationCode();
         },
@@ -250,13 +251,11 @@
                 });
             });
         },
-        initTypehead: function() {
+        initSelect2: function() {
 
-            $('select').select2({
-                 theme: "classic"
+            $('.select2').select2({
+                theme: "classic"
             });
-
-
         },
         initJoinQun: function() {
             var self = this;
@@ -283,6 +282,9 @@
                     }
                 });
             });
+        },
+        initTypeahead: function(){
+            $('.typeahead');
         },
         initCreateInvitationCode: function() {
             $('.invitation-code-btn').click(function() {

@@ -290,3 +290,116 @@ exports.follow = function(req, res, next) {
     }, ep.done('topic_follow'));
     Topic.findById(topic_id, ep.done('topic'));
 };
+
+exports.createQunTopic = function(req, res, next) {
+    var qid = req.params.qid;
+    var ep = new EventProxy();
+    ep.fail(next);
+
+    ep.all('qun', function(qun) {
+        if (!qun) {
+            return res.render404('群不存在或已被删除。');
+        }
+        res.render('qun_topic/edit', {
+            qun: qun
+        });
+        return;
+    });
+
+    Qun.findOne({ id: qid }, ep.done('qun'));
+};
+exports.putQunTopic = function(req, res, next) {
+    var title = req.body.title;
+    var content = req.body.t_content;
+    var user = req.session.user;
+    var qid = req.params.qid;
+    if (!qid) {
+        return res.render404('群不存在或已被删除。');
+    }
+    var ep = new EventProxy();
+    ep.fail(next);
+
+    if (title !== undefined) {
+        title = validator.trim(title);
+    }
+    if (content !== undefined) {
+        content = validator.trim(content);
+    }
+    var error;
+    if (!title) {
+        error = "标题不能为空";
+    } else if (title.length > 140) {
+        error = "标题不能大于140字数";
+    }
+
+    if (error) {
+        ep.all('qun', function(qun) {
+            return res.render('qun_topic/edit', {
+                title: title,
+                content: content,
+                qun: qun,
+                error: error
+            });
+        });
+        Qun.findOne({ id: qid }, ep.done('qun'));
+        return;
+    }
+
+
+
+    ep.all('topic', function(topic) {
+        return res.redirect('/qun/topic/' + topic._id);
+    });
+
+    var topic = new Topic();
+    topic.title = title;
+    topic.content = content;
+    topic.author_id = user._id;
+    topic.qun_id = qid;
+    topic.save(ep.done(function(topic) {
+        User.findById(user._id, ep.done(function(user) {
+            user.topic_count += 1;
+            user.save();
+            req.session.user = user;
+        }));
+        ep.emit('topic', topic);
+    }));
+};
+
+exports.qunTopic = function(req, res, next) {
+    var tid = req.params.tid;
+    var ep = new EventProxy();
+    ep.fail(next);
+    ep.all('topic', 'replies', function(topic, replies) {
+        if (!replies) {
+            replies = [];
+        } else {
+            topic.lastReply = replies[replies.length - 1];
+        }
+        res.render('qun_topic/index', {
+            topic: topic,
+            replies: replies,
+            is_uped: is_uped,
+            is_collected: false,
+            is_followed: false
+        });
+    });
+
+    Topic.findById(tid, function(err, topic) {
+        if (err) {
+            next(err);
+            return;
+        }
+        if (!topic) {
+            res.render404('话题不存在或已被删除。');
+            return;
+        }
+
+        topicRepo.affixQun(topic, ep.done(function(topic) {
+            topic.visit_count += 1;
+            topic.save();
+            ep.emit('topic', topic);
+        }));
+        replyRepo.affixReplies(tid, ep.done('replies'));
+    });
+};

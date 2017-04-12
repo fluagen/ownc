@@ -14,7 +14,7 @@ var replyRepo = require('../repository/reply_repo');
 var qunRepo = require('../repository/qun_repo');
 
 var apply = require('../common/apply_qun');
-
+var tools = require('../common/tools');
 
 var shortid = require('shortid');
 //shortid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
@@ -168,6 +168,8 @@ exports.explore = function(req, res, next) {
 exports.index = function(req, res, next) {
     var qid = req.params.qid;
     var user = req.session.user;
+
+
     var ep = new EventProxy();
     ep.fail(next);
 
@@ -300,127 +302,13 @@ exports.put = function(req, res, next) {
     verify(qid, name, ep.done('err'));
 };
 
-exports.createTopic = function(req, res, next) {
-    var qid = req.params.qid;
-    var ep = new EventProxy();
-    ep.fail(next);
-
-    ep.all('qun', function(qun) {
-        if (!qun) {
-            return res.render404('群不存在或已被删除。');
-        }
-        res.render('qun_topic/edit', {
-            qun: qun
-        });
-        return;
-    });
-
-    Qun.findOne({ id: qid }, ep.done('qun'));
-};
-exports.putTopic = function(req, res, next) {
-    var title = req.body.title;
-    var content = req.body.t_content;
-    var user = req.session.user;
-    var qid = req.params.qid;
-    if (!qid) {
-        return res.render404('群不存在或已被删除。');
-    }
-    var ep = new EventProxy();
-    ep.fail(next);
-
-    if (title !== undefined) {
-        title = validator.trim(title);
-    }
-    if (content !== undefined) {
-        content = validator.trim(content);
-    }
-    var error;
-    if (!title) {
-        error = "标题不能为空";
-    } else if (title.length > 140) {
-        error = "标题不能大于140字数";
-    }
-
-    if (error) {
-        ep.all('qun', function(qun) {
-            return res.render('qun_topic/edit', {
-                title: title,
-                content: content,
-                qun: qun,
-                error: error
-            });
-        });
-        Qun.findOne({ id: qid }, ep.done('qun'));
-        return;
-    }
-
-
-
-    ep.all('topic', function(topic) {
-        return res.redirect('/qun/'+qid+'topic/' + topic._id);
-    });
-
-    var topic = new Topic();
-    topic.title = title;
-    topic.content = content;
-    topic.author_id = user._id;
-    topic.qun_id = qid;
-    topic.save(ep.done(function(topic) {
-        User.findById(user._id, ep.done(function(user) {
-            user.topic_count += 1;
-            user.save();
-            req.session.user = user;
-        }));
-        ep.emit('topic', topic);
-    }));
-};
-
-exports.topic = function(req, res, next) {
-    var tid = req.params.tid;
-    var ep = new EventProxy();
-    ep.fail(next);
-    ep.all('topic', 'replies', function(topic, replies) {
-        if (!replies) {
-            replies = [];
-        } else {
-            topic.lastReply = replies[replies.length - 1];
-        }
-        res.render('topic/index', {
-            topic: topic,
-            replies: replies,
-            is_uped: is_uped,
-            is_collected: false,
-            is_followed: false
-        });
-    });
-
-    Topic.findById(tid, function(err, topic) {
-        if (err) {
-            next(err);
-            return;
-        }
-        if (!topic) {
-            res.render404('话题不存在或已被删除。');
-            return;
-        }
-
-        topicRepo.affixQun(topic, ep.done(function(topic) {
-            topic.visit_count += 1;
-            topic.save();
-            ep.emit('topic', topic);
-        }));
-        replyRepo.affixReplies(tid, ep.done('replies'));
-    });
-};
-
 exports.invitation = function(req, res, next) {
     var qid = req.params.qid;
-    var user = req.session.user;
+    // var user = req.session.user;
     var ep = new EventProxy();
     ep.fail(next);
     ep.all('qun', function(qun) {
-        res.render('qun/index', {
-            action: 'invitation',
+        res.render('qun/invitation', {
             qun: qun
         });
     });
@@ -487,24 +375,128 @@ exports.checkInvitation = function(req, res, next) {
 };
 
 exports.join = function(req, res, next) {
+
+    var qid = req.params.qid;
+    var code = req.params.code;
+    var user = req.session.user;
+    var ep = new EventProxy();
+    var alerts = [];
+    if (user.alerts) {
+        alerts = user.alerts;
+    }
+    ep.fail(next);
+    ep.all('invitation', 'qun', function(invitation, qun) {
+        if (!invitation || !qun) {
+            alerts.push({
+                text: '邀请码已被使用或已过期',
+                type: 'alert-warning'
+            });
+            user.alerts = alerts;
+            return res.redirect('/');
+        }
+        if (tools.is_member(qun.members, user)) {
+
+            alerts.push({
+                text: '你已经是群内成员，不可重复加入',
+                type: 'alert-warning'
+            });
+            user.alerts = alerts;
+
+            return res.redirect('/qun/' + qid);
+
+        }
+        invitation.remove();
+        qun.members.push({
+            'id': user.loginid,
+            'type': 2
+        });
+        qun.save();
+
+        alerts.push({
+            text: '你成功加入了 ' + qun.name,
+            type: 'alert-warning'
+        });
+        user.alerts = alerts;
+
+        return res.redirect('/qun/' + qid);
+    });
+
+    Invitation.findOne({
+        code: code,
+        qun_id: qid
+    }, ep.done('invitation'));
+
+    Qun.findOne({
+        id: qid
+    }, ep.done('qun'));
+};
+
+exports.joinByUrl = function(req, res, next) {
+
+};
+
+exports.edit = function(req, res, next) {
     var qid = req.params.qid;
     var user = req.session.user;
     var ep = new EventProxy();
     ep.fail(next);
+
     ep.all('qun', function(qun) {
-        if (qunHelper.is_member(qun.members, user)) {
-            return res.redirect('/qun/' + qid);
-        }
-        return res.render('qun/join', {
+        res.render('qun/admin', {
+            action: 'edit',
             qun: qun
         });
     });
 
     Qun.findOne({
-        qid: qid
+        id: qid
+    }, ep.done('qun'));
+};
+exports.edit_members = function(req, res, next) {
+    var qid = req.params.qid;
+    var user = req.session.user;
+    var ep = new EventProxy();
+    ep.fail(next);
+
+    ep.all('qun', function(qun) {
+        res.render('qun/admin', {
+            action: 'edit_members',
+            qun: qun
+        });
+    });
+
+    Qun.findOne({
+        id: qid
+    }, ep.done('qun'));
+};
+exports.invitation = function(req, res, next) {
+    var qid = req.params.qid;
+    var code = shortid.generate();
+    var ep = new EventProxy();
+    ep.fail(next);
+    ep.all('qun', 'url', function(qun, url) {
+        res.render('qun/admin', {
+            action: 'invitation',
+            qun: qun,
+            invitation_url: url
+        });
+    });
+
+    var invitation = new Invitation();
+    invitation.code = code;
+    invitation.qun_id = qid;
+    invitation.save(ep.done(function(invitation) {
+        ep.emit('url', 'http://localhost:3000/join/' + qid + '/i/' + invitation.code + '/');
+    }));
+
+    Qun.findOne({
+        id: qid
     }, ep.done('qun'));
 };
 
-exports.joinByUrl = function(req, res, next) {
+exports.update_basicinfo = function(req, res, next) {
+
+};
+exports.update_members = function(req, res, next) {
 
 };

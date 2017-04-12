@@ -51,7 +51,7 @@
 		</ul>
 		<%if(current_user){%>
 		<div class="editor-box reply-editor">
-			<form class="form-horizontal reply-form" action="/<%= topic._id%>/reply" method="post">
+			<form class="form-horizontal reply-form" action="/qun/topic/<%= topic._id%>/reply" method="post">
 				<textarea class="form-control editor-text" id="r_content" name="r_content" rows="4" placeholder="添加回复"></textarea>
 			</form>
 		</div>

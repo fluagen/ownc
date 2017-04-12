@@ -41,6 +41,7 @@
     "devDependencies": {
         "gulp": "*",
         "gulp-sass": "*",
+        "gulp-sourcemaps": "^2.4",
         "gulp-autoprefixer": "*"
     }
 }

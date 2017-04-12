@@ -1,74 +1,71 @@
 <% layout('layout') -%>
-<div class="row">
-	<div class="col-md-9">
-		<ul class="list-group topic">
-			<li class="list-group-item topic-header" id="<%= topic._id%>">
-				<div class="info">
-					<div class="info-nav">
-						<a href="/">OC</a>
-                        <span class="chevron">&nbsp;›&nbsp;</span>
-                        <a href="/go/<%= topic.group_id%>"><%= topic.group.name%></a>
-					</div>
-					<h1 class="topic-title"><%= topic.title%></h1>
-					<div class="meta">
-						<a href="#"><%= topic.author.loginid %></a>
-						<span>&nbsp;•&nbsp;</span>
-						<abbr class="timeago" title="<%= topic.create_at_fmt() %>" >
-							于<%= topic.create_at_ago()%>发布
-						</abbr>
-						<%
-						if(topic.last_reply){
-						%>
-						<span>&nbsp;•&nbsp;</span>
-						最后由<a href="#"><%= topic.last_reply_author%></a>
-						<abbr class="timeago" title="<%= topic.last_reply_at_fmt() %>" >
-							于<%= topic.last_reply_at_ago()%>回复
-						</abbr>
-						<%}%>
-						<span>&nbsp;•&nbsp; </span>
-						<%= topic.visit_count%>次阅读
-					</div>
-				</div>
-				<div class="avatar">
-					<a href="javascript:void(0);"><img class="avatar-65" src="<%= topic.author.avatar_url%>"></a>
-				</div>
-			</li>
-			<li class="list-group-item markdown-body"><%- markdown(topic.content) %></li>
-			<li class="list-group-item topic-footer operate">
-				<a class="follow <%= is_followed ? 'active' : '' %>" href="javascript:void(0);">
-					<i class="fa fa-eye" aria-hidden="true"></i>
-					<span class="count"><%= topic.follow_count ? topic.follow_count  : ''%></span>关注
-				</a>
-				<a class="bookmark <%= is_collected ? 'active' : '' %>" href="javascript:void(0);">
-					<i class="fa fa-bookmark" aria-hidden="true"></i>
-					<span class="count"><%= topic.collect_count ? topic.collect_count  : ''%></span>收藏
-				</a>
-			</li>
-		</ul>
-		<ul class="list-group">
-			<li class="list-group-item"><%= topic.reply_count%>&nbsp;回复</li>
-			<%- partial('../reply/reply', replies) %>
-		</ul>
-		<%if(current_user){%>
-		<div class="editor-box reply-editor">
-			<form class="form-horizontal reply-form" action="/<%= topic._id%>/reply" method="post">
-				<textarea class="form-control editor-text" id="r_content" name="r_content" rows="4" placeholder="添加回复"></textarea>
-			</form>
-		</div>
-		<div class="preview-box reply-preview markdown-reply">
-		</div>
-		<div class="editor-bar-box">
-			<div class="editor-bar-buttons">
-				<button name="save-btn" id="save-btn"  class="btn btn-primary reply-btn">回复</button>
-				<button name="edit-btn" id="edit-btn" class="btn btn-primary">编辑</button>
-				<button name="preview-btn" id ="preview-btn" class="btn btn-primary">预览</button>
-			</div>
-			<div class="editor-bar-fa">
-				<a title="上传图片" id="fileupload_btn" href="javascript:void(0);"><i class="fa fa-image" aria-hidden="true"></i></a>
-				<input id="fileupload" name="file_image" type="file" style="display:none">
-			</div>
-		</div>
-		<%}%>
-	</div>
-	<div class="col-md-3"></div>
-</div>
+    <div class="row">
+        <div class="col-md-9">
+            <ul class="list-group topic">
+                <li class="list-group-item topic-header">
+                    <h1 class="topic-title"><%= topic.title%></h1>
+                    <div class="meta">
+                        <a href="#">
+                            <%= topic.author.loginid %>
+                        </a>
+                        <span>&nbsp;•&nbsp;</span> 于
+                        <%= topic.create_at_ago()%>发布
+                            <%
+					if(topic.last_reply_id){
+					%>
+                                <span>&nbsp;•&nbsp;</span> 最后由
+                                <span>&nbsp;</span>
+                                <a href="#">
+                                    <%= topic.last_reply_author%>
+                                </a>
+                                <span>&nbsp;</span> 于
+                                <%= topic.last_reply_at_ago()%>回复
+                                    <%}%>
+                                        <span>&nbsp;•&nbsp; </span>
+                                        <%= topic.visit_count%>次阅读
+                    </div>
+                </li>
+                <li class="list-group-item markdown-body">
+                    <%- markdown(topic.content) %>
+                </li>
+                <li class="list-group-item topic-footer operate">
+                    <a class="follow <%= is_followed ? 'active' : '' %>" href="javascript:void(0);">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                        <span class="count"><%= topic.follow_count ? topic.follow_count  : ''%></span>关注
+                    </a>
+                    <a class="bookmark <%= is_collected ? 'active' : '' %>" href="javascript:void(0);">
+                        <i class="fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="count"><%= topic.collect_count ? topic.collect_count  : ''%></span>收藏
+                    </a>
+                </li>
+            </ul>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <%= topic.reply_count%>&nbsp;回复</li>
+                <%- partial('../reply/reply', replies) %>
+            </ul>
+            <%if(current_user){%>
+                <div class="editor-box reply-editor">
+                    <form class="form-horizontal reply-form" action="/<%= topic._id%>/reply" method="post">
+                        <textarea class="form-control editor-text" id="r_content" name="r_content" rows="4" placeholder="添加回复"></textarea>
+                    </form>
+                </div>
+                <div class="preview-box reply-preview markdown-reply">
+                </div>
+                <div class="editor-bar-box">
+                    <div class="editor-bar-buttons">
+                        <button name="save-btn" id="save-btn" class="btn btn-primary reply-btn">回复</button>
+                        <button name="edit-btn" id="edit-btn" class="btn btn-primary">编辑</button>
+                        <button name="preview-btn" id="preview-btn" class="btn btn-primary">预览</button>
+                    </div>
+                    <div class="editor-bar-fa">
+                        <a title="上传图片" id="fileupload_btn" href="javascript:void(0);"><i class="fa fa-image" aria-hidden="true"></i></a>
+                        <input id="fileupload" name="file_image" type="file" style="display:none">
+                    </div>
+                </div>
+                <%}%>
+        </div>
+        <div class="col-md-3">
+                <%- partial('./aside/author', {author: topic.author}) %>
+        </div>
+    </div>

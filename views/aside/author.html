@@ -1,0 +1,17 @@
+<div class="author">
+    <ul class="list-group text-center">
+        <li class="list-group-item">
+            作者: &nbsp; <%=author.loginid%>
+        </li>
+        <li class="list-group-item">
+            <div class="avatar">
+            	<a href="#">
+            		<img src="<%= author.avatar_url%>">
+            	</a>
+            </div>
+            <div class="bio">
+            <%= typeof(author.bio) !== 'undefined' && author.bio || '' %>
+            </div>
+        </li>
+    </ul>
+</div>

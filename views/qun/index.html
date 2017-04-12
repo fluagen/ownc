@@ -2,36 +2,42 @@
     <div class="row">
         <div class="col-md-9">
             <div class="list-group">
-                <div class="list-group-item group">
+                <div class="list-group-item qun">
                     <div class="avatar">
                         <a href="javascript:void(0);">
                             <img src="<%=qun.avatar_url%>">
                         </a>
                     </div>
-                    <div class="info">
-                        <div class="info-top">
-                            <div class="info-nav">
-                                <a href="/qun">群</a>
-                                <span class="chevron">&nbsp;›&nbsp;</span>
-                                <span><%= qun.name%></span>
-                            </div>
-                            <div class="tip">
-                                <span>话题总数</span>
-                                <strong class="gray"><%= topics.length%></strong>
-                            </div>
+                    <div class="qun-info">
+                        <div class="qun-heading">
+                           <h4><%= qun.name%></h4>
                         </div>
                         <div class="bio">
-                            <%= typeof(qun.bio) !== 'undefined' && qun.bio || '' %>
-                        </div>
-                        <div class="op">
-                            <button type="button" class="super normal button" onclick="location.href = '/qun/<%= qun.id %>/topic/create';">创建话题</button>
+                             <%= typeof(qun.bio) !== 'undefined' && qun.bio || '' %>
                         </div>
                     </div>
+                    <div class="meta">
+                        <span> 话题总数：<strong><%= topics.length%></strong> </span>
+                    </div>
                 </div>
-                <%- partial('../qun_topic/topic', topics) %>
+                <%- partial('../topic/topic', topics) %>
             </div>
+
+
         </div>
         <div class="col-md-3">
+            <%if(current_user){%>
+            
+            <%- partial('./aside/qun_topic_new', {
+            qid: qun.id
+            }) %>
+
+            <%- partial('./aside/qun_admin', {
+            qid: qun.id
+            }) %>
+
+            <%}%>
+            
             <%- partial('./aside/about') %>
         </div>
     </div>
