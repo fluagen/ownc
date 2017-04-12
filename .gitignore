@@ -1,4 +1,5 @@
 /node_modules/*
 /public/uploads/*
 /public/bower_components/*
-.DS_store
+/resources/bower_components/*
+.DS_store\
