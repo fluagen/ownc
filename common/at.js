@@ -34,6 +34,81 @@ var fetchUsers = function(text) {
 exports.fetchUsers = fetchUsers;
 
 
+var Type = {
+
+    reply: 'reply', //回复话题
+    at_reply: 'at_reply', //回复中at
+    at_topic: 'at_topic', //话题中at
+    follow: 'follow' //关注的话题
+};
+
+exports.Type = Type;
+
+exports.send_reply_message = function(sender_id, receiver_id, topic_id, reply_id, callback) {
+    var message = new Message();
+    message.sender_id = sender_id;
+    message.receiver_id = receiver_id;
+    message.topic_id = topic_id;
+    message.reply_id = reply_id;
+    message.type = Type.reply;
+    message.save(callback);
+};
+
+exports.send_at_reply_message = function(text, sender_id, topic_id, reply_id, callback) {
+    var receiver_ids = fetchUsers(text);
+    if (receiver_ids.length === 0) {
+        return callback(null, []);
+    }
+
+    receiver_ids = receiver_ids.filter(function(id) {
+        return !id.equals(sender_id);
+    });
+
+    var docs = [];
+
+    receiver_ids.forEach(function(id) {
+        var message = {};
+        message.sender_id = sender_id;
+        message.receiver_id = id;
+        message.topic_id = topic_id;
+        message.reply_id = reply_id;
+        message.type = Type.at_reply;
+        docs.push(message);
+    });
+
+    Message.create(docs, callback);
+};
+
+exports.send_at_topic_message = function(text, sender_id, topic_id, callback) {
+    var receiver_ids = fetchUsers(text);
+    if (receiver_ids.length === 0) {
+        return callback(null, []);
+    }
+
+    receiver_ids = receiver_ids.filter(function(id) {
+        return !id.equals(sender_id);
+    });
+
+    var docs = [];
+
+    receiver_ids.forEach(function(id) {
+        var message = {};
+        message.sender_id = sender_id;
+        message.receiver_id = id;
+        message.topic_id = topic_id;
+        message.reply_id = reply_id;
+        message.type = Type.at_topic;
+        docs.push(message);
+    });
+
+    Message.create(docs, callback);
+};
+
+exports.send_follow_message = function(sender_id, topic_id, reply_id, callback) {
+
+};
+
+
 exports.sendMessage = function(text, sender_id, topic_id, reply_id, callback) {
     var loginids = fetchUsers(text);
     if (loginids.length === 0) {
@@ -43,10 +118,13 @@ exports.sendMessage = function(text, sender_id, topic_id, reply_id, callback) {
     loginids = loginids.filter(function(loginid) {
         return !loginid.equals(sender_id);
     });
-    var type = MessageType.At.reply;
+    var type = Type.at_reply;
     if (!reply_id) {
-        type = MessageType.At.topic;
+        type = Type.at_topic;
     }
+
+    var docs = [];
+
 
     loginids.forEach(function(loginid) {
         var message = new Message();
@@ -55,6 +133,8 @@ exports.sendMessage = function(text, sender_id, topic_id, reply_id, callback) {
         message.topic_id = topic_id;
         message.reply_id = reply_id;
         message.type = type;
-        message.save();
+        docs.push(message);
     });
+
+    Message.create(docs, callback);
 };
