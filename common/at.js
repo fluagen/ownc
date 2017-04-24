@@ -36,7 +36,7 @@ exports.fetchUsers = fetchUsers;
 
 var Type = {
 
-    reply: 'reply', //回复话题
+    topic: 'topic', //回复话题
     at_reply: 'at_reply', //回复中at
     at_topic: 'at_topic', //话题中at
     follow: 'follow' //关注的话题
@@ -44,97 +44,80 @@ var Type = {
 
 exports.Type = Type;
 
-exports.send_reply_message = function(sender_id, receiver_id, topic_id, reply_id, callback) {
+var send_topic_message = function(sender, topic, reply, callback) {
     var message = new Message();
-    message.sender_id = sender_id;
-    message.receiver_id = receiver_id;
-    message.topic_id = topic_id;
-    message.reply_id = reply_id;
-    message.type = Type.reply;
+    message.sender_id = sender.loginid;
+    message.receiver_id = topic.author_id;
+    message.topic_id = topic._id;
+    message.reply_id = reply._id;
+    message.type = Type.topic;
     message.save(callback);
 };
 
-exports.send_at_reply_message = function(text, sender_id, topic_id, reply_id, callback) {
+var send_at_message = function(text, sender, topic, reply, callback) {
     var receiver_ids = fetchUsers(text);
     if (receiver_ids.length === 0) {
         return callback(null, []);
     }
 
     receiver_ids = receiver_ids.filter(function(id) {
-        return !id.equals(sender_id);
+        return !id.equals(sender.loginid);
     });
 
     var docs = [];
+    var type = Type.at_topic;
+    if (reply) {
+        type = Type.at_reply;
+    }
 
     receiver_ids.forEach(function(id) {
         var message = {};
-        message.sender_id = sender_id;
+        message.sender_id = sender.loginid;
         message.receiver_id = id;
-        message.topic_id = topic_id;
-        message.reply_id = reply_id;
-        message.type = Type.at_reply;
-        docs.push(message);
-    });
-
-    Message.create(docs, callback);
-};
-
-exports.send_at_topic_message = function(text, sender_id, topic_id, callback) {
-    var receiver_ids = fetchUsers(text);
-    if (receiver_ids.length === 0) {
-        return callback(null, []);
-    }
-
-    receiver_ids = receiver_ids.filter(function(id) {
-        return !id.equals(sender_id);
-    });
-
-    var docs = [];
-
-    receiver_ids.forEach(function(id) {
-        var message = {};
-        message.sender_id = sender_id;
-        message.receiver_id = id;
-        message.topic_id = topic_id;
-        message.reply_id = reply_id;
-        message.type = Type.at_topic;
-        docs.push(message);
-    });
-
-    Message.create(docs, callback);
-};
-
-exports.send_follow_message = function(sender_id, topic_id, reply_id, callback) {
-
-};
-
-
-exports.sendMessage = function(text, sender_id, topic_id, reply_id, callback) {
-    var loginids = fetchUsers(text);
-    if (loginids.length === 0) {
-        return callback(null, []);
-    }
-
-    loginids = loginids.filter(function(loginid) {
-        return !loginid.equals(sender_id);
-    });
-    var type = Type.at_reply;
-    if (!reply_id) {
-        type = Type.at_topic;
-    }
-
-    var docs = [];
-
-
-    loginids.forEach(function(loginid) {
-        var message = new Message();
-        message.sender_id = sender_id;
-        message.receiver_id = loginid;
-        message.topic_id = topic_id;
-        message.reply_id = reply_id;
+        message.topic_id = topic._id;
+        message.reply_id = reply._id;
         message.type = type;
         docs.push(message);
     });
 
     Message.create(docs, callback);
+};
+
+
+var send_follow_message = function(sender, topic, reply, callback) {
+    if (topic.followers.length === 0) {
+        return callback(null, []);
+    }
+
+    var receiver_ids = _.map(topic.followers, 'id');
+
+    var docs = [];
+
+    receiver_ids.forEach(function(id) {
+        var message = {};
+        message.sender_id = sender.loginid;
+        message.receiver_id = id;
+        message.topic_id = topic_id;
+        message.reply_id = reply_id;
+        message.type = Type.follow;
+        docs.push(message);
+    });
+
+    Message.create(docs, callback);
+};
+
+
+exports.sendMessage = function(text, sender, topic, reply, callback) {
+    var ep = new EventProxy();
+    ep.fail(callback);
+
+    ep.done('topic_message', 'at_message', 'follow_message', function() {
+        return callback(null, true);
+    });
+
+    send_topic_message(sender, topic, reply, ep.done('topic_message'));
+
+    send_at_message(text, sender, topic, reply, ep.done('at_message'));
+
+    send_follow_message(sender, topic, reply, ep.done('follow_message'));
 };

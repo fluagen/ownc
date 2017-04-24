@@ -7,22 +7,19 @@ var tools = require('../common/tools');
 var TopicSchema = new Schema({
     title: { type: String },
     content: { type: String },
-    author_id: { type: ObjectId },
+    author_id: { type: String },
     qun_id: { type: String },
     top: { type: Boolean, default: false }, // 置顶帖
     good: { type: Boolean, default: false }, // 精华帖
     lock: { type: Boolean, default: false }, // 被锁定主题
-    opened: { type: Boolean, default: true }, // 公开的
     deleted: { type: Boolean, default: false },
     create_at: { type: Date, default: Date.now },
     update_at: { type: Date, default: Date.now },
 
     reply_count: { type: Number, default: 0 },
     visit_count: { type: Number, default: 0 },
-    collect_count: { type: Number, default: 0 },
-    follow_count: { type: Number, default: 0 },
 
-    follower: [{
+    followers: [{
         id: {
             type: String
         },
@@ -32,7 +29,7 @@ var TopicSchema = new Schema({
         }
     }],
 
-    collector: [{
+    collectors: [{
         id: {
             type: String
         },
@@ -46,8 +43,7 @@ var TopicSchema = new Schema({
     last_reply_author: { type: String },
     last_reply_at: { type: Date, default: Date.now },
 
-    group_id: { type: String },
-    group_name: { type: String }
+    group_id: { type: String }
 
 });
 
