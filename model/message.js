@@ -4,8 +4,8 @@ var Schema    = mongoose.Schema;
 var ObjectId  = Schema.ObjectId;
 
 var MessageSchema = new Schema({
-  sender_id: { type: ObjectId },
-  receiver_id: { type: ObjectId},
+  sender_id: { type: String },
+  receiver_id: { type: String},
   topic_id: { type: ObjectId },
   reply_id: { type: ObjectId },
   type: { type: String },

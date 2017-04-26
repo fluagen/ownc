@@ -15,7 +15,7 @@ var affix = function(reply, callback) {
 
         return callback(null, reply);
     });
-    User.findById(reply.author_id, ep.done('author'));
+    User.findOne({ loginid: reply.author_id }, ep.done('author'));
 };
 
 exports.affixReply = function(id, callback) {
