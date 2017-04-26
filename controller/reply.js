@@ -8,11 +8,7 @@ var Reply = model.Reply;
 var Message = model.Message;
 
 var at = require('../common/at');
-var MessageType = require('../common/message_type');
 
-// var topicManager = require('../manager/topic');
-// var replyManager = require('../manager/reply');
-// var userManager = require('../manager/user');
 
 
 
@@ -31,19 +27,19 @@ exports.add = function(req, res, next) {
         return;
     }
 
-    ep.all('reply', 'update_user_reply_count', 'update_topic_last_reply', 'send_at_message', function(reply) {
+    ep.all('reply', 'update_user_reply_count', 'update_topic_last_reply', 'send_message', function(reply) {
         res.redirect('/topic/' + tid + '#' + reply._id);
     });
 
-    ep.all('topic', 'topicAuthor', function(topic, topicAuthor) {
-        if (!topicAuthor) {
+    ep.all('topic', function(topic) {
+        if (!topic) {
             res.render404('话题不存在或已被删除。');
             return;
         }
         var reply = new Reply();
         reply.topic_id = tid;
         reply.content = content;
-        reply.author_id = user._id;
+        reply.author_id = user.loginid;
         reply.save(ep.done(function(reply) {
             topic.last_reply_id = reply._id;
             topic.last_reply_author = user.loginid;
@@ -58,25 +54,10 @@ exports.add = function(req, res, next) {
                 ep.emit('update_user_reply_count');
             }));
         }));
-        if (topic.author_id.toString() !== user._id.toString()) {
-            var message = new Message();
-            message.sender_id = user.loginid;
-            message.receiver_id = topicAuthor.loginid;
-            message.topic_id = topic._id;
-            message.reply_id = reply._id;
-            message.type = MessageType.Reply;
-            message.save();
-        }
-        var n_content = content.replace('@' + topicAuthor.loginid + ' ', '');
-        at.sendMessage(n_content, user._id, topic._id, reply._id, ep.done('send_at_message'));
+
+        var n_content = content.replace('@' + topic.author_id + ' ', '');
+        at.sendMessage(n_content, user, topic, reply, ep.done('send_message'));
         ep.emit('reply', reply);
-    });
-    ep.all('topic', function(topic) {
-        if (!topic) {
-            res.render404('话题不存在或已被删除。');
-            return;
-        }
-        User.findById(topic.author_id, ep.done('topicAuthor'));
     });
     Topic.findById(tid, ep.done('topic'));
 };

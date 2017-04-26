@@ -1,11 +1,8 @@
 var EventProxy = require('eventproxy');
 var validator = require('validator');
+var _ = require('lodash');
 
 var tools = require('../common/tools');
-
-var topicManager = require('../manager/topic');
-var userManager = require('../manager/user');
-var replyManager = require('../manager/reply');
 
 var model = require('../model');
 var TopicCollect = model.TopicCollect;
@@ -77,61 +74,38 @@ var is_uped = function(user, reply) {
 // };
 
 exports.index = function(req, res, next) {
-
+    var user = req.session.user;
     var tid = req.params.tid;
     var ep = new EventProxy();
     ep.fail(next);
     ep.all('topic', 'replies', function(topic, replies) {
         if (!replies) {
             replies = [];
-        } else {
-            topic.lastReply = replies[replies.length - 1];
         }
+        var is_followed = _.filter(topic.followers, function(f) {
+            return f.id === user.loginid;
+        });
         res.render('topic/index', {
             topic: topic,
             replies: replies,
             is_uped: is_uped,
-            is_collected: false,
-            is_followed: false
+            is_followed: is_followed
         });
     });
 
-    Topic.findById(tid, function(err, topic) {
-        if (err) {
-            next(err);
-            return;
-        }
+    Topic.findById(tid, ep.done(function(topic) {
         if (!topic) {
             res.render404('话题不存在或已被删除。');
             return;
         }
-
-        topicRepo.affixGroup(topic, ep.done(function(topic) {
-            topic.visit_count += 1;
-            topic.save();
-            ep.emit('topic', topic);
-        }));
+        topic.visit_count += 1;
+        topic.save();
+        topicRepo.affixTopic(topic, ep.done('topic'));
         replyRepo.affixReplies(tid, ep.done('replies'));
-    });
+    }));
 };
 
 exports.create = function(req, res, next) {
-    var ep = new EventProxy();
-    ep.fail(next);
-
-    ep.all('groups', function(groups) {
-        if (!groups) {
-            groups = [];
-        }
-        res.render('topic/edit', {
-            groups: groups
-        });
-    });
-
-    Group.find({}, ep.done('groups'));
-};
-
-exports.createByGid = function(req, res, next) {
     var gid = req.params.gid;
     var ep = new EventProxy();
     ep.fail(next);
@@ -150,15 +124,17 @@ exports.createByGid = function(req, res, next) {
 
 };
 
-var check = function(title) {
-    var rst;
+var verify_title = function(title) {
+    var error;
     if (!title) {
-        rst = "标题不能为空";
+        error = "标题不能为空";
     } else if (title.length > 140) {
-        rst = "标题不能大于140字数";
+        error = "标题不能大于140字数";
     }
-    return rst;
+
+    return error;
 };
+
 
 exports.put = function(req, res, next) {
     var title = req.body.title;
@@ -177,13 +153,7 @@ exports.put = function(req, res, next) {
     if (content !== undefined) {
         content = validator.trim(content);
     }
-    var error;
-    if (!title) {
-        error = "标题不能为空";
-    } else if (title.length > 140) {
-        error = "标题不能大于140字数";
-    }
-
+    var error = verify_title(title);
     if (error) {
         ep.all('groups', function(groups) {
             return res.render('topic/edit', {
@@ -197,9 +167,6 @@ exports.put = function(req, res, next) {
         Group.find({}, ep.done('groups'));
         return;
     }
-
-
-
     ep.all('topic', function(topic) {
         return res.redirect('/topic/' + topic._id);
     });
@@ -207,13 +174,17 @@ exports.put = function(req, res, next) {
     var topic = new Topic();
     topic.title = title;
     topic.content = content;
-    topic.author_id = user._id;
+    topic.author_id = user.loginid;
     topic.group_id = gid;
     topic.save(ep.done(function(topic) {
         User.findById(user._id, ep.done(function(user) {
             user.topic_count += 1;
             user.save();
             req.session.user = user;
+        }));
+        Group.findOne({ id: gid }, ep.done(function(group) {
+            group.topic_count += 1;
+            group.save();
         }));
         ep.emit('topic', topic);
     }));

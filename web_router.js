@@ -31,7 +31,7 @@ router.get('/login-required', auth.loginRequired);
 
 router.get('/topic/create', auth.userRequired, tab.com, topic.create);
 router.post('/topic/create', auth.userRequired, topic.put);
-router.get('/topic/create/:gid', auth.userRequired, topic.createByGid);
+router.get('/topic/create/:gid', auth.userRequired, topic.create);
 router.get('/topic/:tid', tab.com, topic.index);
 router.post('/topic/:tid/collect', auth.userRequired, topic.collect);
 router.post('/topic/:tid/follow', auth.userRequired, topic.follow);

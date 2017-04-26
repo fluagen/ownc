@@ -24,7 +24,8 @@ var GroupSchema = new Schema({
     update_at: {
         type: Date,
         default: Date.now
-    }
+    },
+    topic_count: { type: Number, default: 0 }
 });
 
 GroupSchema.plugin(BaseModel);

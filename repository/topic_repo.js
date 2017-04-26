@@ -13,21 +13,6 @@ var affixTopic = function(topic, callback) {
     if (!topic) {
         return callback(null, null);
     }
-    ep.all('author', function(author) {
-        //附加属性
-        topic.author = author;
-        return callback(null, topic);
-    });
-    //作者
-    User.findById(topic.author_id, ep.done('author'));
-};
-
-var affixGroup = function(topic, callback) {
-    var ep = new EventProxy();
-    ep.fail(callback);
-    if (!topic) {
-        return callback(null, null);
-    }
     ep.all('author', 'group', function(author, group) {
         //附加属性
         topic.author = author;
@@ -35,36 +20,20 @@ var affixGroup = function(topic, callback) {
         return callback(null, topic);
     });
     //作者
-    User.findById(topic.author_id, ep.done('author'));
-    Group.findOne({ id: topic.group_id }, ep.done('group'));
-};
+    User.findOne({loginid: topic.author_id}, ep.done('author'));
 
-var affixQun = function(topic, callback) {
-
-    var ep = new EventProxy();
-    ep.fail(callback);
-    if (!topic) {
-        return callback(null, null);
-    }
-    ep.all('author', 'qun', function(author, qun) {
-        //附加属性
-        topic.author = author;
-        topic.qun = qun;
-        return callback(null, topic);
-    });
-    //作者
-    User.findById(topic.author_id, ep.done('author'));
-    Qun.findOne({ id: topic.qun_id }, ep.done('qun'));
+    Group.findOne({id: topic.group_id}, ep.done('group'));
 };
 
 
-var affixTopics = function(topics, affix, callback) {
+
+
+var affixTopics = function(topics, callback) {
     if (typeof affix === 'function') {
         callback = affix;
         affix = null;
     }
     if (!topics || topics.length === 0) {
-
         return callback(null, []);
     }
     var ep = new EventProxy();
@@ -76,19 +45,9 @@ var affixTopics = function(topics, affix, callback) {
 
     //遍历 增加附加属性
     topics.forEach(function(topic, i) {
-        if (affix === 'group') {
-            affixGroup(topic, ep.done('topics'));
-        } else if (affix === 'qun') {
-            affixQun(topic, ep.done('topics'));
-        } else {
-            affixTopic(topic, ep.done('topics'));
-        }
-
+        affixTopic(topic, ep.done('topics'));
     });
 };
 
 exports.affixTopic = affixTopic;
-exports.affixGroup = affixGroup;
-exports.affixQun = affixQun;
-
 exports.affixTopics = affixTopics;
