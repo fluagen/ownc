@@ -159,7 +159,7 @@ exports.explore = function(req, res, next) {
             })
             .sort('-last_reply_at -create_at')
             .exec(ep.done(function(topics) {
-                topicRepo.affixTopics(topics, 'qun', ep.done('topics'));
+                topicRepo.affixQunTopics(topics, ep.done('topics'));
             }));
 
     }));
@@ -213,7 +213,7 @@ exports.index = function(req, res, next) {
         })
         .sort('-last_reply_at -create_at')
         .exec(ep.done(function(topics) {
-            topicRepo.affixTopics(topics, '', ep.done('topics'));
+            topicRepo.affixQunTopics(topics, ep.done('topics'));
         }));
 };
 
@@ -254,6 +254,40 @@ var verify = function(qid, name, callback) {
     }, ep.done('re_qid'));
 };
 
+var spec = function(qid, name, callback) {
+    var _spec = {};
+
+    if (!qid || qid === '') {
+        _spec.error = "ID不能为空";
+    } else if (qid === 'create') {
+        _spec.error = "ID不合法或已被占用";
+    } else if (!name) {
+        _spec.error = "名称不能为空";
+    } else if (name.length > 15) {
+        _spec.error = "名称不能大于15字数";
+    }
+    if (_spec.error) {
+        return callback(null, _spec);
+    }
+    var ep = new EventProxy();
+    ep.fail(callback);
+    ep.all('re_qid', 're_name', function(re_qid, re_name) {
+        if (re_qid) {
+            _spec.error = "ID不合法或已被占用";
+        } else if (re_name) {
+            _spec.error = "名称已被使用";
+        }
+        return callback(null, _spec);
+    });
+    Qun.findOne({
+        name: name
+    }, ep.done('re_name'));
+
+    Qun.findOne({
+        id: qid
+    }, ep.done('re_qid'));
+};
+
 exports.put = function(req, res, next) {
     var name = req.body.name;
     var bio = req.body.bio;
@@ -275,13 +309,13 @@ exports.put = function(req, res, next) {
         return res.redirect('/qun/' + qun.id);
     });
 
-    ep.all('err', function(err) {
-        if (err) {
+    ep.all('_spec', function(_spec) {
+        if (_spec.error) {
             return res.render('qun/create', {
                 qid: qid,
                 name: name,
                 bio: bio,
-                error: err
+                error: _spec.error
             });
         } else {
             var user = req.session.user;
@@ -299,7 +333,7 @@ exports.put = function(req, res, next) {
     });
 
 
-    verify(qid, name, ep.done('err'));
+    spec(qid, name, ep.done('_spec'));
 };
 
 exports.invitation = function(req, res, next) {

@@ -135,6 +135,28 @@ var verify_title = function(title) {
     return error;
 };
 
+var spec = function(title, content) {
+
+    if (title !== undefined) {
+        title = validator.trim(title);
+    }
+    if (content !== undefined) {
+        content = validator.trim(content);
+    }
+    var error;
+    if (!title) {
+        error = "标题不能为空";
+    } else if (title.length > 140) {
+        error = "标题不能大于140字数";
+    }
+    var _spec = {};
+    _spec.title = title;
+    _spec.content = content;
+    _spec.error = error;
+
+    return _spec;
+};
+
 
 exports.put = function(req, res, next) {
     var title = req.body.title;
@@ -147,21 +169,16 @@ exports.put = function(req, res, next) {
     var ep = new EventProxy();
     ep.fail(next);
 
-    if (title !== undefined) {
-        title = validator.trim(title);
-    }
-    if (content !== undefined) {
-        content = validator.trim(content);
-    }
-    var error = verify_title(title);
-    if (error) {
+    var _spec = spec(title, content, error);
+
+    if (_spec.error) {
         ep.all('groups', function(groups) {
             return res.render('topic/edit', {
-                title: title,
-                content: content,
+                title: _spec.title,
+                content: _spec.content,
                 gid: gid,
                 groups: groups,
-                error: error
+                error: _spec.error
             });
         });
         Group.find({}, ep.done('groups'));
@@ -172,8 +189,8 @@ exports.put = function(req, res, next) {
     });
 
     var topic = new Topic();
-    topic.title = title;
-    topic.content = content;
+    topic.title = _spec.title;
+    topic.content = _spec.content;
     topic.author_id = user.loginid;
     topic.group_id = gid;
     topic.save(ep.done(function(topic) {
@@ -290,26 +307,15 @@ exports.putQunTopic = function(req, res, next) {
     var ep = new EventProxy();
     ep.fail(next);
 
-    if (title !== undefined) {
-        title = validator.trim(title);
-    }
-    if (content !== undefined) {
-        content = validator.trim(content);
-    }
-    var error;
-    if (!title) {
-        error = "标题不能为空";
-    } else if (title.length > 140) {
-        error = "标题不能大于140字数";
-    }
+    var _spec = spec(title, content);
 
-    if (error) {
+    if (_spec.error) {
         ep.all('qun', function(qun) {
             return res.render('qun_topic/edit', {
-                title: title,
-                content: content,
+                title: _spec.title,
+                content: _spec.content,
                 qun: qun,
-                error: error
+                error: _spec.error
             });
         });
         Qun.findOne({ id: qid }, ep.done('qun'));
@@ -323,9 +329,9 @@ exports.putQunTopic = function(req, res, next) {
     });
 
     var topic = new Topic();
-    topic.title = title;
-    topic.content = content;
-    topic.author_id = user._id;
+    topic.title = _spec.title;
+    topic.content = _spec.content;
+    topic.author_id = user.loginid;
     topic.qun_id = qid;
     topic.save(ep.done(function(topic) {
         User.findById(user._id, ep.done(function(user) {
@@ -347,30 +353,31 @@ exports.qunTopic = function(req, res, next) {
         } else {
             topic.lastReply = replies[replies.length - 1];
         }
+
+        var is_followed = _.filter(topic.followers, function(f) {
+            return f.id === user.loginid;
+        });
+
         res.render('qun_topic/index', {
             topic: topic,
             replies: replies,
             is_uped: is_uped,
-            is_collected: false,
-            is_followed: false
+            is_followed: is_followed
         });
     });
 
-    Topic.findById(tid, function(err, topic) {
-        if (err) {
-            next(err);
-            return;
-        }
+
+    Topic.findById(tid, ep.done(function(topic) {
         if (!topic) {
             res.render404('话题不存在或已被删除。');
             return;
         }
 
-        topicRepo.affixQun(topic, ep.done(function(topic) {
+        topicRepo.affixQunTopic(topic, ep.done(function(topic) {
             topic.visit_count += 1;
             topic.save();
             ep.emit('topic', topic);
         }));
         replyRepo.affixReplies(tid, ep.done('replies'));
-    });
+    }));
 };

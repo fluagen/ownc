@@ -49,5 +49,46 @@ var affixTopics = function(topics, callback) {
     });
 };
 
+var affixQunTopic = function(topic, callback) {
+    var ep = new EventProxy();
+    ep.fail(callback);
+    if (!topic) {
+        return callback(null, null);
+    }
+    ep.all('author', 'qun', function(author, qun) {
+        //附加属性
+        topic.author = author;
+        topic.qun = qun;
+        return callback(null, topic);
+    });
+    //作者
+    User.findOne({loginid: topic.author_id}, ep.done('author'));
+
+    Qun.findOne({id: topic.qun_id}, ep.done('qun'));
+};
+
+var affixQunTopics = function(topics, callback) {
+    if (typeof affix === 'function') {
+        callback = affix;
+        affix = null;
+    }
+    if (!topics || topics.length === 0) {
+        return callback(null, []);
+    }
+    var ep = new EventProxy();
+    ep.fail(callback);
+    ep.after('topics', topics.length, function(topics) {
+        callback(null, topics);
+        return;
+    });
+
+    //遍历 增加附加属性
+    topics.forEach(function(topic, i) {
+        affixTopic(topic, ep.done('topics'));
+    });
+};
+
 exports.affixTopic = affixTopic;
 exports.affixTopics = affixTopics;
+exports.affixQunTopic = affixQunTopic;
+exports.affixQunTopics = affixQunTopics;

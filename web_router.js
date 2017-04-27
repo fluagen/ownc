@@ -43,7 +43,7 @@ router.post('/:tid/reply', auth.userRequired, reply.add);
 // router.post('/reply/:reply_id/edit', auth.userRequired, reply.update);
 router.post('/reply/:reply_id/up', auth.userRequired, reply.up);
 
-router.get('/message', auth.userRequired, message.index);
+router.get('/notifications', auth.userRequired, message.index);
 
 
 router.get('/qun', qun.explore);

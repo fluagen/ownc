@@ -1,0 +1,37 @@
+<li class="list-group-item message">
+    <div class="avatar">
+        <a href="javascript:void(0);"><img src="<%=message.sender.avatar_url%>">
+		</a>
+    </div>
+    <div class="message-info">
+        <% if(message.type === 'topic'){%>
+        <div class="media-heading">
+            <a href="/user/<%= message.sender.loginid%>"><%= message.sender.loginid%></a>
+            •
+            回复了你发布的文章:
+            <a href="/topic/<%= message.topic._id%>"><%= message.topic.title%></a>
+
+            <span class="meta">
+                <span>&nbsp;•&nbsp;</span>
+                <span><%= message.reply.create_at_ago()%></span>
+            </span>
+        </div>
+        <%}else if(message.type === 'follow'){%>
+        <div class="media-heading">
+            <a href="#"><%= message.sender.loginid%></a>
+            •
+            回复了你关注的文章:
+            <a href="#"><%= message.topic.title%></a>
+
+            <span class="meta">
+                <span>&nbsp;•&nbsp;</span>
+                <span><%= message.reply.create_at_ago()%></span>
+            </span>
+        </div>
+        <%}%>
+        <div class="markdown-reply media-body">
+            <%- markdown(message.reply.content) %>
+        </div>
+        
+    </div>
+</li>
