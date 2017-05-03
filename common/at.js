@@ -61,7 +61,7 @@ var send_at_message = function(text, sender, topic, reply, callback) {
     }
 
     receiver_ids = receiver_ids.filter(function(id) {
-        return !id.equals(sender.loginid);
+        return id !== sender.loginid;
     });
 
     var docs = [];
@@ -90,15 +90,17 @@ var send_follow_message = function(sender, topic, reply, callback) {
     }
 
     var receiver_ids = _.map(topic.followers, 'id');
-
+    receiver_ids = receiver_ids.filter(function(id) {
+        return id !== sender.loginid;
+    });
     var docs = [];
 
     receiver_ids.forEach(function(id) {
         var message = {};
         message.sender_id = sender.loginid;
         message.receiver_id = id;
-        message.topic_id = topic_id;
-        message.reply_id = reply_id;
+        message.topic_id = topic._id;
+        message.reply_id = reply._id;
         message.type = Type.follow;
         docs.push(message);
     });
@@ -111,7 +113,7 @@ exports.sendMessage = function(text, sender, topic, reply, callback) {
     var ep = new EventProxy();
     ep.fail(callback);
 
-    ep.done('topic_message', 'at_message', 'follow_message', function() {
+    ep.all('topic_message', 'at_message', 'follow_message', function() {
         return callback(null, true);
     });
 

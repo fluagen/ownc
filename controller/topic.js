@@ -82,9 +82,7 @@ exports.index = function(req, res, next) {
         if (!replies) {
             replies = [];
         }
-        var is_followed = _.filter(topic.followers, function(f) {
-            return f.id === user.loginid;
-        });
+        var is_followed = _.some(topic.followers, { 'id': user.loginid });
         res.render('topic/index', {
             topic: topic,
             replies: replies,
@@ -244,39 +242,42 @@ exports.collect = function(req, res, next) {
 };
 
 exports.follow = function(req, res, next) {
-    var topic_id = req.params.tid;
-    var user_id = req.session.user._id;
+    var tid = req.params.tid;
+    var user_id = req.session.user.loginid;
     var ep = new EventProxy();
     ep.fail(next);
-    ep.all('action', function(action) {
-        return res.send({
-            success: true,
-            action: action
-        });
-    });
-    ep.all('topic', 'topic_follow', function(topic, topic_follow) {
-        if (topic_follow) {
-            topic_follow.remove(ep.done(function() {
-                topic.follow_count -= 1;
-                topic.save();
-                ep.emit('action', 'cancel');
+    ep.all('topic', function(topic) {
+        if (!topic) {
+            return res.send({
+                success: false
+            });
+        }
+        var follower = _.some(topic.followers, { 'id': user_id });
+
+        if (follower) {
+            var followers = topic.followers;
+            topic.followers = _.dropWhile(followers, function(o) {
+                return o.id === user_id;
+            });
+            topic.save(ep.done(function(topic) {
+                return res.send({
+                    success: true,
+                    action: 'cancel'
+                });
             }));
         } else {
-            var tf = new TopicFollow();
-            tf.user_id = user_id;
-            tf.topic_id = topic_id;
-            tf.save(ep.done(function() {
-                topic.follow_count += 1;
-                topic.save();
-                ep.emit('action', 'follow');
+            topic.followers.push({
+                'id': user_id
+            });
+            topic.save(ep.done(function(topic) {
+                return res.send({
+                    success: true,
+                    action: 'follow'
+                });
             }));
         }
     });
-    TopicFollow.findOne({
-        user_id: user_id,
-        topic_id: topic_id
-    }, ep.done('topic_follow'));
-    Topic.findById(topic_id, ep.done('topic'));
+    Topic.findById(tid, ep.done('topic'));
 };
 
 exports.createQunTopic = function(req, res, next) {
