@@ -84,7 +84,7 @@ var affixQunTopics = function(topics, callback) {
 
     //遍历 增加附加属性
     topics.forEach(function(topic, i) {
-        affixTopic(topic, ep.done('topics'));
+        affixQunTopic(topic, ep.done('topics'));
     });
 };
 

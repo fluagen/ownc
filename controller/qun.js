@@ -145,24 +145,22 @@ exports.explore = function(req, res, next) {
         });
     });
 
-    qunRepo.userQuns(user.loginid, ep.done(function(quns) {
-
-        if (!quns || quns.length === 0) {
-            ep.emit('topics', []);
-        }
+    ep.all('quns', function(quns) {
         var qids = _.map(quns, 'id');
-        Topic.find({
-                'qun_id': {
-                    $in: qids
-                },
-                'deleted': false
-            })
-            .sort('-last_reply_at -create_at')
+        // Topic.find({'qun_id': {
+        //             $in: qids
+        //         }}).exec(ep.done('topics'));
+        Topic.where('qun_id').in(qids)
             .exec(ep.done(function(topics) {
                 topicRepo.affixQunTopics(topics, ep.done('topics'));
             }));
+    });
 
-    }));
+
+
+    Qun.find({ 'members.id': user.loginid })
+        .select('id')
+        .exec(ep.done('quns'));
 };
 
 exports.index = function(req, res, next) {
