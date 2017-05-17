@@ -76,7 +76,6 @@ body {
   font-size: 12px; }
   .meta a,
   .operate a {
-    padding: 1px 2px;
     color: #B9BDC0;
     text-decoration: none; }
   .meta a.active,
@@ -113,6 +112,8 @@ body {
       .topic-item .topic-info .topic-title a:focus,
       .topic-item .topic-info .topic-title a:hover {
         color: #555; }
+    .topic-item .topic-info .meta {
+      padding: 2px 0px; }
 
 .topic .topic-header {
   background-color: #fcfcfc; }
@@ -123,6 +124,10 @@ body {
     line-height: 135%;
     margin-bottom: 12px;
     font-weight: normal; }
+
+.topic .topic-footer {
+  background-color: #fcfcfc;
+  text-align: right; }
 
 .preview-box {
   padding: 10px;

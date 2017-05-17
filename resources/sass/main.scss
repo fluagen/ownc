@@ -97,7 +97,6 @@ body {
     color: #d0d0d0;
     font-size: 12px;
     a {
-        padding: 1px 2px;
         color: #B9BDC0;
         text-decoration: none;
     }
@@ -132,6 +131,9 @@ body {
                 color: #555;
             }
         }
+        .meta {
+            padding: 2px 0px;
+        }
     }
     .badge-reply-count {}
 }
@@ -147,6 +149,10 @@ body {
             margin-bottom: 12px;
             font-weight: normal;
         }
+    }
+    .topic-footer {
+        background-color: #fcfcfc;
+        text-align: right;
     }
 }
 

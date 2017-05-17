@@ -14,11 +14,9 @@
 					if(topic.last_reply_id){
 					%>
                                 <span>&nbsp;•&nbsp;</span> 最后由
-                                <span>&nbsp;</span>
                                 <a href="#">
                                     <%= topic.last_reply_author%>
                                 </a>
-                                <span>&nbsp;</span> 于
                                 <%= topic.last_reply_at_ago()%>回复
                                     <%}%>
                                         <span>&nbsp;•&nbsp; </span>

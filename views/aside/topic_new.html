@@ -1,7 +1,21 @@
 <div id="topic_new">
 	<ul class="list-group">
+		<%
+		if(typeof(gid) !== 'undefined' && gid){
+		%>
+		<li class="list-group-item">
+			<a href="/topic/create/<%= gid%>" class="btn btn-primary btn-block">发布话题</a>
+		</li>
+		<%}else if(typeof(qid) !== 'undefined' && qid){
+		%>
+		<li class="list-group-item">
+			<a href="/qun/<%= qid%>/topic/create" class="btn btn-primary btn-block">发布话题</a>
+		</li>
+		<%}else{%>
 		<li class="list-group-item">
 			<a href="/topic/create" class="btn btn-primary btn-block">发布话题</a>
 		</li>
+		<%}%>
+		
 	</ul>
 </div>

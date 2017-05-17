@@ -170,11 +170,9 @@
                                 $this.removeClass('active');
                             }
                         }
-                    } else {
-                        alert(data.message);
                     }
                 }).fail(function(xhr) {
-                    if (xhr.status === 403) {
+                    if (xhr.status === 401) {
                         //alert('请先登录，登陆后即可点赞。');
                         window.location.href = '/login-required';
                         return;
@@ -209,7 +207,7 @@
                         alert(data.message);
                     }
                 }).fail(function(xhr) {
-                    if (xhr.status === 403) {
+                    if (xhr.status === 401) {
                         window.location.href = '/login-required';
                         return;
                     }
@@ -233,7 +231,7 @@
                         }
                     }
                 }).fail(function(xhr) {
-                    if (xhr.status === 403) {
+                    if (xhr.status === 401) {
                         window.location.href = '/login-required';
                         return;
                     }
@@ -289,7 +287,7 @@
                         return;
                     }
                 }).fail(function(xhr) {
-                    if (xhr.status === 403) {
+                    if (xhr.status === 401) {
                         window.location.href = '/login-required';
                         return;
                     }

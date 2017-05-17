@@ -9,7 +9,7 @@ var Qun = model.Qun;
 exports.loginRequired = function(req, res, next) {
     res.render('sign/signin', {
         alertType: 'alert-danger',
-        message: '需要登录，或会话已过期。'
+        message: '需要登录才可以继续此操作，或会话已过期。'
     });
 };
 
@@ -18,7 +18,9 @@ exports.loginRequired = function(req, res, next) {
  */
 exports.userRequired = function(req, res, next) {
     if (!req.session || !req.session.user || !req.session.user._id) {
-        return res.status(301).redirect('/login-required');
+        return res.status(401).send({
+            error: 'Unauthorized'
+        });
     }
 
     next();

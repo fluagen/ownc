@@ -82,7 +82,10 @@ exports.index = function(req, res, next) {
         if (!replies) {
             replies = [];
         }
-        var is_followed = _.some(topic.followers, { 'id': user.loginid });
+        var is_followed = false;
+        if (user && user.loginid) {
+            is_followed = _.some(topic.followers, { 'id': user.loginid });
+        }
         res.render('topic/index', {
             topic: topic,
             replies: replies,
@@ -167,7 +170,7 @@ exports.put = function(req, res, next) {
     var ep = new EventProxy();
     ep.fail(next);
 
-    var _spec = spec(title, content, error);
+    var _spec = spec(title, content);
 
     if (_spec.error) {
         ep.all('groups', function(groups) {
